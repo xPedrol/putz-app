@@ -1,0 +1,75 @@
+<div class="wrap-table100">
+  <div class="scroll">
+    <div class="table">
+      <div class="row header custom-sticky-header z-index-1">
+        <div class="cell" [sortable]="column.name" [ngClass]="column.class" *ngFor="let column of portfoliosColumn"
+             (sort)="onSort($event)">
+          <nb-icon
+            *ngIf="column.title && column.name === sort?.column && sort?.icon"
+            [icon]="sort?.icon??''" class="table-header-icon mx-2"
+            status="basic"></nb-icon>
+          <span class="label font-size-small">{{column?.title}}</span>
+        </div>
+      </div>
+      <div class="row" *ngFor="let portfolio of portfolios;trackBy:trackPortfoliosByFn"
+           [libTableRow]="portfoliosColumn">
+        <div class="cell text-start" data-title="Nome" *libTableCell="'id'">
+          <nb-tag status="basic" appearance="outline" size="small"
+                  [text]="portfolio?.id | empty"></nb-tag>
+        </div>
+        <div class="cell text-start" data-title="Nome" *libTableCell="'name'">
+          <div nbTooltip="Descrição: {{portfolio?.description | empty}}">
+            <span>{{portfolio?.name | empty}}</span>
+            <nb-icon icon="question-mark-circle-outline" class="m-2"></nb-icon>
+          </div>
+        </div>
+        <div class="cell text-start" data-title="Freelancer" *libTableCell="'freelancer'">
+          <a [routerLink]="['','account','profile',portfolio?.person.slug]" target="_blank" class="text-decoration-none">
+            <nb-user size="large" [picture]="portfolio?.person?.avatar | empty" *ngIf="portfolio?.person?.avatar"
+                     [name]="portfolio?.person?.name | empty"></nb-user>
+            <nb-user size="large" *ngIf="!portfolio?.person?.avatar" [name]="portfolio?.person?.name | empty"></nb-user>
+          </a>
+        </div>
+        <div class="cell text-start text-nowrap" data-title="Competência" *libTableCell="'competenceName'">
+          <nb-tag status="info" appearance="outline" size="small"
+                  [text]="portfolio?.competence?.name | empty"></nb-tag>
+        </div>
+        <div class="cell text-start text-nowrap" data-title="Valor" *libTableCell="'file'">
+          <nb-tag appearance="outline" status="warning" size="tiny" *ngIf="!portfolio?.fileLink"
+                  text="Sem arquivo"></nb-tag>
+          <a *ngIf="portfolio?.fileLink" [href]="portfolio?.fileLink" target="_blank" nbButton size="tiny"
+             status="primary" appearance="outline">Ver arquivo</a>
+        </div>
+        <div class="cell text-start text-nowrap" data-title="Valor" *libTableCell="'isVerified'">
+          <nb-tag appearance="outline"
+                  [status]="portfolio.requestStatus === portfolioRequestStatusEnum.APPROVED?'success':'basic'"
+                  size="tiny"
+                  [text]="('portfolio.requestStatus.'+portfolio.requestStatus) | translate"></nb-tag>
+        </div>
+        <div class="cell text-start text-nowrap" data-title="Valor" *libTableCell="'level'">
+          <nb-tag appearance="outline" status="primary" size="tiny"
+                  [text]="portfolio?.level?('level.'+portfolio?.level | translate):'---'"></nb-tag>
+        </div>
+        <div class="cell text-end" data-title="" *libTableCell="'actions'">
+          <ng-container *nbIsGranted="['approve','portfolio-manager']">
+            <ng-container *ngIf="portfolio?.requestStatus !== portfolioRequestStatusEnum.APPROVED &&
+portfolio?.requestStatus !== portfolioRequestStatusEnum.DECLINED">
+              <button nbButton ghost status="success" type="button" (click)="verifyPortfolio(portfolio)"
+                      nbTooltip="Aprovar">
+                <nb-icon icon="checkmark-outline"></nb-icon>
+              </button>
+            </ng-container>
+          </ng-container>
+          <a nbButton ghost status="info" type="button" *nbIsGranted="['view','portfolio-manager']" nbTooltip="Editar"
+             [routerLink]="['','portfolios',portfolio?.id]">
+            <nb-icon icon="edit-2-outline"></nb-icon>
+          </a>
+          <button nbButton ghost status="danger" type="button" (click)="deletePortfolio(portfolio)" nbTooltip="Deletar"
+                  *nbIsGranted="['edit','portfolio-manager']">
+            <nb-icon icon="trash-outline"></nb-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

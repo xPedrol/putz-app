@@ -1,0 +1,39 @@
+<div class="m-3 d-flex justify-content-center flex-column d-block d-lg-none">
+  <ng-container *ngIf="account">
+    <nb-actions size="small" class="d-flex justify-content-center my-4">
+      <nb-action class="user-action">
+        <nb-user
+          [onlyPicture]="true"
+          [nbContextMenu]="userMenu"
+          size="giant"
+          [name]="account?.login | empty"
+          [title]="account?.email | empty"
+          [picture]="account!.imageUrl?account!.imageUrl:''"
+          nbContextMenuTag="userMenu">
+        </nb-user>
+      </nb-action>
+    </nb-actions>
+    <div class="text-center justify-content-center no-wrap">
+      <h6 class="m-0">{{account?.login}}</h6>
+      <small class="m-0">{{account?.email}}</small>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!account">
+    <button nbButton ghost size="medium" [routerLink]="['/auth/login']" (click)="collapse()">Login</button>
+    <button nbButton ghost size="medium" [routerLink]="['/auth/register']" (click)="collapse()">Registrar
+    </button>
+  </ng-container>
+</div>
+<div class="d-flex justify-content-center d-block d-lg-none">
+  <button nbButton ghost class="mt-2" (click)="toggleTheme()">
+    <nb-icon [icon]="currentTheme === 'default'?'moon-outline':'sun-outline'"></nb-icon>
+  </button>
+  <button nbButton ghost class="mt-2" *ngIf="isAdmin" [nbContextMenu]="adminConfigMenu"
+          nbContextMenuTag="adminConfigMenu">
+    <nb-icon icon="settings-2-outline"></nb-icon>
+  </button>
+  <!--  <nb-action icon="settings-2-outline" *ngIf="isAdmin" nbContextMenuTag="adminConfigMenu" title="Configurações"-->
+  <!--             [nbContextMenu]="adminConfigMenu">-->
+  <!--  </nb-action>-->
+</div>
+<nb-menu [items]="sidebarItems"></nb-menu>

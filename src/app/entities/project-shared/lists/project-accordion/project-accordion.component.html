@@ -1,0 +1,66 @@
+<nb-accordion>
+  <nb-accordion-item *ngFor="let project of projects;trackBy:trackById">
+    <nb-accordion-item-header>
+      <div class="d-flex align-items-center justify-content-between w-95">
+        <span class="header-title no-wrap">{{project?.name}}
+          - {{project?.projectStatusAsString}} </span>
+        <div class="text-center">
+          <nb-tag *ngIf="project?.anyApproved" status="success" size="tiny" appearance="filled"
+                  class="no-wrap d-none d-sm-inline"
+                  [text]="'Aprovado '+(project?.approvedByPutz?'pela putz':'pelo cliente')"></nb-tag>
+          <a *ngIf="project.isProject" nbButton status="info" type="button" class="m-1" appearance="filled" size="small" nbTooltip="Acompanhar projeto pela timeline"
+             [routerLink]="['','projects',project.id,'timeline']">
+            <nb-icon icon="trending-up-outline"></nb-icon>
+          </a>
+        </div>
+      </div>
+
+    </nb-accordion-item-header>
+    <nb-accordion-item-body>
+      <div class="row m-3 text-center">
+        <div class="col-12">
+          <button nbButton status="info" appearance="filled" *nbIsGranted="['edit','project']" class="m-1" size="small"
+                  (click)="closeProject(project)">
+            Fechar projeto
+            <nb-icon icon="folder-outline"></nb-icon>
+          </button>
+          <a *nbIsGranted="['view','project-contract']" nbButton status="info" size="small" type="button" target="_blank"
+             appearance="filled" class="m-1"
+             [routerLink]="['','pdf','contract',project?.id]">
+            Contrato
+            <nb-icon icon="file-text-outline"></nb-icon>
+          </a>
+          <a *ngIf="project.isProject" nbButton status="info" type="button" size="small" class="m-1" appearance="filled"
+             [routerLink]="['','projects',project.id,'timeline']">
+            Acompanhar Projeto
+            <nb-icon icon="trending-up-outline"></nb-icon>
+          </a>
+          <a *ngIf="project?.projectRenderSlug" nbButton status="info" type="button" size="small" class="m-1" appearance="filled"
+             [routerLink]="['','projects',project.id,'render',project?.projectRenderSlug]">
+            Hiperpersonalização
+            <nb-icon icon="film-outline"></nb-icon>
+          </a>
+          <a nbButton status="info" type="button" class="m-1" size="small" appearance="filled"
+             *nbIsGranted="['view','project-basic']"
+             nbTooltip="Detalhes"
+             [routerLink]="['','projects',project.id,'general']">
+            <nb-icon icon="edit-2-outline"></nb-icon>
+          </a>
+          <button nbButton status="danger" appearance="filled" type="button" size="small" (click)="deleteProject(project)"
+                  class="m-1" *nbIsGranted="['edit','project']"
+                  nbTooltip="Excluir">
+            <nb-icon icon="trash-outline"></nb-icon>
+          </button>
+        </div>
+      </div>
+      <nb-card class="border-0">
+        <nb-card-body>
+          <app-project-step-timeline-test *ngIf="project && project.projectSteps && project.isProject"
+                                          [project]="project"
+                                          [projectSteps]="project?.projectSteps"></app-project-step-timeline-test>
+          <app-project-resume [project]="project" *ngIf="!project.isProject"></app-project-resume>
+        </nb-card-body>
+      </nb-card>
+    </nb-accordion-item-body>
+  </nb-accordion-item>
+</nb-accordion>

@@ -1,0 +1,8 @@
+export enum ProjectRenderGroupNameRecordStatusEnum {
+  APPROVED = "APPROVED",
+  AVALIABLE = "AVALIABLE",
+  BACKUP = "BACKUP",
+  DECLINED = "DECLINED",
+  REPLACED = "REPLACED",
+  SUBSCRIBED = "SUBSCRIBED"
+}

@@ -1,0 +1,40 @@
+<div class="wrap-table100">
+  <div class="scroll">
+    <div class="table">
+      <div class="row header custom-sticky-header z-index-1">
+        <div class="cell" [sortable]="column.name" [ngClass]="column.class" *ngFor="let column of columns"
+             (sort)="onSort($event)">
+          <nb-icon
+            *ngIf="column.title && column.name === state!.sort!.column && state!.getSortIcon()"
+            [icon]="state!.getSortIcon()" class="table-header-icon mx-2"
+            status="basic"></nb-icon>
+          <span class="label font-size-small">{{column?.title}}</span>
+        </div>
+      </div>
+      <ng-container *ngIf="attachments && attachments.length > 0">
+        <div class="row" *ngFor="let attachment of attachments;trackBy:trackById" [libTableRow]="columns">
+          <div class="cell text-start" data-title="ID" *libTableCell="'id'">
+            <nb-tag status="basic" appearance="outline" size="small"
+                    [text]="attachment?.id | empty"></nb-tag>
+          </div>
+          <div class="cell text-start no-wrap max-width-150px" data-title="Nome" *libTableCell="'name'">
+            {{attachment?.name | empty}}
+          </div>
+          <!--          <div class="cell text-start" data-title="Status" *libTableCell="'link'">-->
+          <!--            <nb-tag status="info" appearance="outline" size="small"-->
+          <!--                    [text]="attachment?.link | empty"></nb-tag>-->
+          <!--          </div>-->
+          <div class="cell text-start text-md-end" data-title="" *libTableCell="'actions'">
+            <button nbButton ghost status="primary" type="button">
+              <nb-icon icon="external-link-outline"></nb-icon>
+            </button>
+            <button nbButton ghost status="danger" type="button" (click)="deleteAttachment(attachment)"
+                    *nbIsGranted="['edit','attachment']">
+              <nb-icon icon="trash-outline"></nb-icon>
+            </button>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

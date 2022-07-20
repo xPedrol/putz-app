@@ -1,0 +1,51 @@
+<div>
+  <div class="d-flex justify-content-between align-items-center">
+    <h2 id="metrics-page-heading" class="m-0 p-0 fw-bolder poppins">Application Metrics</h2>
+    <button nbButton status="primary" class="btn btn-primary float-right" (click)="refresh()">
+      <span>Refresh</span>
+    </button>
+  </div>
+  <hr>
+
+  <h3 class="fw-bold poppins">JVM Metrics</h3>
+
+  <div class="row" *ngIf="metrics && !updatingMetrics">
+    <putz-jvm-memory class="col-md-4" [updating]="updatingMetrics" [jvmMemoryMetrics]="metrics.jvm"></putz-jvm-memory>
+
+    <putz-jvm-threads class="col-md-4" [threads]="threads"></putz-jvm-threads>
+
+    <putz-metrics-system class="col-md-4" [updating]="updatingMetrics" [systemMetrics]="metrics.processMetrics"></putz-metrics-system>
+  </div>
+
+  <putz-metrics-garbagecollector
+    *ngIf="metrics && metricsKeyExists('garbageCollector')"
+    [updating]="updatingMetrics"
+    [garbageCollectorMetrics]="metrics.garbageCollector"
+  ></putz-metrics-garbagecollector>
+
+  <div class="well well-lg" *ngIf="updatingMetrics">Updating...</div>
+
+  <putz-metrics-request
+    *ngIf="metrics && metricsKeyExists('http.server.requests')"
+    [updating]="updatingMetrics"
+    [requestMetrics]="metrics['http.server.requests']"
+  ></putz-metrics-request>
+
+  <putz-metrics-endpoints-requests
+    *ngIf="metrics && metricsKeyExists('services')"
+    [updating]="updatingMetrics"
+    [endpointsRequestsMetrics]="metrics.services"
+  ></putz-metrics-endpoints-requests>
+
+  <putz-metrics-cache
+    *ngIf="metrics && metricsKeyExists('cache')"
+    [updating]="updatingMetrics"
+    [cacheMetrics]="metrics.cache"
+  ></putz-metrics-cache>
+
+  <putz-metrics-datasource
+    *ngIf="metrics && metricsKeyExistsAndObjectNotEmpty('databases')"
+    [updating]="updatingMetrics"
+    [datasourceMetrics]="metrics.databases"
+  ></putz-metrics-datasource>
+</div>

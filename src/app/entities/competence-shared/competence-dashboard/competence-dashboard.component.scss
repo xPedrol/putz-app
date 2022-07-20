@@ -1,0 +1,8 @@
+@use "../../../shared/themes/scrollbar"as *;
+@use "../../../shared/themes/bpagination"as *;
+
+.competence-list {
+  overflow: auto;
+  max-height: 65vh;
+  @extend .custom-scrollbar;
+}

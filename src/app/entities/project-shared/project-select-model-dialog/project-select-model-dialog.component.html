@@ -1,0 +1,53 @@
+<nb-card class="dialog-content">
+  <nb-card-header class="border-0">
+    <div class="row align-items-center">
+      <div class="col-6 text-start">
+        <h6 class="header-title fw-bold">
+          <span>Selecione um modelo</span>
+        </h6>
+      </div>
+      <div class="col-6 text-end">
+        <button nbButton ghost status="basic" (click)="close()">
+          <nb-icon icon="close-outline"></nb-icon>
+        </button>
+      </div>
+    </div>
+
+  </nb-card-header>
+  <nb-card-body>
+    <div class="row mt-3">
+      <div class="mb-3 col-12" *ngIf="submitted && !projectModel">
+        <nb-alert status="danger">Modelo não selecionado!</nb-alert>
+      </div>
+      <div class="mb-3 col-12">
+        <label class="label">Modelo</label>
+        <nb-form-field>
+          <input fieldSize="large"
+                 nbInput
+                 type="text"
+                 placeholder="Escolha um modelo..."
+                 fullWidth
+                 [formControl]="productInput"
+                 [status]="(productInput.dirty || productInput.touched) ? (productInput.invalid  ? 'danger' : 'success') : 'basic'"
+                 [nbAutocomplete]="projectItemAuto"/>
+
+          <nb-autocomplete #projectItemAuto [handleDisplayFn]="viewHandle">
+
+            <nb-option *ngFor="let option of projectModels;trackBy:trackProjectModelsByFn;" [value]="option">
+              {{ option?.name | empty }}
+            </nb-option>
+
+          </nb-autocomplete>
+        </nb-form-field>
+        <ng-container *ngIf="productInput.invalid && productInput.touched">
+          <p class="text-danger" *ngIf="productInput.errors?.required">
+            Campo obrigatório
+          </p>
+        </ng-container>
+      </div>
+      <div class="mb-3 col-12 text-end" (click)="save()">
+        <button nbButton status="primary">Selecionar</button>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>

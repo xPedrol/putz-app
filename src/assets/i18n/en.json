@@ -1,0 +1,78 @@
+{
+  "timeline": {
+    "event": {
+      "status": {
+        "COMMIT": "Entrega",
+        "TOPIC": "Tópico",
+        "APPROVED": "Aprovado",
+        "SOLVED": "Resolvido",
+        "REQUEST": "Alteração"
+      }
+    }
+  },
+  "project": {
+    "status": {
+      "conceptions": "Orçamentos",
+      "models": "Modelos",
+      "actives": "Ativos",
+      "MODEL": "Modelo",
+      "CONCEPTION": "Orçamento",
+      "BRIEFING": "Planejamento",
+      "EXECUTION": "Execução  ",
+      "CANCELED": "Cancelado",
+      "CLOSE": "Fechado"
+    }
+  },
+  "error": {
+    "idexists": "Entidade ja registrada",
+    "http": {
+      "401": {
+        "title": "Invalid user",
+        "description": "Verifique seu login e senha."
+      },
+      "400": {
+        "title": "Server error",
+        "description": "Server returned a error"
+      },
+      "404": {
+        "title": "Algum recurso não foi encontrado",
+        "description": "O endereço da requisição que você está procurando não foi encontrado"
+      },
+      "505": {
+        "title": "Erro interno do servidor",
+        "description": "O servidor encontrou um erro, por favor volte mais tarde"
+      },
+      "invalidDate": {
+        "title": "Data inválida",
+        "description": "Data não informada ou inválida"
+      },
+      "incorrecttype": {
+        "title": "Tipo inválido",
+        "description": "Verifique o tipo do arquivo e tente novamente"
+      },
+      "alreadyRegistered": {
+        "title": "Already registered",
+        "description": "Your account is already registered in this course"
+      }
+    },
+    "404": {
+      "title": "Não encontrado",
+      "description": "O que você está procurando não foi encontrado"
+    },
+    "validation": {
+      "title": "Invalid field",
+      "description": "Verifique os dados inseridos"
+    }
+  },
+  "dashboard": "Dashboard",
+  "languages": [
+    {
+      "name": "Portuguese",
+      "initials": "pt"
+    },
+    {
+      "name": "English",
+      "initials": "en"
+    }
+  ]
+}

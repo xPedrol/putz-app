@@ -1,0 +1,8 @@
+.step-card {
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.step-card:hover {
+  transform: scale(1.02);
+}

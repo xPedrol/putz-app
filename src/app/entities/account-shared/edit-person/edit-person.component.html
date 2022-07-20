@@ -1,0 +1,358 @@
+<form [formGroup]="profileForm">
+  <div class="row">
+    <div class="col-md-2 mb-3">
+      <label class="label">Login</label>
+      <nb-form-field>
+        <input type="text" nbInput fullWidth placeholder="Nome" formControlName="slug" fieldSize="large"
+               [status]="(profileForm.get('slug')!.dirty || profileForm.get('slug')!.touched) ? (profileForm.get('slug')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container *ngIf="profileForm.get('slug')!.invalid && profileForm.get('slug')!.touched">
+        <p class="text-danger" *ngIf="profileForm.get('slug')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+
+    <div class="col-md-2 mb-3">
+      <label class="label">Tipo de Pessoa</label>
+      <nb-form-field>
+        <nb-select fullWidth placeholder="Selecione um Tipo..." formControlName="personType" size="large"
+                   [status]="(profileForm.get('personType')!.dirty || profileForm.get('personType')!.touched) ? (profileForm.get('gender')!.invalid  ? 'danger' : 'success') : 'basic'">
+          <option>Selecione um tipo</option>
+          <nb-option [value]="personType.value"
+                     *ngFor="let personType of personTypes">{{personType.displayName}}</nb-option>
+        </nb-select>
+      </nb-form-field>
+      <ng-container *ngIf="profileForm.get('personType')!.invalid && profileForm.get('personType')!.touched">
+        <p class="text-danger" *ngIf="profileForm.get('personType')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+
+    <div class="col-md-4 mb-3" *nbIsGranted="['view','auth-buttons']">
+      <label class="label">Tipo de Usuário</label>
+      <nb-form-field>
+        <nb-select fullWidth placeholder="Selecione um Tipo..." formControlName="personType" size="large"
+                   [status]="(profileForm.get('personType')!.dirty || profileForm.get('personType')!.touched) ? (profileForm.get('personType')!.invalid  ? 'danger' : 'success') : 'basic'">
+          <option>Selecione um tipo</option>
+          <nb-option [value]="personType.value"
+                     *ngFor="let personType of personTypes">{{personType.displayName}}</nb-option>
+        </nb-select>
+      </nb-form-field>
+      <ng-container *ngIf="profileForm.get('personType')!.invalid && profileForm.get('personType')!.touched">
+        <p class="text-danger" *ngIf="profileForm.get('personType')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+
+    <div class="col-md-4 mb-3">
+      <label class="label">Nome</label>
+      <nb-form-field>
+        <input type="text" nbInput fullWidth placeholder="Nome" formControlName="name" fieldSize="large"
+               [status]="(profileForm.get('name')!.dirty || profileForm.get('name')!.touched) ? (profileForm.get('name')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container *ngIf="profileForm.get('name')!.invalid && profileForm.get('name')!.touched">
+        <p class="text-danger" *ngIf="profileForm.get('name')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class=" col-12 col-md-4 mb-3">
+      <label class="label">Email</label>
+      <nb-form-field>
+        <input type="text" nbInput fullWidth placeholder="Email" formControlName="email" fieldSize="large"
+
+               [status]="(profileForm.get('email')!.dirty || profileForm.get('email')!.touched) ? (profileForm.get('email')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container *ngIf="profileForm.get('email')!.invalid && profileForm.get('email')!.touched">
+        <p class="text-danger" *ngIf="profileForm.get('email')!.errors?.required">
+          Campo obrigatório
+        </p>
+        <p class="text-danger" *ngIf="profileForm.get('email')!.errors?.email">
+          Email inválido
+        </p>
+      </ng-container>
+    </div>
+    <div class="col-md-4 mb-3" *ngIf="!isJuridic">
+      <label class="label">Aniversário</label>
+      <nb-form-field>
+        <input type="text" nbInput fullWidth placeholder="Data de aniversário" formControlName="birthday"
+               fieldSize="large" [nbDatepicker]="datepicker"
+               [status]="(profileForm.get('birthday')!.dirty || profileForm.get('birthday')!.touched) ? (profileForm.get('birthday')!.invalid  ? 'danger' : 'success') : 'basic'">
+        <nb-datepicker #datepicker format="DD/MM/yyyy"></nb-datepicker>
+      </nb-form-field>
+      <ng-container *ngIf="profileForm.get('birthday')!.invalid && profileForm.get('birthday')!.touched">
+        <p class="text-danger" *ngIf="profileForm.get('birthday')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class="col-md-4 mb-3">
+      <label class="label">DDI</label>
+      <nb-form-field>
+        <nb-select fullWidth placeholder="Selecione um ddi..." formControlName="ddi" size="large"
+                   [status]="(profileForm.get('ddi')!.dirty || profileForm.get('ddi')!.touched) ? (profileForm.get('ddi')!.invalid  ? 'danger' : 'success') : 'basic'">
+          <nb-option [disabled]="true">Selecione um país...</nb-option>
+          <nb-option *ngFor="let countryCode of countryCodes"
+                     [value]="countryCode.dial_code">{{countryCode.dial_code}} - {{countryCode.name}}</nb-option>
+        </nb-select>
+      </nb-form-field>
+      <ng-container *ngIf="profileForm.get('ddi')!.invalid && profileForm.get('ddi')!.touched">
+        <p class="text-danger" *ngIf="profileForm.get('ddi')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class="col-md-4 mb-3">
+      <label class="label">Telefone</label>
+      <nb-form-field>
+        <input type="text" nbInput fullWidth placeholder="N. de Telefone" formControlName="phone" fieldSize="large"
+               [mask]="phoneMask"
+               [status]="(profileForm.get('phone')!.dirty || profileForm.get('phone')!.touched) ? (profileForm.get('phone')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container *ngIf="profileForm.get('phone')!.invalid && profileForm.get('phone')!.touched">
+        <p class="text-danger" *ngIf="profileForm.get('phone')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class="col-md-4 mb-3">
+      <label class="label">Celular</label>
+      <nb-form-field>
+        <input type="text" nbInput fullWidth placeholder="N. de Celular" formControlName="phoneCel" fieldSize="large"
+               [mask]="phoneMask"
+               [status]="(profileForm.get('phoneCel')!.dirty || profileForm.get('phoneCel')!.touched) ? (profileForm.get('phoneCel')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container *ngIf="profileForm.get('phoneCel')!.invalid && profileForm.get('phoneCel')!.touched">
+        <p class="text-danger" *ngIf="profileForm.get('phoneCel')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class="col-md-4 mb-3">
+      <label class="label">WhatsApp</label>
+      <nb-form-field>
+        <input type="text" nbInput fullWidth placeholder="WhatsApp" formControlName="phoneWhatsapp" fieldSize="large"
+               [mask]="phoneMask"
+               [status]="(profileForm.get('phoneWhatsapp')!.dirty || profileForm.get('phoneWhatsapp')!.touched) ? (profileForm.get('phoneWhatsapp')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container *ngIf="profileForm.get('phoneWhatsapp')!.invalid && profileForm.get('phoneWhatsapp')!.touched">
+        <p class="text-danger" *ngIf="profileForm.get('phoneWhatsapp')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class="col-md-4 mb-3" *ngIf="isJuridic">
+      <label class="label">Nome fantasia</label>
+      <nb-form-field>
+        <input type="text" nbInput fullWidth placeholder="Nome fantasia" formControlName="nameFantasy" fieldSize="large"
+               [status]="(profileForm.get('nameFantasy')!.dirty || profileForm.get('nameFantasy')!.touched) ? (profileForm.get('nameFantasy')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container *ngIf="profileForm.get('nameFantasy')!.invalid && profileForm.get('nameFantasy')!.touched">
+        <p class="text-danger" *ngIf="profileForm.get('nameFantasy')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+
+    <div class=" col-12 col-md-2 mb-3" *ngIf="!isJuridic">
+      <label class="label">Gênero</label>
+      <nb-form-field>
+        <nb-select fullWidth placeholder="Selecione um gênero..." formControlName="gender" size="large"
+                   [status]="(profileForm.get('gender')!.dirty || profileForm.get('gender')!.touched) ? (profileForm.get('gender')!.invalid  ? 'danger' : 'success') : 'basic'">
+          <option>Selecione uma lingua</option>
+          <nb-option [value]="gender.value" *ngFor="let gender of genders">{{gender.displayName}}</nb-option>
+        </nb-select>
+      </nb-form-field>
+      <ng-container *ngIf="profileForm.get('gender')!.invalid && profileForm.get('gender')!.touched">
+        <p class="text-danger" *ngIf="profileForm.get('gender')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class=" col-12 col-md-2 mb-3">
+      <label class="label">Origem</label>
+      <nb-form-field>
+        <nb-select fullWidth placeholder="Selecione uma origem..." formControlName="reference" size="large"
+                   [status]="(profileForm.get('reference')!.dirty || profileForm.get('reference')!.touched) ? (profileForm.get('reference')!.invalid  ? 'danger' : 'success') : 'basic'">
+          <option>Selecione uma origem</option>
+          <nb-option [value]="reference" *ngFor="let reference of references">{{reference}}</nb-option>
+        </nb-select>
+      </nb-form-field>
+      <ng-container *ngIf="profileForm.get('reference')!.invalid && profileForm.get('reference')!.touched">
+        <p class="text-danger" *ngIf="profileForm.get('reference')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class=" col-12 col-md-3 mb-3">
+      <label class="label">CPF/CNPJ</label>
+      <nb-form-field>
+        <input type="text" nbInput fullWidth placeholder="CPF/CNPJ" formControlName="cpfCNPF" fieldSize="large"
+               mask="CPF_CNPJ"
+
+               [status]="(profileForm.get('cpfCNPF')!.dirty || profileForm.get('cpfCNPF')!.touched) ? (profileForm.get('cpfCNPF')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container *ngIf="profileForm.get('cpfCNPF')!.invalid && profileForm.get('cpfCNPF')!.touched">
+        <p class="text-danger" *ngIf="profileForm.get('cpfCNPF')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class="col-12 col-md-3 mb-3">
+      <label class="label">Data de verificação</label>
+      <nb-form-field>
+        <input type="text" nbInput fullWidth placeholder="Verificação por whatsapp..."
+               formControlName="phoneWhatsappVerification"
+               fieldSize="large" [nbDatepicker]="phoneWhatsappVerificationDatepicker">
+        <nb-datepicker #phoneWhatsappVerificationDatepicker format="DD/MM/yyyy"></nb-datepicker>
+      </nb-form-field>
+    </div>
+    <div class=" col-12 col-md-3 mb-3" *ngIf="!isJuridic">
+      <label class="label">RG</label>
+      <nb-form-field>
+        <input type="text" nbInput fullWidth placeholder="N. de RG" formControlName="rgDoc" fieldSize="large"
+
+               [status]="(profileForm.get('rgDoc')!.dirty || profileForm.get('rgDoc')!.touched) ? (profileForm.get('rgDoc')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container *ngIf="profileForm.get('rgDoc')!.invalid && profileForm.get('rgDoc')!.touched">
+        <p class="text-danger" *ngIf="profileForm.get('rgDoc')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class=" col-12 col-md-3 mb-3" *ngIf="!isJuridic">
+      <label class="label">Empresa</label>
+      <nb-form-field>
+        <input fullWidth fieldSize="large"
+               [formControl]="agencySearch"
+               nbInput
+               type="text"
+               placeholder="Nome da agência..."
+               [status]="(agencySearch.touched) ? (agencySearch.invalid  ? 'danger' : 'success') : 'basic'"
+               [nbAutocomplete]="autoControl"/>
+
+        <nb-autocomplete #autoControl [handleDisplayFn]="viewAgencyHandle">
+
+          <nb-option *ngFor="let option of agencies;trackBy:trackAgenciesByFn" [value]="option">
+            {{ option?.name }}
+          </nb-option>
+
+        </nb-autocomplete>
+      </nb-form-field>
+      <ng-container *ngIf="profileForm.get('rgDoc')!.invalid && profileForm.get('rgDoc')!.touched">
+        <p class="text-danger" *ngIf="profileForm.get('rgDoc')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+
+  </div>
+  <hr>
+  <div class="row custom-sticky top-0">
+    <div class=" col-12">
+      <h6 class="header-title">Endereço</h6>
+    </div>
+  </div>
+  <div class="row">
+    <div class=" col-12 col-md-3 mb-3">
+      <label class="label">CEP</label>
+      <nb-form-field>
+        <input type="text" nbInput fullWidth placeholder="Insira um CEP..." formControlName="addressZipCode"
+               fieldSize="large"
+
+               [status]="(profileForm.get('addressZipCode')!.dirty || profileForm.get('addressZipCode')!.touched) ? (profileForm.get('addressZipCode')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container *ngIf="profileForm.get('addressZipCode')!.invalid && profileForm.get('addressZipCode')!.touched">
+        <p class="text-danger" *ngIf="profileForm.get('addressZipCode')!.errors?.required">
+          Campo obrigatório
+        </p>
+        <p class="text-danger"
+           *ngIf="profileForm.get('addressZipCode')!.errors?.maxlength || profileForm.get('addressZipCode')!.errors?.minlength">
+          CEP inválido
+        </p>
+      </ng-container>
+    </div>
+    <div class=" col-12 col-md-3 mb-3">
+      <label class="label">Bairro</label>
+      <nb-form-field>
+        <input type="text" nbInput fullWidth placeholder="Insira um distríto..." formControlName="addressDistrict"
+               fieldSize="large"
+
+               [status]="(profileForm.get('addressDistrict')!.dirty || profileForm.get('addressDistrict')!.touched) ? (profileForm.get('addressDistrict')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container *ngIf="profileForm.get('addressDistrict')!.invalid && profileForm.get('addressDistrict')!.touched">
+        <p class="text-danger" *ngIf="profileForm.get('addressDistrict')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class=" col-12 col-md-3 mb-3">
+      <label class="label">Cidade</label>
+      <nb-form-field>
+        <input type="text" nbInput fullWidth placeholder="Insira uma cidade..." formControlName="addressCity"
+               fieldSize="large"
+
+               [status]="(profileForm.get('addressCity')!.dirty || profileForm.get('addressCity')!.touched) ? (profileForm.get('addressCity')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container *ngIf="profileForm.get('addressCity')!.invalid && profileForm.get('addressCity')!.touched">
+        <p class="text-danger" *ngIf="profileForm.get('addressCity')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class=" col-12 col-md-3 mb-3">
+      <label class="label">Estado</label>
+      <nb-form-field>
+        <nb-select fullWidth placeholder="Insira um estado..." formControlName="addressUf" size="large"
+                   [status]="(profileForm.get('addressUf')!.dirty || profileForm.get('addressUf')!.touched) ? (profileForm.get('addressUf')!.invalid  ? 'danger' : 'success') : 'basic'">
+          <nb-option [value]="uf" *ngFor="let uf of ufs">{{uf}}</nb-option>
+        </nb-select>
+        <!--        <input type="text" nbInput fullWidth placeholder="Insira um estado..." formControlName="addressUf"-->
+        <!--               fieldSize="large"-->
+
+        <!--               [status]="(profileForm.get('addressUf')!.dirty || profileForm.get('addressUf')!.touched) ? (profileForm.get('addressUf')!.invalid  ? 'danger' : 'success') : 'basic'">-->
+      </nb-form-field>
+      <ng-container *ngIf="profileForm.get('addressUf')!.invalid && profileForm.get('addressUf')!.touched">
+        <p class="text-danger" *ngIf="profileForm.get('addressUf')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class=" col-12 col-md-3 mb-3">
+      <label class="label">País</label>
+      <nb-form-field>
+        <nb-select fullWidth placeholder="Selecione um país..." formControlName="addressCountry" size="large"
+                   [status]="(profileForm.get('addressCountry')!.dirty || profileForm.get('addressCountry')!.touched) ? (profileForm.get('addressCountry')!.invalid  ? 'danger' : 'success') : 'basic'">
+          <nb-option [disabled]="true">Selecione um país...</nb-option>
+          <nb-option *ngFor="let countryCode of countryCodes"
+                  [value]="countryCode.code">{{countryCode.name}}</nb-option>
+        </nb-select>
+      </nb-form-field>
+      <ng-container *ngIf="profileForm.get('addressCountry')!.invalid && profileForm.get('addressCountry')!.touched">
+        <p class="text-danger" *ngIf="profileForm.get('addressCountry')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class=" col-12 col-md-3 mb-3">
+      <label class="label">Complemento</label>
+      <nb-form-field>
+        <input type="text" nbInput fullWidth placeholder="Insira algum complemento..."
+               formControlName="addressComplement"
+               fieldSize="large"
+
+               [status]="(profileForm.get('addressComplement')!.dirty || profileForm.get('addressComplement')!.touched) ? (profileForm.get('addressComplement')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container
+        *ngIf="profileForm.get('addressComplement')!.invalid && profileForm.get('addressComplement')!.touched">
+        <p class="text-danger" *ngIf="profileForm.get('addressComplement')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+  </div>
+</form>
+

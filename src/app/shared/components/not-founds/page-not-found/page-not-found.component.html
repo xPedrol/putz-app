@@ -1,0 +1,25 @@
+<div class="layout-content h-100">
+  <div class="row align-items-center h-100 spinner-content spinner-no-bg" [nbSpinner]="loadingAccount" nbSpinnerStatus="primary"
+       nbSpinnerSize="giant">
+    <div class="col-8 m-auto" *ngIf="!loadingAccount">
+      <app-detailed-not-found [isAuthenticated]="!!account" message="A página não foi encontrada"></app-detailed-not-found>
+<!--      <nb-card status="danger">-->
+<!--        <nb-card-header>Pagina não encontrada</nb-card-header>-->
+<!--        <nb-card-body class="text-center">-->
+<!--          <img alt="Pagina não encontrada" width="130" src="https://image.flaticon.com/icons/png/512/2748/2748558.png">-->
+<!--          <p class="mt-4">A página não foi encontrada. Clique no botão abaixo para voltar ao login/dashboard</p>-->
+<!--          &lt;!&ndash;        <p><strong>Pagina: </strong>{{url}}</p>&ndash;&gt;-->
+<!--        </nb-card-body>-->
+<!--        <nb-card-footer>-->
+<!--          <button class="float-right" nbButton status="info" *ngIf="!accountService.account"-->
+<!--                  [routerLink]="['/auth/login']">Login-->
+<!--          </button>-->
+<!--          <a class="float-right" nbButton status="info" *ngIf="accountService.account"-->
+<!--             [routerLink]="['/'+sF.routeAuthSwitch(accountService.account.authorities,true)+'dashboard']">-->
+<!--            Dashboard-->
+<!--          </a>-->
+<!--        </nb-card-footer>-->
+<!--      </nb-card>-->
+    </div>
+  </div>
+</div>

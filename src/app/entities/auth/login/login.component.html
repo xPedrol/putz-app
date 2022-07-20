@@ -1,0 +1,120 @@
+<div class="d-flex align-items-center align-items-lg-center justify-content-center h-100">
+  <div class="width-500px">
+    <div class="text-center mb-5 w-100">
+      <img alt="logo-putz" src="../../../../../assets/images/logo/logo-putz.png">
+    </div>
+    <nb-card accent="info">
+      <nb-card-body class="py-5" [nbSpinner]="submitted" nbSpinnerStatus="info" nbSpinnerSize="giant"
+                    nbSpinnerMessage="Carregando...">
+        <nb-auth-block class="m-auto">
+          <nb-alert *ngIf="justSignedUp" status="success" closable>
+            <div class="row">
+              <div class="col-12">
+                <span> Verifique seu email para ativar sua conta antes de fazer login</span>
+              </div>
+            </div>
+          </nb-alert>
+          <h1 id="title" class="title fw-bold poppins">Login</h1>
+          <p class="sub-title">Olá! Logue com seu nome de usuário ou e-mail</p>
+          <form (ngSubmit)="login()" [formGroup]="loginForm" aria-labelledby="title">
+            <div class="row">
+              <div class="col-12 mb-3">
+                <label class="label" for="input-login">Nome de usuário ou e-mail</label>
+                <input nbInput
+                       fullWidth
+                       formControlName="login"
+                       name="login"
+                       id="input-login"
+                       placeholder="Nome do usuário..."
+                       [status]="(loginForm.get('login')!.dirty || loginForm.get('login')!.touched) ? (loginForm.get('login')!.invalid  ? 'danger' : 'success') : 'basic'"
+                       [required]="true"
+                       [attr.aria-invalid]="loginForm.get('login')!.invalid && loginForm.get('login')!.touched ? true : null">
+                <ng-container *ngIf="loginForm.get('login')!.invalid && loginForm.get('login')!.touched">
+                  <p class="text-danger" *ngIf="loginForm.get('login')!.errors?.required">
+                    Campo obrigatório
+                  </p>
+                </ng-container>
+              </div>
+              <div class="col-12 mb-3">
+                <label class="label">Senha</label>
+                <nb-form-field>
+
+                  <input nbInput
+                         fullWidth
+                         formControlName="password"
+                         name="password"
+                         [type]="getInputType()"
+                         id="input-password"
+                         placeholder="Senha..."
+                         [status]="(loginForm.get('password')!.dirty || loginForm.get('password')!.touched) ? (loginForm.get('password')!.invalid  ? 'danger' : 'success') : 'basic'"
+                         [required]="true"
+                         [attr.aria-invalid]="loginForm.get('password')!.invalid && loginForm.get('password')!.touched ? true : null">
+                  <button nbSuffix nbButton ghost (click)="toggleShowPassword()" type="button">
+                    <nb-icon [icon]="showPassword ? 'eye-outline' : 'eye-off-2-outline'"
+                             pack="eva"
+                             [attr.aria-label]="showPassword ? 'hide password' : 'show password'">
+                    </nb-icon>
+                  </button>
+                </nb-form-field>
+                <ng-container *ngIf="loginForm.get('password')!.invalid && loginForm.get('password')!.touched ">
+                  <p class="text-danger" *ngIf="loginForm.get('password')!.errors?.required">
+                    Campo obrigatório
+                  </p>
+                </ng-container>
+              </div>
+            </div>
+
+            <div class="row justify-content-around mt-3">
+              <div class="col-12 col-sm-6" *ngIf="!submitted">
+                <a nbButton
+                   fullWidth
+                   status="basic"
+                   type="button"
+                   [routerLink]="['/auth/register']"
+                >
+                  Registrar
+                </a>
+              </div>
+              <div class="col-12 col-sm-6 mt-2 mt-sm-0">
+                    <button nbButton
+                            fullWidth
+                            status="primary"
+                            class="spinner-no-bg"
+                    >
+                      Log In
+                    </button>
+              </div>
+              <div class="col-12 mt-2 text-center button-margin" *ngIf="isDevelopMode">
+                <button nbButton (click)="nebularLoginGoogleStrategy()"
+                        appearance="outline"
+                        status="basic"
+                        class="spinner-no-bg m-1"
+                        type="button">
+                  <nb-icon icon="google-outline"></nb-icon>
+                </button>
+                <button nbButton (click)="nebularLoginGithubStrategy()"
+                        appearance="outline"
+                        status="basic"
+                        class="spinner-no-bg m-1"
+                        type="button">
+                  <nb-icon icon="github-outline"></nb-icon>
+                </button>
+                <button nbButton (click)="nebularLoginGithubStrategy()"
+                        appearance="outline"
+                        status="basic"
+                        class="spinner-no-bg m-1"
+                        type="button">
+                  <nb-icon icon="facebook-outline"></nb-icon>
+                </button>
+              </div>
+              <div class="col-12 text-center mt-3">
+                  <!--                          <nb-checkbox status="info" formControlName="rememberMe">Remember me</nb-checkbox>-->
+                  <a [routerLink]="['/auth','password','request']" class="forgot-password text-muted">Esqueceu a senha? Clique aqui.</a>
+              </div>
+            </div>
+          </form>
+        </nb-auth-block>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

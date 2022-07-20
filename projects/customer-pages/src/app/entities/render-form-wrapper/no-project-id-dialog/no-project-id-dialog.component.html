@@ -1,0 +1,27 @@
+<nb-card class="dialog-content" status="basic">
+  <nb-card-header class="py-2 border-0">
+    <div class="d-flex align-items-center  justify-content-end">
+      <button nbButton ghost (click)="close()">
+        <nb-icon icon="close-outline"></nb-icon>
+      </button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="d-flex align-items-center justify-content-center flex-column">
+      <nb-icon icon="alert-triangle-outline" status="warning" style="font-size:45px"></nb-icon>
+      <h5 class="poppins fw-bold gray-color m-0 mb-1">Id do projeto não encontrado</h5>
+      <small>Quando estiver logado é preciso enviar o id do projeto atraves da url da pagina.</small>
+      <small class="text-center">Mas caso deseje continuar, clique em prosseguir para upload sem usar privilegios de autentificação.</small>
+    </div>
+  </nb-card-body>
+  <nb-card-footer class="py-2">
+    <div class="d-flex align-items-center  justify-content-end">
+      <button nbButton size="medium" status="success" (click)="close(true)" class="m-1">
+        Prosseguir
+      </button>
+      <button nbButton size="medium" (click)="close()" class="m-1">
+        Fechar
+      </button>
+    </div>
+  </nb-card-footer>
+</nb-card>

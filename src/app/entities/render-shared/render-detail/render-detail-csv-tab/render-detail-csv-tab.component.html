@@ -1,0 +1,6 @@
+<div class="row mt-2">
+  <div class="col-12" *ngIf="isCsvRenderProject">
+    <app-csv-upload></app-csv-upload>
+  </div>
+  <app-detailed-not-found *ngIf="!isCsvRenderProject" title="Sem acesso" [hasCallback]="false"  message="Esse projeto não possui upload de CSV"></app-detailed-not-found>
+</div>

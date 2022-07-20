@@ -1,0 +1,10 @@
+<ng-container [ngSwitch]="renderSlug">
+  <app-render-form-poc #cmp *ngSwitchCase="'poc'"></app-render-form-poc>
+  <app-render-form-galo #cmp *ngSwitchCase="'galo'"></app-render-form-galo>
+  <app-render-form-franq #cmp *ngSwitchCase="'franq'"></app-render-form-franq>
+  <app-render-form-teste #cmp *ngSwitchCase="'teste'"></app-render-form-teste>
+  <app-render-form-creditas #cmp *ngSwitchCase="'creditas'"></app-render-form-creditas>
+  <app-render-form-wine #cmp *ngSwitchCase="'wine'"></app-render-form-wine>
+  <app-render-form-agbara #cmp *ngSwitchCase="'agbara'"></app-render-form-agbara>
+  <app-render-form-criativa #cmp *ngSwitchCase="'criativa'"></app-render-form-criativa>
+</ng-container>

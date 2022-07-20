@@ -1,0 +1,30 @@
+<nb-card>
+  <nb-card-body>
+    <h3 id="requestMetrics" putzTranslate="metrics.jvm.http.title">HTTP requests (time in millisecond)</h3>
+
+    <table class="table table-striped w-100" *ngIf="!updating && requestMetrics" aria-describedby="requestMetrics">
+      <thead>
+      <tr>
+        <th scope="col" putzTranslate="metrics.jvm.http.table.code">Code</th>
+        <th scope="col" putzTranslate="metrics.jvm.http.table.count">Count</th>
+        <th scope="col" class="text-right" putzTranslate="metrics.jvm.http.table.mean">Mean</th>
+        <th scope="col" class="text-right" putzTranslate="metrics.jvm.http.table.max">Max</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let entry of requestMetrics['percode'] | keyvalue">
+        <td>{{ entry.key }}</td>
+        <td>
+          <nb-progress-bar status="primary" [value]="entry.value.count">
+            <span>{{ entry.value.count }}</span>
+          </nb-progress-bar>
+        </td>
+        <td class="text-right">
+          {{ filterNaN(entry.value.mean) | number: '1.0-2' }}
+        </td>
+        <td class="text-right">{{ entry.value.max | number: '1.0-2' }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </nb-card-body>
+</nb-card>

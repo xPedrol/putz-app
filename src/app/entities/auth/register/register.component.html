@@ -1,0 +1,176 @@
+<div class="d-flex align-items-lg-center justify-content-center h-100">
+  <div class="width-500px">
+    <div class="text-center mb-5">
+      <!--            <img alt="logo-putz" src="https://projetos.putzfilmes.com/Content/Template/images/brand/logo.png">-->
+      <img alt="logo-putz" src="../../../../../assets/images/logo/logo-putz.png">
+    </div>
+    <nb-card accent="info">
+      <nb-card-body class="py-5 spinner-no-bg" [nbSpinner]="submitted" nbSpinnerStatus="info" nbSpinnerSize="giant"
+                    nbSpinnerMessage="Carregando...">
+        <nb-auth-block class="m-auto">
+          <h1 id="title" class="title fw-bold poppins">Registro</h1>
+
+          <form (ngSubmit)="register()" [formGroup]="registerForm" aria-labelledby="title">
+            <div class="row">
+              <div class="col-12 mb-3"
+                   nbTooltip="Sua requisição deverá ser confirmada pela Putz Filmes após o registro "
+                   nbTooltipStatus="basic">
+                <label class="label" for="input-login">Tipo de Usuário:</label>
+                <nb-select
+                  fullWidth
+                  formControlName="authorities"
+                  placeholder="Selecione o tipo de usuário..."
+                  autofocus
+                  [status]="(registerForm.get('authorities')!.dirty || registerForm.get('authorities')!.touched) ? (registerForm.get('authorities')!.invalid  ? 'danger' : 'success') : 'basic'"
+                  [required]="true"
+                  [attr.aria-invalid]="registerForm.get('authorities')!.invalid && registerForm.get('authorities')!.touched ? true : null">
+                  <nb-option [value]="[authorities.FREELANCER]">Quero ser Freelancer da Putz Filmes</nb-option>
+                  <nb-option [value]="[authorities.CLIENT]">Cliente Putz Filmes</nb-option>
+                  <nb-option [value]="[authorities.CLIENT,authorities.AGENCY]">Quero ser/sou Agência Parceira
+                  </nb-option>
+                  <nb-option [value]="[authorities.VENDOR]">Revendedor Parceiro</nb-option>
+                </nb-select>
+                <ng-container
+                  *ngIf="registerForm.get('authorities')!.invalid && registerForm.get('authorities')!.touched">
+                  <p class="text-danger" *ngIf="registerForm.get('authorities')!.errors?.required">
+                    Campo obrigatório
+                  </p>
+                </ng-container>
+              </div>
+              <div class="col-12 mb-3">
+                <label class="label" for="input-login">Login</label>
+                <input nbInput
+                       fullWidth
+                       formControlName="login"
+                       name="login"
+                       id="input-login"
+                       placeholder="Login..."
+                       autofocus
+                       [status]="(registerForm.get('login')!.dirty || registerForm.get('login')!.touched) ? (registerForm.get('login')!.invalid || !loginIsAvailable  ? 'danger' : 'success') : 'basic'"
+                       [required]="true"
+                       [attr.aria-invalid]="registerForm.get('login')!.invalid && registerForm.get('login')!.touched ? true : null">
+                <small class="text-danger" *ngIf="!loginIsAvailable">
+                  Esse login já está em uso
+                </small>
+                <ng-container *ngIf="registerForm.get('login')!.invalid && registerForm.get('login')!.touched">
+                  <small class="text-danger" *ngIf="registerForm.get('login')!.errors?.required">
+                    Campo obrigatório
+                  </small>
+                  <small class="text-danger" *ngIf="registerForm.get('login')!.errors?.pattern">
+                    Campo inválido (espaços e caracteres especiais não são permitidos)
+                  </small>
+                  <small class="text-danger d-block" *ngIf="registerForm.get('login')!.errors?.apiValidation">
+                    {{ registerForm.get('login')!.errors?.apiValidation}}
+                  </small>
+                </ng-container>
+              </div>
+              <div class="col-12 mb-3">
+                <label class="label" for="input-email">Email</label>
+                <input nbInput
+                       fullWidth
+                       formControlName="email"
+                       name="email"
+                       id="input-email"
+                       placeholder="Email"
+                       autofocus
+                       [status]="(registerForm.get('email')!.dirty || registerForm.get('email')!.touched) ? (registerForm.get('email')!.invalid  ? 'danger' : 'success') : 'basic'"
+                       [required]="true"
+                       [attr.aria-invalid]="registerForm.get('email')!.invalid && registerForm.get('email')!.touched ? true : null">
+                <ng-container *ngIf="registerForm.get('email')!.invalid && registerForm.get('email')!.touched">
+                  <p class="text-danger" *ngIf="registerForm.get('email')!.errors?.required">
+                    Campo obrigatório
+                  </p>
+                  <p class="text-danger" *ngIf="registerForm.get('email')!.errors?.email">
+                    Email inválido
+                  </p>
+                </ng-container>
+              </div>
+              <div class="col-12 col-md-6 mb-3">
+                <label class="label" for="input-password">Senha</label>
+                <nb-form-field>
+                  <input nbInput
+                         fullWidth
+                         formControlName="password"
+                         name="password"
+                         [type]="showPassword?'text':'password'"
+                         id="input-password"
+                         placeholder="Password"
+                         [status]="(registerForm.get('password')!.dirty || registerForm.get('password')!.touched) ? (registerForm.get('password')!.invalid  ? 'danger' : 'success') : 'basic'"
+                         [required]="true"
+                         [attr.aria-invalid]="registerForm.get('password')!.invalid && registerForm.get('password')!.touched ? true : null">
+                  <button nbSuffix nbButton ghost (click)="showPassword = !showPassword" type="button">
+                    <nb-icon [icon]="showPassword ? 'eye-outline' : 'eye-off-2-outline'"
+                             pack="eva"
+                             [attr.aria-label]="showPassword ? 'hide password' : 'show password'">
+                    </nb-icon>
+                  </button>
+                </nb-form-field>
+                <ng-container *ngIf="registerForm.get('password')!.invalid && registerForm.get('password')!.touched ">
+                  <p class="text-danger" *ngIf="registerForm.get('password')!.errors?.required">
+                    Campo obrigatório
+                  </p>
+                  <p class="text-danger" *ngIf="registerForm.get('password')!.errors?.minlength">
+                    Senha é muito curta!
+                  </p>
+                </ng-container>
+              </div>
+              <div class="col-12 col-md-6 mb-3">
+                <label class="label" for="input-confirm-Password">Confirmar senha</label>
+                <nb-form-field>
+                  <input nbInput
+                         fullWidth
+                         formControlName="confirmPassword"
+                         name="confirmPassword"
+                         [type]="showCPassword?'text':'password'"
+                         id="input-confirm-Password"
+                         placeholder="confirmar senha"
+                         [status]="(registerForm.get('confirmPassword')!.dirty || registerForm.get('confirmPassword')!.touched) ? (registerForm.get('confirmPassword')!.invalid  ? 'danger' : 'success') : 'basic'"
+                         [required]="true"
+                         [attr.aria-invalid]="registerForm.get('confirmPassword')!.invalid && registerForm.get('confirmPassword')!.touched ? true : null">
+                  <button nbSuffix nbButton ghost (click)="showCPassword = !showCPassword" type="button">
+                    <nb-icon [icon]="showCPassword ? 'eye-outline' : 'eye-off-2-outline'"
+                             pack="eva"
+                             [attr.aria-label]="showCPassword ? 'hide password' : 'show password'">
+                    </nb-icon>
+                  </button>
+                </nb-form-field>
+                <ng-container
+                  *ngIf="registerForm.get('confirmPassword')!.invalid && registerForm.get('confirmPassword')!.touched ">
+                  <p class="text-danger" *ngIf="registerForm.get('confirmPassword')!.errors?.required">
+                    Campo obrigatório
+                  </p>
+                  <p class="text-danger" *ngIf="registerForm.get('confirmPassword')!.errors?.passwordCheck">
+                    As senhas não conhecidem
+                  </p>
+                </ng-container>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-12 col-sm-6 text-start">
+                <a nbButton
+                   fullWidth
+                   [routerLink]="['/auth/login']"
+                   status="basic">
+                  Log in
+                </a>
+              </div>
+              <div class="col-12 col-sm-6 mt-2 mt-sm-0 text-end">
+                <button nbButton
+                        fullWidth
+                        status="primary"
+                        [disabled]="submitted || validatingLogin || !loginIsAvailable">
+                  Registrar
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <!--        <section class="another-action" aria-label="Register">-->
+          <!--          Já possui uma conta? <a class="text-link" [routerLink]="['/auth/login']">Login</a>-->
+          <!--        </section>-->
+
+        </nb-auth-block>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

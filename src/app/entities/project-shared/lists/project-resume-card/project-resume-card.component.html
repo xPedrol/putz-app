@@ -1,0 +1,145 @@
+<nb-reveal-card [showToggleButton]="false" [revealed]="revealed">
+  <nb-card-front>
+    <nb-card status="basic">
+      <nb-card-header class="py-2">
+        <div class="d-flex align-items-center justify-content-between">
+          <h5 class="poppins header-title" id="card-header-{{project?.id}}">{{project?.name | empty}}</h5>
+          <div>
+            <nb-tag-list id="card-tags-{{project?.id}}">
+              <nb-tag status="primary" appearance="filled" size="small"
+                      [text]="('project.status.'+project?.projectStatus) | translate"></nb-tag>
+              <nb-tag status="success" appearance="filled" size="small" *ngIf="project?.videoUrlHiRes"
+                      [text]="'Vídeo pronto'"></nb-tag>
+            </nb-tag-list>
+            <button type="button" nbButton size="small" ghost (click)="buildGuidedTour()"
+                    class="ms-2 d-none d-lg-inline">
+              <nb-icon icon="question-mark-circle-outline"></nb-icon>
+            </button>
+          </div>
+        </div>
+
+      </nb-card-header>
+      <nb-card-body>
+        <div class="row">
+          <div class="col-12 col-lg-5 align-self-center border-lg-end">
+            <dl class="row-md jh-entity-details">
+              <dt><span>Data</span></dt>
+              <dd id="card-dates-{{project?.id}}">
+                  <span class="header-title">{{ project?.startDate | convert | date:'dd/MM/yyyy' | empty}}
+                    <ng-container *ngIf="project?.endDate">
+                    a {{ project?.endDate | convert | date:'dd/MM/yyyy' | empty}}
+                      </ng-container>
+                  </span>
+              </dd>
+              <dt><span>Valor</span></dt>
+              <dd id="card-value-{{project?.id}}">
+                <span class="header-title">{{ project?.negotiation?.finalPrice ?? 0 | currency}}</span>
+              </dd>
+              <dt><span>Dias</span></dt>
+              <dd id="card-days-{{project?.id}}">
+                <span class="header-title">{{ project?.days | empty}}</span>
+              </dd>
+            </dl>
+          </div>
+          <div class="col-12 col-lg-7 align-self-center" id="card-step-{{project?.id}}">
+            <ng-container *ngIf="currentStep">
+              <nb-badge status="basic" *ngIf="newEventsCount" class="m-3" id="card-step-new-events-{{project?.id}}"
+                        [text]="(newEventsCount)+' novo(s) evento(s)'"></nb-badge>
+              <div class="d-flex align-items-center justify-content-center justify-content-lg-start">
+                <img width="120" [src]="currentStep?.iconUrl??''" alt="step_icon">
+                <div class="d-flex flex-column">
+                  <p class="header-title m-0">{{currentStep?.name}}</p>
+                  <small
+                    class="header-title">Início: {{currentStep?.startDate | convert | date:'dd/MM/yyyy' | empty}}</small>
+                  <small class="header-title"
+                         *ngIf="currentStep?.endDate">Fim: {{currentStep?.endDate | convert | date:'dd/MM/yyyy' | empty}}</small>
+                  <small class="header-title"
+                         *ngIf="currentStep?.endDateExpected && !currentStep?.endDate">Previsão
+                    de
+                    término: {{currentStep?.endDateExpected | convert | date:'dd/MM/yyyy' | empty}}</small>
+                </div>
+              </div>
+              <div class="row text-center">
+                <div class="col-12" id="card-step-events-{{project?.id}}">
+                  <button nbButton size="tiny" status="primary" *ngIf="events && events.length > 0"
+                          (click)="revealed = !revealed">
+                    Ultimos eventos
+                  </button>
+                  <nb-tag *ngIf="!events || events?.length === 0" appearance="outline" size="tiny" status="danger"
+                          text="Sem eventos"></nb-tag>
+                </div>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="!currentStep">
+              <app-simple-not-found size="small" message="Sem etapa em andamento"></app-simple-not-found>
+            </ng-container>
+          </div>
+        </div>
+      </nb-card-body>
+      <nb-card-footer class="py-1">
+        <div class="d-flex justify-content-end align-items-center" id="card-buttons-{{project?.id}}">
+          <a *ngIf="project?.projectRenderId" nbButton appearance="outline" status="primary" type="button" class="m-1"
+             nbTooltip="Renderização"
+             [routerLink]="['','projects',project?.id,'render',project?.projectRenderSlug]">
+            <nb-icon icon="film-outline"></nb-icon>
+          </a>
+          <a nbButton appearance="outline" status="primary" type="button" nbTooltip="Timeline" class="m-1"
+             *ngIf="project?.isProject && (project?.projectSteps && project?.projectSteps!.length > 0)"
+             [routerLink]="['','projects',project?.id,'timeline']">
+            <nb-icon icon="trending-up-outline"></nb-icon>
+          </a>
+          <a [routerLink]="['','projects',project?.id,'general']" nbButton status="primary" appearance="outline"
+             class="m-1"
+             nbTooltip="Detalhes" *nbIsGranted="['view','project-basic']">
+            <nb-icon icon="edit-2-outline"></nb-icon>
+          </a>
+          <!--          <a [routerLink]="['','projects',project?.id,'timeline']" nbButton status="primary" appearance="outline">-->
+          <!--            <nb-icon icon="trending-up-outline"></nb-icon>-->
+          <!--          </a>-->
+        </div>
+      </nb-card-footer>
+    </nb-card>
+  </nb-card-front>
+  <nb-card-back class="h-100">
+    <nb-card status="basic" class="h-100">
+      <nb-card-header class="py-2">
+        <div class="d-flex align-items-center justify-content-between">
+          <h5 class="poppins header-title">Lista de eventos</h5>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <app-simple-not-found size="small" appearance="outline" *ngIf="!events || events?.length === 0"></app-simple-not-found>
+        <nb-list *ngIf="events && events.length > 0">
+          <nb-list-item *ngFor="let event of events" class="d-block">
+            <div class="d-flex align-items-center justify-content-between">
+              <div class="d-flex flex-column">
+                <h6 class="fw-bold m-0">{{ event?.title | empty }}</h6>
+                <small>{{ event?.createdDate |  convert | date:'dd/MM/yyyy' | empty }}</small>
+              </div>
+              <div>
+                <ng-container [ngSwitch]="event?.eventType">
+                  <nb-tag status="danger" size="tiny" appearance="outline" text="Não aprovado"
+                          *ngSwitchCase="eventType.REQUEST"></nb-tag>
+                  <nb-tag status="success" size="tiny" appearance="outline" text="Aprovado"
+                          *ngSwitchCase="eventType.APPROVED"></nb-tag>
+                  <ng-container [ngTemplateOutlet]="pendingEventType" *ngSwitchDefault></ng-container>
+                </ng-container>
+              </div>
+            </div>
+          </nb-list-item>
+        </nb-list>
+      </nb-card-body>
+      <nb-card-footer class="py-1">
+        <div class="d-flex justify-content-end align-items-center">
+          <button nbButton status="primary" appearance="outline" class="m-1" nbTooltip="Voltar"
+                  (click)="revealed = !revealed;">
+            <nb-icon icon="arrow-back-outline"></nb-icon>
+          </button>
+        </div>
+      </nb-card-footer>
+    </nb-card>
+  </nb-card-back>
+</nb-reveal-card>
+<ng-template #pendingEventType>
+  <nb-tag status="warning" size="tiny" appearance="outline" text="Pendente"></nb-tag>
+</ng-template>

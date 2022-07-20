@@ -1,0 +1,64 @@
+<div class="wrap-table100">
+  <div class="scroll">
+    <div class="table">
+      <div class="row header custom-sticky-header z-index-1">
+        <div class="cell" [sortable]="column.name" [ngClass]="column.class" *ngFor="let column of columns"
+             (sort)="onSort($event)">
+          <nb-icon
+            *ngIf="column.title && column.name === sort?.column && sort?.icon"
+            [icon]="sort?.icon??''" class="table-header-icon mx-2"
+            status="basic"></nb-icon>
+          <span class="label">{{column?.title}}</span>
+        </div>
+      </div>
+      <ng-container *ngIf="persons && persons.length > 0">
+        <div class="row" *ngFor="let person of persons;trackBy:trackPersonsByFn" [libTableRow]="columns">
+          <div class="cell text-start" data-title="ID" *libTableCell="'id'">
+            <nb-tag status="basic" appearance="outline" size="small"
+                    [text]="person?.id | empty"></nb-tag>
+          </div>
+          <div class="cell text-start d-lg-flex justify-content-between align-items-center" data-title="Nome"
+               *libTableCell="'name'">
+            <div class="">
+              <nb-user *ngIf="person?.avatar && person?.avatar !== USER_STANDARD_AVATAR"
+                       size="large"
+                       [name]="person?.name | empty"
+                       [showInitials]="true"
+                       [picture]="person.avatar"
+              ></nb-user>
+              <nb-user *ngIf="!person?.avatar || person?.avatar === USER_STANDARD_AVATAR"
+                       size="large"
+                       [name]="person?.name | empty"
+                       [showInitials]="true"
+              ></nb-user>
+            </div>
+            <nb-tag *ngIf="account?.id === person?.id" status="warning" appearance="outline" size="tiny"
+                    text="Este é você"></nb-tag>
+          </div>
+          <div class="cell text-start" data-title="Status" *libTableCell="'phoneCel'">
+            <nb-tag status="info" appearance="outline" size="small"
+                    [text]="person?.phoneCel | empty"></nb-tag>
+          </div>
+          <div class="cell text-start" data-title="Valor" *libTableCell="'company'">
+            <nb-tag status="basic" appearance="outline" size="small"
+                    [text]="person?.company?.name | empty"></nb-tag>
+          </div>
+          <div class="cell text-start text-md-end" data-title="" *libTableCell="'actions'">
+            <a nbButton ghost status="info" type="button" target="_blank"
+               [routerLink]="['','account','profile',person?.slug]">
+              <nb-icon icon="external-link-outline"></nb-icon>
+            </a>
+            <a nbButton ghost status="info" type="button" *nbIsGranted="['edit','person']"
+               [routerLink]="['','people',person?.slug]">
+              <nb-icon icon="edit-2-outline"></nb-icon>
+            </a>
+            <button nbButton ghost status="danger" type="button" (click)="deleteProject(person)"
+                    *nbIsGranted="['edit','person']">
+              <nb-icon icon="trash-outline"></nb-icon>
+            </button>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

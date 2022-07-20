@@ -1,0 +1,17 @@
+
+<div class="modal-body">
+  <div class="d-flex align-items-center justify-content-center flex-column">
+    <!--    <nb-icon icon="alert-triangle-outline" status="warning" style="font-size:45px"></nb-icon>-->
+<!--    <i class="fa-solid fa-2"></i>-->
+    <h5 class="poppins fw-bold gray-color m-0 mb-1">Id do projeto não encontrado</h5>
+    <small>Quando estiver logado é preciso enviar o id do projeto atraves da url da pagina.</small>
+    <small class="">Mas caso deseje continuar, clique em prosseguir para upload sem usar privilegios de
+      autentificação.</small>
+  </div>
+</div>
+<div class="modal-footer py-2">
+  <button class="btn-sm btn btn-outline-dark m-1" (click)="activeModal.close(true)">
+    Prosseguir
+  </button>
+  <button type="button" class="btn btn-sm btn-outline-dark" (click)="activeModal.close()">Fechar</button>
+</div>

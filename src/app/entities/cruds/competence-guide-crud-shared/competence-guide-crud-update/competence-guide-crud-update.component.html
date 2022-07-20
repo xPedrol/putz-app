@@ -1,0 +1,140 @@
+<div class="clearfix layout-content">
+  <nb-card [nbSpinner]="submitting" nbSpinnerStatus="primary" nbSpinnerMessage="Carregando...">
+    <nb-card-header class="border-0">
+      <div class="d-flex justify-content-between align-items-center">
+        <h6 class="header-title poppins">
+          <ng-container *ngIf="new">
+            Nova Guia de Competência
+          </ng-container>
+          <ng-container *ngIf="!new">
+            Guia de Competência {{form.get('name')?.value | empty}}
+          </ng-container>
+        </h6>
+      </div>
+    </nb-card-header>
+    <nb-card-body>
+      <form (ngSubmit)="save()" [formGroup]="form">
+        <div class="row">
+          <div class="col-md-1 mb-3">
+            <nb-form-field>
+              <label class="label">ID</label>
+              <input formControlName="id" placeholder="ID..." nbInput fullWidth readonly fieldSize="large">
+            </nb-form-field>
+          </div>
+          <div class="col-md-3 mb-3">
+            <nb-form-field>
+              <label class="label">Nome</label>
+              <input formControlName="name" nbInput fullWidth placeholder="Digite um nome..." fieldSize="large">
+            </nb-form-field>
+            <ng-container
+              *ngIf="form.get('name')!.invalid && form.get('name')!.touched">
+              <small class="text-danger" *ngIf="form.get('name')!.errors?.required">
+                Campo obrigatório
+              </small>
+            </ng-container>
+          </div>
+          <div class="col-md-2 mb-3">
+            <nb-form-field>
+              <label class="label">Slug</label>
+              <input formControlName="slug" nbInput fullWidth placeholder="Digite um slug..." fieldSize="large">
+            </nb-form-field>
+            <ng-container
+              *ngIf="form.get('slug')!.invalid && form.get('slug')!.touched">
+              <small class="text-danger" *ngIf="form.get('slug')!.errors?.required">
+                Campo obrigatório
+              </small>
+            </ng-container>
+          </div>
+          <div class="col-md-3 mb-3">
+            <nb-form-field>
+              <label class="label">Criado por</label>
+              <input formControlName="createdBy" placeholder="Criado por..." nbInput fullWidth fieldSize="large">
+            </nb-form-field>
+          </div>
+          <div class="col-md-3 mb-3">
+            <nb-form-field>
+              <label class="label">Ultima modificação</label>
+              <input formControlName="lastModifiedBy" placeholder="Ultima modificação feita por..." nbInput fullWidth
+                     fieldSize="large">
+            </nb-form-field>
+          </div>
+          <div class="col-md-2 mb-3">
+            <nb-form-field>
+              <label class="label">Data de criação</label>
+              <input formControlName="createdDate" placeholder="Data de criação..." nbInput fullWidth fieldSize="large"
+                     [nbDatepicker]="createDatePicker">
+              <nb-datepicker #createDatePicker></nb-datepicker>
+            </nb-form-field>
+          </div>
+          <div class="col-md-2 mb-3">
+            <nb-form-field>
+              <label class="label">Data de modificação</label>
+              <input formControlName="lastModifiedDate" placeholder="Data de modificação..." nbInput fullWidth
+                     fieldSize="large" [nbDatepicker]="lastModifiedDatePicker">
+              <nb-datepicker #lastModifiedDatePicker></nb-datepicker>
+            </nb-form-field>
+          </div>
+          <div class="col-md-4 mb-3">
+            <nb-form-field>
+              <label class="label">Nível</label>
+              <nb-select formControlName="level" placeholder="Escolha um nível..." fullWidth size="large">
+                <nb-option *ngFor="let level of levelArray" [value]="level">{{'level.' + level | translate}}</nb-option>
+              </nb-select>
+            </nb-form-field>
+            <ng-container
+              *ngIf="form.get('level')!.invalid && form.get('level')!.touched">
+              <small class="text-danger" *ngIf="form.get('level')!.errors?.required">
+                Campo obrigatório
+              </small>
+            </ng-container>
+          </div>
+          <div class="col-md-4 mb-3">
+            <ngx-dropzone [multiple]="false" *ngIf="file" (change)="onFileSelect($event)" class="dropzone-background">
+              <ngx-dropzone-label>Coloque sua imagem aqui</ngx-dropzone-label>
+              <ngx-dropzone-preview [file]="form.get('file')?.value"
+                                    *ngIf="form.get('file')?.value" [removable]="true" (removed)="onFileRemove()"
+              >
+                            <ngx-dropzone-label>{{form.get('file')?.value?.name}}</ngx-dropzone-label>
+              </ngx-dropzone-preview>
+            </ngx-dropzone>
+            <nb-form-field *ngIf="!file">
+              <label class="label">Arquivo</label>
+              <input formControlName="fileLink" nbInput fullWidth placeholder="Coloque o link do arquivo..."
+                     fieldSize="large">
+            </nb-form-field>
+            <div class="d-flex justify-content-end mt-2">
+              <nb-toggle [(checked)]="file" (checkedChange)="changeFileUpload()">Trocar para {{!file ? 'upload de arquivo' : 'link'}}</nb-toggle>
+            </div>
+            <ng-container
+              *ngIf="form.get('fileLink')!.invalid && form.get('fileLink')!.touched">
+              <small class="text-danger" *ngIf="form.get('fileLink')!.errors?.required">
+                Campo obrigatório
+              </small>
+            </ng-container>
+          </div>
+          <div class="col-md-4 mb-3 align-self-center">
+            <nb-checkbox formControlName="isActive">Ativo</nb-checkbox>
+            &nbsp;
+            <nb-checkbox formControlName="isVerified">Verificado</nb-checkbox>
+          </div>
+          <div class="col-md-12 mb-3">
+            <nb-form-field>
+              <label class="label">Descrição</label>
+              <textarea formControlName="description" placeholder="Digite uma descrição..." nbInput fullWidth
+                        fieldSize="large" rows="3"></textarea>
+            </nb-form-field>
+          </div>
+          <div class="col-md-12 mb-3">
+            <ckeditor [config]="ckEditorconfig"  formControlName="htmlPage" [editor]="Editor" (ready)="onReady($event)" class="ck-editor-style"></ckeditor>
+          </div>
+          <div class="col-md-12 text-end">
+            <button nbButton status="danger" class="m-1" type="button" *ngIf="!new && form.get('id')?.value"
+                    (click)="delete()">Desativar
+            </button>
+            <button nbButton status="primary" class="m-1">Salvar</button>
+          </div>
+        </div>
+      </form>
+    </nb-card-body>
+  </nb-card>
+</div>

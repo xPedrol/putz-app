@@ -1,0 +1,26 @@
+<div class="hori-timeline text-center" dir="ltr">
+  <ul class="list-inline events m-0 p-0">
+    <li class="list-inline-item event-list" *ngFor="let projectStep of projectSteps;trackBy:trackByFn">
+      <div class="px-4">
+        <nb-tag class="m-0" status="success" *ngIf="projectStep.isCurrent" text="Em produção" size="tiny"></nb-tag>
+        <img width="240" [src]="projectStep?.iconUrl" alt="image_icon">
+        <h6 class="text-center timeline-title poppins header-title">{{projectStep?.name | empty}}</h6>
+        <p class="text-center mb-0 timeline-title">
+          <small *ngIf="projectStep?.startDate"
+                 class="fw-bold">Início: {{projectStep?.startDate | convert | date:'dd/MM/yyyy' | empty}}</small>
+          <small *ngIf="projectStep?.startDateExpected && !projectStep?.startDate"
+                 class="fw-bold">Previsão de
+            início: {{projectStep?.startDateExpected | convert | date:'dd/MM/yyyy' | empty}}</small>
+        </p>
+        <p class="text-center mt-0 timeline-title">
+          <small *ngIf="projectStep?.endDate"
+                 class="fw-bold">Término: {{projectStep?.endDate | convert | date:'dd/MM/yyyy' | empty}}</small>
+          <small *ngIf="projectStep?.endDateExpected && !projectStep?.endDate"
+                 class="fw-bold">Previsão de
+            término: {{projectStep?.endDateExpected | convert | date:'dd/MM/yyyy' | empty}}</small>
+          <button nbButton status="primary" appearance="outline" size="tiny" (click)="openProjectItemDetailDialog(projectStep)">Ver itens</button>
+        </p>
+      </div>
+    </li>
+  </ul>
+</div>

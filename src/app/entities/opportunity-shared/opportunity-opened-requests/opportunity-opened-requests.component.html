@@ -1,0 +1,79 @@
+<div class="clearfix layout-content">
+  <div class="row">
+    <div class="col-12">
+      <nb-card status="primary">
+        <nb-card-header class="border-0">
+          <div class="row align-items-center text-light">
+            <div class="col-8 col-md-4 text-start order-0">
+              <h5 class="text-light poppins fw-bold">Oportunidades abertas</h5>
+              <nb-tag size="tiny" appearance="outline" status="control"
+                      [text]="'Total: '+ (projectItemService!.totalCount$ | async)"></nb-tag>
+            </div>
+            <div class="col-12 col-md-5 order-2 order-md-0 mt-4 mt-md-0 text-end">
+              <nb-form-field>
+                <input [formControl]="searchInput" fullWidth type="text" nbInput placeholder="Pesquisar..."
+                       fieldSize="large"
+                       status="control"
+
+                       value="">
+                <button nbSuffix nbButton ghost status="control" type="button" *ngIf="!searchInput.value">
+                  <nb-icon icon="search-outline">
+                  </nb-icon>
+                </button>
+                <button nbSuffix nbButton ghost status="control" type="button" *ngIf="searchInput.value"
+                        (click)="searchInput.reset()">
+                  <nb-icon icon="backspace-outline">
+                  </nb-icon>
+                </button>
+              </nb-form-field>
+            </div>
+            <div class="col-4 col-md-3 order-1 order-md-0 text-end">
+              <button nbButton outline status="control" size="large" (click)="tableView = !tableView"
+                      nbTooltip="Visualização">
+                <nb-icon [icon]="!tableView?'list-outline':'layers-outline'"></nb-icon>
+              </button>
+            </div>
+          </div>
+        </nb-card-header>
+      </nb-card>
+    </div>
+    <div class="col-12 spinner-no-bg" [nbSpinner]="isLoading" nbSpinnerStatus="primary"
+         nbSpinnerMessage="Carregando..." [class.spinner-content]="isLoading">
+      <ng-container *ngIf="(this.projectItemService.totalCount$ | async | empty:'number') > 0">
+        <!--      <lib-opportunity-list (stateChange)="getOpportunities($event)"-->
+        <!--                            [defaultSize]="defaultOpportunityListSize"></lib-opportunity-list>-->
+        <ng-container *ngIf="tableView">
+          <app-project-item-table [isOpportunity]="true"
+                                  (stateChange)="onSort($event)"></app-project-item-table>
+        </ng-container>
+        <ng-container *ngIf="!tableView">
+          <div class="row item-list">
+            <div class="col-12 col-lg-4" *ngFor="let projectItem of projectItems;trackBy:trackProjectItemsByFn">
+              <app-project-item-card [isOpportunity]="true" [projectItem]="projectItem"></app-project-item-card>
+            </div>
+          </div>
+        </ng-container>
+        <app-pagination-wrapper>
+          <ngb-pagination
+            [collectionSize]="projectItemService!.totalCount$ | async | empty:'number'"
+            [(page)]="state!.page"
+            [pageSize]="state!.size"
+            (pageChange)="pageChange($event)"
+            [maxSize]="5">
+         </ngb-pagination>
+          <nb-form-field>
+            <nb-select [selected]="state!.size"
+                       (selectedChange)="sizeChange($event)">
+              <nb-option [value]="5">5</nb-option>
+              <nb-option [value]="10">10</nb-option>
+              <nb-option [value]="15">15</nb-option>
+              <nb-option [value]="20">20</nb-option>
+            </nb-select>
+          </nb-form-field>
+        </app-pagination-wrapper>
+      </ng-container>
+      <app-simple-not-found class="text-center"
+                     *ngIf="!(this.projectItemService.totalCount$ | async) && !isLoading"></app-simple-not-found>
+    </div>
+  </div>
+</div>

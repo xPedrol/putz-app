@@ -1,0 +1,446 @@
+<form [formGroup]="editForm">
+  <div class="row row-cols-md-3 row-cols-lg-4">
+    <div class="col-12">
+      <label class="label">Tempo do vídeo <br> Segundos</label>
+      <input fieldSize="medium" type="text" nbInput fullWidth placeholder="Tempo de video"
+             formControlName="videoTime" mask="separator,2"
+             thousandSeparator="."
+             (keyup)="project!.negotiation!.videoTime = editForm.get('videoTime')!.value"
+             [status]="(editForm.get('videoTime')!.dirty || editForm.get('videoTime')!.touched) ? (editForm.get('videoTime')!.invalid  ? 'danger' : 'success') : 'basic'">
+      <ng-container
+        *ngIf="editForm.get('videoTime')!.invalid && editForm.get('videoTime')!.touched">
+        <small class="text-danger" *ngIf="editForm.get('videoTime')!.errors?.required">
+          Campo obrigatório
+        </small>
+      </ng-container>
+    </div>
+    <div class="col-12">
+      <label class="label">Quantidade <br>de Vídeos</label>
+      <nb-form-field>
+        <input fieldSize="medium" type="text" nbInput fullWidth placeholder="Quantidade"
+               formControlName="quantity"
+               (keyup)="project!.negotiation!.quantity = editForm.get('quantity')!.value"
+               [status]="(editForm.get('quantity')!.dirty || editForm.get('quantity')!.touched) ? (editForm.get('quantity')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container
+        *ngIf="editForm.get('quantity')!.invalid && editForm.get('quantity')!.touched">
+        <small class="text-danger" *ngIf="editForm.get('quantity')!.errors?.required">
+          Campo obrigatório
+        </small>
+      </ng-container>
+    </div>
+    <div class="col-12" *ngIf="project?.agencyMaxCommission">
+      <label class="label">Comissão Percentual <br> Agência</label>
+      <nb-form-field>
+        <input fieldSize="medium" type="number" nbInput fullWidth placeholder="Comissão da agência" min="0"
+               step="0.2"
+               formControlName="agencyCommissionPercent"
+               (keyup)="project!.negotiation!.tributePercent = editForm.get('agencyCommissionPercent')!.value"
+               [status]="(editForm.get('agencyCommissionPercent')!.dirty || editForm.get('agencyCommissionPercent')!.touched) ? (editForm.get('agencyCommissionPercent')!.invalid  ? 'danger' : 'success') : 'basic'">
+        <span nbSuffix>%</span>
+      </nb-form-field>
+      <ng-container
+        *ngIf="editForm.get('agencyCommissionPercent')!.invalid && (editForm.get('agencyCommissionPercent')!.dirty || editForm.get('agencyCommissionPercent')!.touched)">
+        <small class="text-danger" *ngIf="editForm.get('agencyCommissionPercent')!.errors?.required">
+          Campo obrigatório
+        </small>
+        <small class="text-danger" [hidden]="!editForm.get('agencyCommissionPercent')!.errors?.max">
+          Esse campo deve ser menor que {{project?.agencyMaxCommission}}
+        </small>
+        <small class="text-danger" [hidden]="!editForm.get('agencyCommissionPercent')!.errors?.min">
+          Esse campo deve ser maior que 0
+        </small>
+      </ng-container>
+      <div *ngIf="negotiationCalc?.agencyCommissionBaseValue">
+        <label class="label text-muted">{{
+          negotiationCalc?.agencyCommissionBaseValue | currency
+          }}</label>
+      </div>
+    </div>
+    <div class="col-12" *ngIf="advancedConception">
+      <label class="label">Soma de custo <br> dos itens</label>
+      <nb-form-field>
+        <input fieldSize="medium" type="number" nbInput fullWidth placeholder="Soma dos itens..."
+               formControlName="itemsBaseSum"
+               (keyup)="project!.negotiation!.videoTime = editForm.get('itemsBaseSum')!.value"
+               [status]="(editForm.get('itemsBaseSum')!.dirty || editForm.get('itemsBaseSum')!.touched) ? (editForm.get('itemsBaseSum')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container
+        *ngIf="editForm.get('itemsBaseSum')!.invalid && (editForm.get('itemsBaseSum')!.dirty || editForm.get('itemsBaseSum')!.touched)">
+        <small
+          class="form-text text-danger"
+          *ngIf="editForm.get('itemsBaseSum')!.errors?.required"
+        >
+          Campo obrigatório
+        </small>
+        <small
+          class="form-text text-danger"
+          [hidden]="!editForm.get('itemsBaseSum')!.errors?.number"
+        >
+          This field should be a number.
+        </small>
+      </ng-container>
+    </div>
+    <div class="col-12" *ngIf="advancedConception">
+      <label class="label">Custo de <br> Imposto (%)</label>
+      <nb-form-field>
+        <input fieldSize="medium" type="text" nbInput fullWidth placeholder="Imposto"
+               formControlName="tributePercent" mask="percent"
+               (keyup)="project!.negotiation!.tributePercent = editForm.get('tributePercent')!.value"
+               [status]="(editForm.get('tributePercent')!.dirty || editForm.get('tributePercent')!.touched) ? (editForm.get('tributePercent')!.invalid  ? 'danger' : 'success') : 'basic'">
+        <span nbSuffix>%</span>
+      </nb-form-field>
+      <ng-container
+        *ngIf="editForm.get('tributePercent')!.invalid && editForm.get('tributePercent')!.touched">
+        <small class="text-danger" *ngIf="editForm.get('tributePercent')!.errors?.required">
+          Campo obrigatório
+        </small>
+        <small class="text-danger" *ngIf="editForm.get('tributePercent')!.errors?.minlength">
+          Campo obrigatório
+        </small>
+        <small class="text-danger" *ngIf="editForm.get('tributePercent')!.errors?.maxlength">
+          Campo obrigatório
+        </small>
+      </ng-container>
+      <ng-container *ngIf="negotiationCalc?.tributeValue">
+        <label class="label text-muted">{{ negotiationCalc?.tributeValue | currency }}</label>
+      </ng-container>
+    </div>
+    <div class="col-md-4" *ngIf="advancedConception">
+      <label class="label">Desconto <br>Assinante (%)</label>
+      <input fieldSize="medium" type="text" nbInput fullWidth placeholder="Assinante"
+             formControlName="rebateSubscriberPercent" mask="separator,2"
+             thousandSeparator="."
+             (keyup)="project!.negotiation!.rebateSubscriberPercent = editForm.get('rebateSubscriberPercent')!.value"
+             [status]="(editForm.get('rebateSubscriberPercent')!.dirty || editForm.get('rebateSubscriberPercent')!.touched) ? (editForm.get('rebateSubscriberPercent')!.invalid  ? 'danger' : 'success') : 'basic'">
+      <ng-container
+        *ngIf="editForm.get('rebateSubscriberPercent')!.invalid && editForm.get('rebateSubscriberPercent')!.touched">
+        <small class="text-danger" *ngIf="editForm.get('rebateSubscriberPercent')!.errors?.required">
+          Campo obrigatório
+        </small>
+      </ng-container>
+    </div>
+
+    <div class="col-md-4">
+      <label class="label">Desconto em <br> Negociação (%)</label>
+      <input fieldSize="medium" type="number" nbInput fullWidth placeholder="negociacao"
+             formControlName="negotiationRebatePercent"
+             (keyup)="project!.negotiation!.rebateCreditsPercent = editForm.get('negotiationRebatePercent')!.value"
+             [status]="(editForm.get('negotiationRebatePercent')!.dirty || editForm.get('negotiationRebatePercent')!.touched) ? (editForm.get('negotiationRebatePercent')!.invalid  ? 'danger' : 'success') : 'basic'">
+      <ng-container
+        *ngIf="editForm.get('negotiationRebatePercent')!.invalid && editForm.get('negotiationRebatePercent')!.touched">
+        <small class="text-danger" *ngIf="editForm.get('negotiationRebatePercent')!.errors?.required">
+          Campo obrigatório
+        </small>
+      </ng-container>
+      <div *ngIf="negotiationCalc?.negotiationRebateValue">
+        <label class="label text-muted">{{
+          negotiationCalc?.negotiationRebateValue | currency
+          }}</label>
+      </div>
+    </div>
+    <div class="col-12" *ngIf="advancedConception">
+      <label class="label"
+      >Comissão (%)</label
+      >
+      <nb-form-field>
+        <input fieldSize="medium" type="text" nbInput fullWidth placeholder="Comissão"
+               formControlName="commissionPercent" mask="separator,2"
+               thousandSeparator="."
+               (keyup)="project!.negotiation!.tributePercent = editForm.get('commissionPercent')!.value"
+               [status]="(editForm.get('commissionPercent')!.dirty || editForm.get('commissionPercent')!.touched) ? (editForm.get('commissionPercent')!.invalid  ? 'danger' : 'success') : 'basic'">
+        <span nbSuffix>%</span>
+      </nb-form-field>
+
+      <ng-container
+        *ngIf="
+                  editForm.get('commissionPercent')!.invalid &&
+                  (editForm.get('commissionPercent')!.dirty || editForm.get('commissionPercent')!.touched)
+                "
+      >
+        <small
+          class="form-text text-danger"
+          *ngIf="editForm.get('commissionPercent')!.errors?.required"
+        >
+          Campo obrigatório
+        </small>
+        <small class="form-text text-danger" [hidden]="!editForm.get('commissionPercent')!.errors?.max">
+          This field should be a number below or equal a 5.
+        </small>
+      </ng-container>
+      <label class="label text-muted">{{ negotiationCalc?.commissionValue | currency }}</label>
+    </div>
+    <div class="col-12" *ngIf="advancedConception">
+      <label class="label"
+      >Margem Sugerida</label
+      >
+      <nb-form-field>
+        <input fieldSize="medium" type="text" nbInput fullWidth placeholder="Margem sugerida..."
+               formControlName="profitTargetPercent" mask="separator,2"
+               thousandSeparator="."
+               [status]="(editForm.get('profitTargetPercent')!.dirty || editForm.get('profitTargetPercent')!.touched) ? (editForm.get('profitTargetPercent')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container
+        *ngIf="editForm.get('profitTargetPercent')!.invalid && editForm.get('profitTargetPercent')!.touched">
+        <small class="text-danger" *ngIf="editForm.get('profitTargetPercent')!.errors?.required">
+          Campo obrigatório
+        </small>
+        <small class="text-danger" *ngIf="editForm.get('profitTargetPercent')!.errors?.min">
+          Esse campo deve ser maior que 10
+        </small>
+      </ng-container>
+    </div>
+  </div>
+  <ng-container>
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <h6 class="poppins header-title">Adicionais</h6>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 col-md-4" *ngIf="insuranceTypes">
+        <label class="label"
+        >Seguro</label
+        >
+        <nb-select size="medium"
+                   (selectedChange)="insuranceChanged($event)"
+                   data-cy="insuranceType"
+                   formControlName="insuranceType" fullWidth
+                   [status]="(editForm.get('insuranceType')!.dirty || editForm.get('insuranceType')!.touched) ? (editForm.get('insuranceType')!.invalid  ? 'danger' : 'success') : 'basic'"
+        >
+          <nb-option [value]="null">Tipo de seguro...</nb-option>
+          <nb-option
+            [value]="insurance.slug"
+            *ngFor="let insurance of insuranceTypes"
+          >
+            {{ ('configParam.slug.' + insurance?.slug | translate) + ' (' + insurance.value + '%)' }}
+          </nb-option>
+        </nb-select>
+        <ng-container
+          *ngIf="editForm.get('insuranceType')!.invalid && editForm.get('insuranceType')!.touched">
+          <small class="text-danger" *ngIf="editForm.get('insuranceType')!.errors?.required">
+            Campo obrigatório
+          </small>
+        </ng-container>
+        <div *ngIf="negotiationCalc?.insuranceValue">
+          <label
+            class="label text-muted">{{ negotiationCalc?.insuranceValue | currency }}</label>
+        </div>
+      </div>
+      <div class="col-6 col-md-4" *ngIf="advancedConception">
+        <label class="label"
+        >Valor seguro (%)</label
+        >
+        <nb-form-field>
+          <input fieldSize="medium" type="text" nbInput fullWidth placeholder="Comissão"
+                 formControlName="insurancePercent" mask="separator,2"
+                 thousandSeparator="."
+                 (keyup)="project!.negotiation!.tributePercent = editForm.get('insurancePercent')!.value"
+                 [status]="(editForm.get('insurancePercent')!.dirty || editForm.get('insurancePercent')!.touched) ? (editForm.get('insurancePercent')!.invalid  ? 'danger' : 'success') : 'basic'">
+          <span nbSuffix>%</span>
+        </nb-form-field>
+
+        <ng-container
+          *ngIf="
+                  editForm.get('insurancePercent')!.invalid &&
+                  (editForm.get('insurancePercent')!.dirty || editForm.get('insurancePercent')!.touched)
+                "
+        >
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get('insurancePercent')!.errors?.required"
+          >
+            Campo obrigatório
+          </small>
+          <small class="form-text text-danger" [hidden]="!editForm.get('insurancePercent')!.errors?.max">
+            Esse campo deve ser menor ou igual a 5.
+          </small>
+        </ng-container>
+        <label class="label text-muted">{{ negotiationCalc?.insurancePercent | currency }}</label>
+      </div>
+
+      <div class="col-6 col-md-4" *ngIf="priorityTypes">
+        <label class="label">Urgência/Prioridade</label>
+        <nb-form-field>
+          <nb-select size="medium" (selectedChange)="priorityChanged($event)"
+                     data-cy="priorityType"
+                     formControlName="priorityType" fullWidth
+                     [status]="(editForm.get('priorityType')!.dirty || editForm.get('priorityType')!.touched) ? (editForm.get('priorityType')!.invalid  ? 'danger' : 'success') : 'basic'"
+          >
+            <nb-option [value]="null" disabled>Tipo de prioridade...</nb-option>
+            <nb-option
+              [value]="priority.slug"
+              *ngFor="let priority of priorityTypes"
+            >
+              {{ priority.name + ' (' + priority.value + '%)' }}
+            </nb-option>
+          </nb-select>
+        </nb-form-field>
+        <ng-container
+          *ngIf="editForm.get('priorityType')!.invalid && editForm.get('priorityType')!.touched">
+          <small class="text-danger" *ngIf="editForm.get('priorityType')!.errors?.required">
+            Campo obrigatório
+          </small>
+        </ng-container>
+      </div>
+      <div class="col-6 col-md-4" *ngIf="advancedConception">
+        <label class="label"
+        >Valor prioridade (%)</label
+        >
+        <nb-form-field>
+          <input fieldSize="medium" type="text" nbInput fullWidth placeholder="Comissão"
+                 formControlName="priorityPercent" mask="separator,2"
+                 thousandSeparator="."
+                 (keyup)="project!.negotiation!.tributePercent = editForm.get('priorityPercent')!.value"
+                 [status]="(editForm.get('priorityPercent')!.dirty || editForm.get('priorityPercent')!.touched) ? (editForm.get('priorityPercent')!.invalid  ? 'danger' : 'success') : 'basic'">
+          <span nbSuffix>%</span>
+        </nb-form-field>
+
+        <ng-container
+          *ngIf="
+                  editForm.get('priorityPercent')!.invalid &&
+                  (editForm.get('priorityPercent')!.dirty || editForm.get('priorityPercent')!.touched)
+                "
+        >
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get('priorityPercent')!.errors?.required"
+          >
+            Campo obrigatório
+          </small>
+          <small class="form-text text-danger" [hidden]="!editForm.get('priorityPercent')!.errors?.max">
+            Esse campo deve ser menor ou igual a 5.
+          </small>
+        </ng-container>
+        <label class="label text-muted">{{ negotiationCalc?.priorityPercent | currency }}</label>
+      </div>
+
+
+      <div class="col-6 col-md-4" *ngIf="paymentTypes">
+        <label class="label">Pagamento (%)</label>
+        <nb-select size="medium" (selectedChange)="paymentChanged($event)"
+
+                   data-cy="paymentFactorPercent"
+                   formControlName="paymentType" fullWidth
+                   [status]="(editForm.get('paymentType')!.dirty || editForm.get('paymentType')!.touched) ? (editForm.get('paymentType')!.invalid  ? 'danger' : 'success') : 'basic'"
+        >
+          <nb-option [value]="null" disabled>Tipo de pagamento...</nb-option>
+          <nb-option
+            [value]="payment.slug"
+            *ngFor="let payment of paymentTypes"
+          >
+            {{ payment.name + ' (' + payment.value + '%)' }}
+          </nb-option>
+        </nb-select>
+        <ng-container
+          *ngIf="editForm.get('paymentType')!.invalid && editForm.get('paymentType')!.touched">
+          <small class="text-danger" *ngIf="editForm.get('paymentType')!.errors?.required">
+            Campo obrigatório
+          </small>
+        </ng-container>
+        <div *ngIf="negotiationCalc?.insuranceValue">
+          <label
+            class="label text-muted">{{ negotiationCalc?.paymentFactorValue | currency }}</label>
+        </div>
+      </div>
+      <div class="col-6 col-md-4" *ngIf="advancedConception">
+        <label class="label"
+        >Valor pagamento (%)</label
+        >
+        <nb-form-field>
+          <input fieldSize="medium" type="text" nbInput fullWidth placeholder="Comissão"
+                 formControlName="paymentFactorPercent" mask="separator,2"
+                 thousandSeparator="."
+                 (keyup)="project!.negotiation!.tributePercent = editForm.get('paymentFactorPercent')!.value"
+                 [status]="(editForm.get('paymentFactorPercent')!.dirty || editForm.get('paymentFactorPercent')!.touched) ? (editForm.get('paymentFactorPercent')!.invalid  ? 'danger' : 'success') : 'basic'">
+          <span nbSuffix>%</span>
+        </nb-form-field>
+
+        <ng-container
+          *ngIf="
+                  editForm.get('paymentFactorPercent')!.invalid &&
+                  (editForm.get('paymentFactorPercent')!.dirty || editForm.get('paymentFactorPercent')!.touched)
+                "
+        >
+          <small
+            class="form-text text-danger"
+            *ngIf="editForm.get('paymentFactorPercent')!.errors?.required"
+          >
+            Campo obrigatório
+          </small>
+          <small class="form-text text-danger" [hidden]="!editForm.get('paymentFactorPercent')!.errors?.max">
+            This field should be a number below or equal a 5.
+          </small>
+        </ng-container>
+        <label class="label text-muted">{{ negotiationCalc?.paymentFactorPercent | currency }}</label>
+      </div>
+      <div class="col-12">
+        <nb-checkbox formControlName="tributeAncine">Imposto Ancine</nb-checkbox>
+      </div>
+    </div>
+  </ng-container>
+  <div class="row mt-4">
+    <div class="col-12"><h6 class="poppins header-title">Descontos Agência</h6></div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+
+      <div class="row">
+        <div class="col-md-6">
+          <label class="label">Marca d'água (%)</label>
+          <nb-form-field *ngIf="advancedConception">
+            <input fieldSize="medium" type="text" nbInput fullWidth placeholder="Marca d'água"
+                   formControlName="rebateWatermarkPercent" mask="percent"
+                   (keyup)="project!.negotiation!.rebateWatermarkPercent = editForm.get('rebateWatermarkPercent')!.value"
+                   [status]="(editForm.get('rebateWatermarkPercent')!.dirty || editForm.get('rebateWatermarkPercent')!.touched) ? (editForm.get('rebateWatermarkPercent')!.invalid  ? 'danger' : 'success') : 'basic'">
+            <span nbSuffix>%</span>
+          </nb-form-field>
+          <p class="m-0" *ngIf="!advancedConception">
+            <nb-toggle formControlName="rebateWatermarkPercent" #watermarkToggle
+                       status="primary">{{watermarkToggle.checked ? 'Habilitado' : 'Desabilitado'}}</nb-toggle>
+          </p>
+          <ng-container
+            *ngIf="editForm.get('rebateWatermarkPercent')!.invalid && editForm.get('rebateWatermarkPercent')!.touched">
+            <small class="text-danger" *ngIf="editForm.get('rebateWatermarkPercent')!.errors?.required">
+              Campo obrigatório
+            </small>
+            <small class="text-danger" *ngIf="editForm.get('rebateWatermarkPercent')!.errors?.max">
+              This field should be a number below or equal a 5.
+            </small>
+          </ng-container>
+          <label *ngIf="advancedConception"
+                 class="label text-muted">{{ negotiationCalc?.rebateWatermarkValue | currency }}</label>
+        </div>
+
+        <div class="col-md-6">
+          <label class="label">Crédito do Vídeo</label>
+          <nb-form-field *ngIf="advancedConception">
+            <input fieldSize="medium" type="text" nbInput fullWidth placeholder="Seguro"
+                   formControlName="rebateCreditsPercent" mask="percent"
+                   (keyup)="project!.negotiation!.rebateCreditsPercent = editForm.get('rebateCreditsPercent')!.value"
+                   [status]="(editForm.get('rebateCreditsPercent')!.dirty || editForm.get('rebateCreditsPercent')!.touched) ? (editForm.get('rebateCreditsPercent')!.invalid  ? 'danger' : 'success') : 'basic'">
+            <span nbSuffix>%</span>
+          </nb-form-field>
+          <p class="m-0" *ngIf="!advancedConception">
+            <nb-toggle formControlName="rebateCreditsPercent" #creditToggle
+                       status="primary">{{creditToggle.checked ? 'Habilitado' : 'Desabilitado'}}</nb-toggle>
+          </p>
+          <ng-container
+            *ngIf="editForm.get('rebateCreditsPercent')!.invalid && editForm.get('rebateCreditsPercent')!.touched">
+            <small class="text-danger" *ngIf="editForm.get('rebateCreditsPercent')!.errors?.required">
+              Campo obrigatório
+            </small>
+            <small class="text-danger" *ngIf="editForm.get('rebateCreditsPercent')!.errors?.max">
+              This field should be a number below or equal a 5.
+            </small>
+          </ng-container>
+          <label *ngIf="advancedConception"
+                 class="label text-muted">{{ negotiationCalc?.rebateCreditsValue | currency }}</label>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 mt-2">
+      <app-project-conception-card [isDetailed]="false"></app-project-conception-card>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,130 @@
+<div class="row">
+  <div class="col-12 text-start">
+    <nb-checkbox (checkedChange)="changeCSVConfigIgnoreHeader()">
+      Possui cabeçalho?
+    </nb-checkbox>
+  </div>
+  <div class="col-12 col-lg-6">
+    <ngx-dropzone (change)="onSelect($event)" class="dropzone-background mb-2" [multiple]="false"
+                  (keyup)="file.markAsTouched()"
+                  (blur)="file.markAsTouched()">
+      <ngx-dropzone-label>Coloque seu arquivo aqui</ngx-dropzone-label>
+      <ngx-dropzone-preview [file]="file.value" *ngIf="file.value"
+                            [removable]="true" (removed)="onRemove()">
+        <ngx-dropzone-label>
+          {{ file.value.name }} ({{ file.value.type }})
+        </ngx-dropzone-label>
+      </ngx-dropzone-preview>
+    </ngx-dropzone>
+    <nb-alert *ngIf="!verifiedByClient && verifiedByClientMsg" status="warning" closable
+              (close)="verifiedByClientMsg = false">
+      É preciso verificar o CSV antes de enviá-lo.
+    </nb-alert>
+    <nb-alert *ngIf="csvError" status="danger" closable
+              (close)="csvError = undefined">
+      {{csvError}}
+    </nb-alert>
+    <div class="col-12 text-end">
+      <button *ngIf="file.value"
+              (click)="onRemove()" nbButton
+              status="danger" type="submit" size="medium" class="m-1">Limpar csv
+        <nb-icon icon="trash"></nb-icon>
+      </button>
+      <button (click)="onSubmit()" nbButton status="success" type="submit" size="medium" class="m-1"
+              nbTooltip="Enviar dados ao Servidor">Solicitar Vídeo
+        <nb-icon icon="film"></nb-icon>
+      </button>
+    </div>
+  </div>
+
+  <div class="col-12 col-lg-6 mx-auto">
+    <nb-card status="basic">
+      <nb-card-header class="py-2">
+        <div class="d-flex align-items-center justify-content-between">
+          <h6 class="poppins header-title">Análise do CSV</h6>
+          <small class="header-title" *ngIf="csvTotalLines">Total de linhas: {{csvTotalLines}}</small>
+        </div>
+      </nb-card-header>
+      <nb-card-body style="max-height: 66vh">
+        <div class="row">
+          <div class="col-12">
+            <nb-alert accent="warning">Quando o upload de csv é feito, as colunas informadas são substituidas pelas
+              padrões da putz, por isso você deve verificar os nomes das colunas do csv com as nossas, afim de
+              garantir
+              que os
+              valores e nome de ambas estejam de acordo.
+              Caso o csv não tenha cabeçalho, apenas verifique abaixo se os valores da primeira linha estão
+              alinhados
+              com as colunas da putz.
+            </nb-alert>
+          </div>
+          <div class="col-12">
+            <h6 class="fw-bold m-0 p-0">Comparação de colunas</h6>
+            <hr>
+          </div>
+          <div class="col-md-8 mx-auto col-lg-12 mb-3 overflow-auto">
+            <table class="w-100">
+              <thead>
+              <tr>
+                <th *ngIf="csvConfig?.ignoreHeader">CSV</th>
+                <th>Esperado</th>
+                <th>Primeira linha (CSV)</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr class="w-50"
+                  *ngFor="let line of csvWithField;let i = index">
+                <ng-container *ngIf="csvConfig.ignoreHeader">
+                  <td>
+                    <div class="d-flex justify-content-between"
+                         [nbTooltip]="!line.hasDiff?'Colunas semelhantes':'As colunas não são iguais. Verifique se os nomes se assemelham.'">
+                      <span>{{line?.csv}}</span>
+                      <nb-icon [icon]="!line.hasDiff?'checkmark-outline':'alert-triangle-outline'"
+                               [status]="!line.hasDiff?'success':'warning'"></nb-icon>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="d-flex justify-content-between"
+                         [nbTooltip]="!line.hasDiff?'Colunas semelhantes':'As colunas não são iguais. Verifique se os nomes se assemelham.'">
+                      <span>{{line?.putz}}</span>
+                      <nb-icon [icon]="!line.hasDiff?'checkmark-outline':'alert-triangle-outline'"
+                               [status]="!line.hasDiff?'success':'warning'"></nb-icon>
+                    </div>
+                  </td>
+                </ng-container>
+                <ng-container *ngIf="!csvConfig.ignoreHeader">
+                  <td>
+                    <span>{{line?.putz}}</span>
+                  </td>
+                </ng-container>
+                <td>
+                  <span>{{csvPreview?.firstDataLine[i]}}</span>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+            <app-simple-not-found appearance="outline" size="small" class="m-1"
+                                  *ngIf="!csvWithField || csvWithField.length === 0"></app-simple-not-found>
+          </div>
+        </div>
+      </nb-card-body>
+      <nb-card-footer class="py-2" *ngIf="csvWithField && csvWithField.length > 0">
+        <div class="row align-items-center">
+          <div class="col-6 text-start">
+            <p class="m-0">Os valores e colunas estão certos?</p>
+            <p class="m-0">Então clique no botao ao lado.</p>
+          </div>
+          <div class="col-6 text-end">
+            <button size="small" nbButton status="success" *ngIf="verifiedByClient">
+              Análise concluida
+            </button>
+            <button size="small" nbButton status="primary" *ngIf="!verifiedByClient"
+                    (click)="verifiedByClient = true; verifiedByClientMsg = false">
+              Concluir análise
+            </button>
+          </div>
+        </div>
+      </nb-card-footer>
+    </nb-card>
+  </div>
+</div>

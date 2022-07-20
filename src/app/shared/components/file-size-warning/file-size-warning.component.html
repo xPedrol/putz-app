@@ -1,0 +1,29 @@
+<nb-card class="dialog-content">
+  <nb-card-body>
+    <div class="row mt-3">
+
+      <div class="col-12 text-center mb-3">
+        <nb-icon icon="alert-triangle-outline" status="warning" class="font-size-50px"></nb-icon>
+        <h5 class="poppins header-title">
+          Aviso de tamanho
+        </h5>
+
+      </div>
+      <div class="col-12 text-center">
+        <h6 class="header-title font-size-14px" *ngIf="displayValues?.maxFileSize">Por favor escolha um arquivo com no
+          máximo {{displayValues?.maxFileSize}}</h6>
+      </div>
+      <div class="col-12 text-center">
+        <h6 class="header-title" *ngIf="file?.size">Esse arquvio execede o tamnho permitido
+          com {{displayValues?.fileSize}}</h6>
+      </div>
+    </div>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="row align-items-center text-center">
+      <div class="col-12">
+        <button nbButton status="warning" size="small" class="m-1" (click)="close(true)">Entendido</button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>

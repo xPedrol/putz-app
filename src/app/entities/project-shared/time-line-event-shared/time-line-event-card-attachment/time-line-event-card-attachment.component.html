@@ -1,0 +1,25 @@
+<iframe *ngIf="attachment | attachmentType:type.FRAME"
+        [src]="(attachment?.link??'' +'&output=embed') | safe" width="100%"
+        height="450" class="border-0" [allowFullscreen]="true"></iframe>
+<div *ngIf="attachment | attachmentType:type.VIDEO" class="d-flex justify-content-center">
+  <video width="100%" height="450" controls class="attachment_video">
+    <source [src]="attachment?.link">
+    Your browser does not support the video tag.
+  </video>
+</div>
+<div *ngIf="attachment | attachmentType:type.IMAGE" class="d-flex justify-content-center">
+  <img [src]="attachment?.link" class="attachment_image"
+       alt="attachment_image">
+</div>
+<div *ngIf="attachment | attachmentType:type.AUDIO" class="d-flex justify-content-center">
+  <audio controls>
+    <source [src]="attachment?.link">
+    Your browser does not support the audio tag.
+  </audio>
+</div>
+<div *ngIf="attachment | attachmentType:type.EXTERNAL_LINK" class="d-flex justify-content-center">
+  <a nbButton size="small" status="primary" [href]="attachment?.link" target="_blank" [title]="attachment?.name">
+    <span class="no-wrap max-width-150px">{{attachment?.name}}</span>
+    <nb-icon icon="external-link-outline"></nb-icon>
+  </a>
+</div>

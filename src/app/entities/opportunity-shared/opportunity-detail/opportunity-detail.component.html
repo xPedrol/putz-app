@@ -1,0 +1,79 @@
+<div class="layout-content">
+  <div class="row overflow-hidden">
+    <div class="col-12 col-md-6">
+      <nb-card>
+        <nb-card-header class="border-0 mb-2">
+          <div class="row align-items-center">
+            <div class="col-md-8 text-start">
+              <h5 class="poppins header-title">Início</h5>
+            </div>
+          </div>
+        </nb-card-header>
+        <nb-card-body>
+          <div class="row m-0">
+            <div class="col-12">
+              <nb-tag-list>
+                <nb-tag status="primary" size="small" appearance="outline"
+                        [text]="'Projeto: '+(request?.project | empty)"></nb-tag>
+                <nb-tag status="primary" size="small" appearance="outline"
+                        [text]="'Etapa: '+(request?.projectStep?.name | empty)"></nb-tag>
+                <nb-tag status="primary" size="small" appearance="outline"
+                        [text]="'Item: '+(request?.projectItem?.name| empty)"></nb-tag>
+                <nb-tag status="warning" size="small" appearance="outline"
+                        [text]="'Status: '+(request?.requestStatus | empty)"></nb-tag>
+              </nb-tag-list>
+              <hr>
+              <p *ngIf="request?.description">{{request?.description}}</p>
+              <p *ngIf="!(request?.description | empty:'boolean')" class="text-center">
+                <nb-tag status="danger" size="small" appearance="outline"
+                        text="Sem descrição"></nb-tag>
+              </p>
+            </div>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
+    <div class="col-12 col-md-6">
+      <nb-card>
+        <nb-card-header class="border-0 mb-2">
+          <div class="row align-items-center">
+            <div class="col-md-8 text-start">
+              <h5 class="poppins header-title">Dados gerais</h5>
+            </div>
+          </div>
+        </nb-card-header>
+        <nb-card-body>
+          <nb-list>
+            <nb-list-item class="row m-0 border-0">
+              <div class="col-md-6 text-start header-title font-weight-700">
+                <span class="header-title font-weight-700">Valor</span>
+              </div>
+              <div class="col-md-6 text-end">
+                <nb-tag appearance="outline" status="primary" size="tiny"
+                        [text]="request?.projectItem?.value | empty:'string':'R$':null"></nb-tag>
+              </div>
+            </nb-list-item>
+            <nb-list-item class="row m-0 border-0">
+              <div class="col-md-6 text-start">
+                <span class="header-title font-weight-700">Início</span>
+              </div>
+              <div class="col-md-6 text-end border-0">
+                <nb-tag appearance="outline" status="primary" size="tiny"
+                        [text]="request?.projectItem?.startDate | convert | date:'dd/MM/yyyy' | empty"></nb-tag>
+              </div>
+            </nb-list-item>
+            <nb-list-item class="row m-0 border-0">
+              <div class="col-md-6 text-start">
+                <span class="header-title font-weight-700">Término</span>
+              </div>
+              <div class="col-md-6 text-end">
+                <nb-tag appearance="outline" status="primary" size="tiny"
+                        [text]="request?.projectItem?.endDate | convert | date:'dd/MM/yyyy' | empty"></nb-tag>
+              </div>
+            </nb-list-item>
+          </nb-list>
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </div>
+</div>

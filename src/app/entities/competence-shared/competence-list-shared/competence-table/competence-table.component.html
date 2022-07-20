@@ -1,0 +1,54 @@
+<div class="wrap-table100">
+  <div class="scroll">
+    <div class="table">
+      <div class="row header custom-sticky-header">
+        <div class="cell" [sortable]="column.name" [ngClass]="column.class" *ngFor="let column of columns"
+             (sort)="onSort($event)">
+          <nb-icon
+            *ngIf="column.title && column.name === sort?.column && sort?.icon"
+            [icon]="sort?.icon??''" class="table-header-icon mx-2"
+            status="basic"></nb-icon>
+          <span class="label">{{column?.title}}</span>
+        </div>
+      </div>
+      <ng-container *ngIf="competences && competences.length > 0">
+        <div class="row" *ngFor="let competence of competences;trackBy:trackCompetencesById" [libTableRow]="columns">
+          <div class="cell text-start" data-title="ID" *libTableCell="'id'">
+            <nb-tag status="basic" appearance="outline" size="small"
+                    [text]="competence?.id | empty"></nb-tag>
+          </div>
+          <div class="cell text-start no-wrap max-width-200px" data-title="Nome" *libTableCell="'name'">
+            {{competence?.name | empty}}
+          </div>
+          <div [nbTooltip]="competence?.description | empty" class="cell text-start no-wrap max-width-400px"
+               data-title="Descrição" *libTableCell="'description'">
+            <span class="">{{competence?.description | empty}}</span>
+          </div>
+          <div class="cell text-start" data-title="Data de criação" *libTableCell="'createdDate'">
+            {{competence?.createdDate | convert | date:'dd/MM/yyyy' | empty}}
+          </div>
+          <div class="cell text-start" data-title="Data de modificação" *libTableCell="'lastModifiedDate'">
+            {{competence?.lastModifiedDate | convert | date:'dd/MM/yyyy' | empty}}
+          </div>
+          <div class="cell text-start" data-title="Ativo" *libTableCell="'isActive'">
+            <nb-checkbox disabled [checked]="competence?.isActive"></nb-checkbox>
+          </div>
+          <div class="cell text-start" data-title="Produtos" *libTableCell="'products'">
+            {{competence?.products?.length ?? 0}}
+          </div>
+          <div class="cell text-start text-md-end max-width-200px" data-title="" *libTableCell="'actions'">
+            <a nbButton ghost status="primary" type="button"
+               [routerLink]="['','admin','competences',competence?.id,'update']"
+               *nbIsGranted="['edit','competence']" nbTooltip="Editar">
+              <nb-icon icon="edit-2-outline"></nb-icon>
+            </a>
+            <button nbButton ghost status="danger" type="button" (click)="deleteCompetence(competence)"
+                    *nbIsGranted="['edit','competence']" nbTooltip="Desativar">
+              <nb-icon icon="trash-outline"></nb-icon>
+            </button>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

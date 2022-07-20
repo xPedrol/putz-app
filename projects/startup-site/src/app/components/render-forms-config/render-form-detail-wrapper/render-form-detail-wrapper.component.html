@@ -1,0 +1,32 @@
+<div class="container render-form-detail-container my-5">
+  <ng-container *ngIf="!renderId || !renderItemId">
+    <ng-content></ng-content>
+  </ng-container>
+  <ng-container *ngIf="renderId && renderItemId">
+    <h4 class="text-center">Progresso do vídeo</h4>
+    <div class="row">
+      <div class="col-12 col-md-10 col-lg-8 mx-auto">
+
+        <app-render-form-feedback-card *ngIf="renderItem"
+                                       [isPreRegistered]="isPreRegistered"
+                                       [renderId]="renderId"
+                                       [renderItem]="renderItem"
+                                       [renderItemId]="renderItemId"
+        ></app-render-form-feedback-card>
+        <hr *ngIf="loadingRenderItem">
+        <div class="text-center d-flex flex-column align-items-center" *ngIf="loadingRenderItem">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <strong>Carregando...</strong>
+          <small>Não se preocupe. Sua solicitação foi recebida com sucesso e o andamento do seu vídeo logo será
+            carregado.</small>
+        </div>
+        <!--        <ng-container *ngIf="!renderItem && !loadingRenderItem">-->
+        <!--          &lt;!&ndash;          <app-detailed-not-found message="Renderização não encontrada"&ndash;&gt;-->
+        <!--          &lt;!&ndash;                                  [hasCallback]="false"></app-detailed-not-found>&ndash;&gt;-->
+        <!--        </ng-container>-->
+      </div>
+    </div>
+  </ng-container>
+</div>

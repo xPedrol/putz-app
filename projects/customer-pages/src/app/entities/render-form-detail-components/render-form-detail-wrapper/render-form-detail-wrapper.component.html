@@ -1,0 +1,22 @@
+<div class="layout-content h-100">
+  <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 80vh">
+    <ng-content></ng-content>
+  </div>
+  <div class="row">
+    <div class="col-12 mx-auto">
+      <div class="row g-3 align-items-center">
+        <div class="col-12">
+          <app-for-business></app-for-business>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4" *ngFor="let feature of features">
+          <app-icon-card
+            [routerLink]="feature.link"
+            [title]="feature.title"
+            [icon]="feature.icon"
+            [description]="feature?.description">
+          </app-icon-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

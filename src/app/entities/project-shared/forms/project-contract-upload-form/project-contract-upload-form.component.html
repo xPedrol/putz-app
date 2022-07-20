@@ -1,0 +1,22 @@
+<div class="row mt-3">
+  <div class="mb-3 col-12">
+    <label class="label">Upload de contrato</label>
+    <ngx-dropzone (change)="onSelect($event)" class="dropzone-background" [multiple]="false"
+                  (keyup)="contractControl.markAsTouched()"
+                  (blur)="contractControl.markAsTouched()">
+      <ngx-dropzone-label>Coloque seu arquivo aqui</ngx-dropzone-label>
+      <ngx-dropzone-preview [file]="contractControl.value" *ngIf="contractControl.value"
+                            [removable]="true" (removed)="onRemove()">
+        <ngx-dropzone-label>
+          {{ contractControl.value.name }} ({{ contractControl.value.type }})
+        </ngx-dropzone-label>
+      </ngx-dropzone-preview>
+    </ngx-dropzone>
+    <ng-container
+      *ngIf="contractControl!.invalid && contractControl!.touched">
+      <p class="text-danger" *ngIf="contractControl!.errors?.required">
+        Campo obrigatório
+      </p>
+    </ng-container>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="row justify-content-center mt-2"
+     *ngIf="project && projectStep && (projectStep?.startDate)">
+  <div class="col-xl-10 col-12">
+    <app-time-line-project-step-card [refreshComponent$]="refreshComponent$"
+                                     *ngIf="!projectStep?.endDate || ([authority.ADMIN,authority.MANAGER]|hasAccess)"
+                                     [isBegin]="false"
+                                     (request)="onTimeLineEventCardChange($event)"></app-time-line-project-step-card>
+    <div class="spinner-no-bg" [class.spinner-content]="loadingTimeLIneEvents" [nbSpinner]="loadingTimeLIneEvents"
+         nbSpinnerStatus="primary" nbSpinnerMessage="Carregando...">
+      <div class="timeline timeline-line-solid mb-1" *ngIf="timeLineEvents && timeLineEvents.length > 0">
+        <ng-container *ngFor="let event of timeLineEvents;trackBy:trackTimeLineEventsByFn">
+          <app-time-line-event-card class="timeline-item" [event]="event"
+                                    (request)="onTimeLineEventCardChange($event)"></app-time-line-event-card>
+        </ng-container>
+      </div>
+    </div>
+    <app-time-line-project-step-card
+      [isBegin]="true"
+      (request)="onTimeLineEventCardChange($event)"></app-time-line-project-step-card>
+  </div>
+</div>

@@ -1,0 +1,39 @@
+<nb-card>
+  <nb-card-header class="border-0">
+    <div class="row align-items-center">
+      <div class="col-6">
+        <h5 class="poppins header-title">{{competence?.name | empty}}</h5>
+        <!--            <span class="header-title-color">{{competenceGuide?.description}}</span>-->
+      </div>
+      <div class="col-6 text-end">
+<!--        <nb-tag-list>-->
+<!--          <nb-tag appearance="outline" status="primary" size="tiny"-->
+<!--                  [text]="competence?.| empty"></nb-tag>-->
+<!--          <nb-tag appearance="outline" status="primary" size="tiny"-->
+<!--                  [text]="competence?. | empty"></nb-tag>-->
+<!--        </nb-tag-list>-->
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+
+    <div class="row">
+      <div class="col-12">
+        <p>{{competence?.description | empty}}</p>
+      </div>
+    </div>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="row">
+      <div class="col-12 text-end">
+        <a class="m-1 not-allowed" nbButton size="small" outline status="primary"
+           disabled
+        >Detalhes</a>
+<!--        [routerLink]="['','competences',competence?.id]"-->
+        <a class="m-1" nbButton size="small" outline status="primary"
+           [routerLink]="['','competences',competence?.id,'guides']"
+        >Escolher</a>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>

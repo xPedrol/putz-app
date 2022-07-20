@@ -1,0 +1,60 @@
+<div class="row clearfix layout-content">
+  <div class="col-md-12">
+    <nb-tabset (changeTab)="changeTab($event)">
+      <nb-tab tabTitle="Início" tabId="initial">
+        <div class="row m-0">
+          <div class="col-12 text-center">
+            <button nbButton status="primary" appearance="outline" class="m-1">
+              <nb-icon icon="plus-outline"></nb-icon>
+              Novo Evento
+            </button>
+            <button nbButton status="success" appearance="outline" class="m-1">
+              <nb-icon icon="checkmark-outline"></nb-icon>
+              Aprovar Etapa
+            </button>
+            <button nbButton status="danger" appearance="outline" class="m-1">
+              <nb-icon icon="close-outline"></nb-icon>
+              Cancelar
+            </button>
+          </div>
+          <div class="col-12">
+            <app-timeline-event></app-timeline-event>
+<!--            <lib-timeline-event></lib-timeline-event>-->
+          </div>
+        </div>
+      </nb-tab>
+      <nb-tab tabTitle="Dados gerais" tabId="general">
+        <div class="row m-0">
+          <div class="col-lg-6">
+            <nb-card>
+              <nb-card-header class="border-0 mb-2">
+                <div class="row align-items-center">
+                  <div class="col-md-8 text-start">
+                    <h6 class="poppins header-title">{{projectStepId ? 'Editar' : 'Novo'}}</h6>
+                  </div>
+                </div>
+              </nb-card-header>
+              <nb-card-body>
+                <!--                <lib-project-general-form (saveCallBack)="saveGeneralForm($event)"></lib-project-general-form>-->
+              </nb-card-body>
+            </nb-card>
+          </div>
+          <div class="col-lg-6">
+            <nb-card>
+              <nb-card-header class="border-0 mb-2">
+                <div class="row align-items-center">
+                  <div class="col-md-8 text-start">
+                    <h6 class="poppins header-title">Pessoas</h6>
+                  </div>
+                </div>
+              </nb-card-header>
+              <nb-card-body>
+                <!--                <lib-project-people-form (saveCallBack)="savePeopleForm($event)"></lib-project-people-form>-->
+              </nb-card-body>
+            </nb-card>
+          </div>
+        </div>
+      </nb-tab>
+    </nb-tabset>
+  </div>
+</div>

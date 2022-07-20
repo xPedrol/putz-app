@@ -1,0 +1,124 @@
+<form [formGroup]="uploadForm">
+  <div class="mt-3">
+
+    <div class="row">
+      <div class="mb-3 col-9 col-sm-6 col-lg-4 form-group">
+        <label class="label">Nome <span class="text-danger">*</span></label>
+        <input
+          id="typeahead-focus"
+          type="text"
+          class="form-control"
+          formControlName="name"
+          placeholder="Nome..."
+          [ngbTypeahead]="search"
+          (focus)="focus$.next($any($event).target.value)"
+          (click)="click$.next($any($event).target.value)"
+          #instance="ngbTypeahead"
+        />
+        <ng-container *ngIf="uploadForm.get('name')!.invalid && uploadForm.get('name')!.touched">
+          <small class="text-danger d-block" *ngIf="uploadForm.get('name')!.errors?.required">
+            Campo obrigatório
+          </small>
+          <small class="text-danger d-block" *ngIf="uploadForm.get('name')!.errors?.apiValidation">
+            {{ uploadForm.get('name')!.errors?.apiValidation}}
+          </small>
+        </ng-container>
+      </div>
+      <div class="mb-3 col-3 col-sm-6 col-lg-2 form-group">
+        <label class="label">UF <span class="text-danger">*</span></label>
+        <select placeholder="Estado" formControlName="uf" size="large" (change)="uFChange()" class="form-control">
+          <option [value]="uf" *ngFor="let uf of ufs">{{uf}}</option>
+        </select>
+        <ng-container *ngIf="uploadForm.get('uf')!.invalid && uploadForm.get('uf')!.touched">
+          <small class="text-danger d-block" *ngIf="uploadForm.get('uf')!.errors?.required">
+            Campo obrigatório
+          </small>
+          <small class="text-danger d-block" *ngIf="uploadForm.get('uf')!.errors?.apiValidation">
+            {{ uploadForm.get('uf')!.errors?.apiValidation}}
+          </small>
+        </ng-container>
+      </div>
+      <div class="mb-3 col-4 col-sm-6 col-lg-2 form-group">
+        <label class="label">País <span class="text-danger">*</span></label>
+        <select formControlName="country" class="form-control">
+          <option *ngFor="let countryCode of countryCodes"
+                  [value]="countryCode.dial_code">{{countryCode.name}}</option>
+        </select>
+        <ng-container *ngIf="uploadForm.get('country')!.invalid && uploadForm.get('country')!.touched">
+          <small class="text-danger d-block" *ngIf="uploadForm.get('country')!.errors?.required">
+            Campo obrigatório
+          </small>
+          <small class="text-danger d-block" *ngIf="uploadForm.get('country')!.errors?.apiValidation">
+            {{ uploadForm.get('country')!.errors?.apiValidation}}
+          </small>
+        </ng-container>
+      </div>
+      <div class="mb-3 col-8 col-sm-6 col-lg-4 form-group">
+        <label class="label">Whatsapp <span class="text-danger">*</span></label>
+        <input type="tel" placeholder="(XX)9XXXX-XXXX" formControlName="whatsapp" class="form-control"
+               [mask]="countryMasks[selectedCountry.code]" *ngIf="countryMasks[selectedCountry.code]">
+        <input type="tel" placeholder="(XX)9XXXX-XXXX" formControlName="whatsapp" class="form-control"
+               *ngIf="!countryMasks[selectedCountry.code]">
+        <ng-container *ngIf="uploadForm.get('whatsapp')!.invalid && uploadForm.get('whatsapp')!.touched">
+          <small class="text-danger d-block" *ngIf="uploadForm.get('whatsapp')!.errors?.required">
+            Campo obrigatório
+          </small>
+          <small class="text-danger d-block" *ngIf="uploadForm.get('whatsapp')!.errors?.apiValidation">
+            {{ uploadForm.get('whatsapp')!.errors?.apiValidation}}
+          </small>
+        </ng-container>
+      </div>
+      <div class="mb-3 col-12 col-md-8">
+        <label class="label p-1"><strong>Meu Motivo!!!</strong> <span class="text-danger">*</span></label>
+        <ng-container *ngIf="uploadForm.get('reason')!.invalid && uploadForm.get('reason')!.touched">
+          <small class="text-danger d-block" *ngIf="uploadForm.get('reason')!.errors?.required">
+            Campo obrigatório
+          </small>
+          <small class="text-danger d-block" *ngIf="uploadForm.get('reason')!.errors?.apiValidation">
+            {{ uploadForm.get('reason')!.errors?.apiValidation}}
+          </small>
+        </ng-container>
+        <div class="row align-items-center justify-content-around">
+          <div class="col-12 my-2 mx-1 m-xl-0 col-md-6 col-xl" *ngFor="let reason of reasons"
+               (click)="selectReason(reason.key)">
+            <div class="d-flex flex-column align-items-center reason-card">
+              <h6 class="poppins text-uppercase fw-bold">{{reason.title}}</h6>
+              <img class="reason-image" [class.reason-card-selected]="uploadForm.get('reason')?.value === reason.key"
+                   [src]="reason.image" alt="{{reason.title}}">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 col-md-4 mb-3">
+        <label class="label "><strong>Adicione sua foto de eleitor</strong></label>
+        <div class="text-center">
+        <div class="d-flex align-items-center justify-content-center">
+          <button type="submit" class="btn btn-sm btn-outline-danger mx-1" *ngIf="uploadForm.get('urlPhoto')?.value"
+                  (click)="uploadForm.get('urlPhoto')?.reset()">Remover Imagem
+          </button>
+          <button class="btn btn-sm btn-outline-primary mx-1" (click)="openImageCropperDialog()">
+            <ng-container *ngIf="uploadForm.get('urlPhoto')?.value">
+              Trocar imagem
+            </ng-container>
+            <ng-container *ngIf="!uploadForm.get('urlPhoto')?.value">
+              Adicionar imagem
+            </ng-container>
+          </button>
+          <ng-container *ngIf="uploadForm.get('urlPhoto')!.invalid && uploadForm.get('urlPhoto')!.touched">
+            <small class="text-danger d-block" *ngIf="uploadForm.get('urlPhoto')!.errors?.required">
+              Campo obrigatório
+            </small>
+            <small class="text-danger d-block" *ngIf="uploadForm.get('urlPhoto')!.errors?.apiValidation">
+              {{ uploadForm.get('urlPhoto')!.errors?.apiValidation}}
+            </small>
+          </ng-container>
+        </div>
+        <img *ngIf="uploadForm.get('urlPhoto').value != ''" class="mt-2" width="200"
+             [src]="uploadForm.get('urlPhoto').value" alt="">
+        <img *ngIf="uploadForm.get('urlPhoto').value == ''" class="semfoto-image"
+             src='/assets/images/forms/pt-lula/semfoto.png' alt="" (click)="openImageCropperDialog()">
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

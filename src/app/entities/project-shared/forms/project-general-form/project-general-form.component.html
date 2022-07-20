@@ -1,0 +1,305 @@
+<form [formGroup]="editForm">
+  <div class="row mt-3">
+    <div class="mb-3 col-md-6">
+      <label class="label">Nome</label>
+      <nb-form-field>
+        <input fieldSize="large" type="text" nbInput fullWidth placeholder="Nome do projeto..."
+               formControlName="name"
+               [status]="(editForm.get('name')!.dirty || editForm.get('name')!.touched) ? (editForm.get('name')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container
+        *ngIf="editForm.get('name')!.invalid && editForm.get('name')!.touched">
+        <p class="text-danger" *ngIf="editForm.get('name')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class="mb-3 col-md-6">
+      <label class="label">Slug</label>
+      <nb-form-field nbTooltip="Se o slug estiver vazio, um automático será gerado.">
+        <input fieldSize="large" type="text" nbInput fullWidth placeholder="Slug do projeto"
+               formControlName="slug"
+               [status]="(editForm.get('slug')!.dirty || editForm.get('slug')!.touched) ? (editForm.get('slug')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container
+        *ngIf="editForm.get('slug')!.invalid && editForm.get('slug')!.touched">
+        <p class="text-danger" *ngIf="editForm.get('slug')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class="mb-3 col-md-12">
+      <label class="label">Descrição</label>
+      <nb-form-field>
+                <textarea fieldSize="large" type="text" nbInput fullWidth placeholder="Apelido"
+                          formControlName="description" rows="5"
+                          [status]="(editForm.get('description')!.dirty || editForm.get('description')!.touched) ? (editForm.get('description')!.invalid  ? 'danger' : 'success') : 'basic'"></textarea>
+      </nb-form-field>
+      <ng-container
+        *ngIf="editForm.get('description')!.invalid && editForm.get('description')!.touched">
+        <p class="text-danger" *ngIf="editForm.get('description')!.errors?.required">
+          Campo obrigatório
+        </p>
+        <p class="text-danger" *ngIf="editForm.get('description')!.errors?.minlength">
+          Campo muito curto
+        </p>
+        <p class="text-danger" *ngIf="editForm.get('description')!.errors?.maxlength">
+          Campo muito longo
+        </p>
+      </ng-container>
+    </div>
+
+    <ng-container>
+      <div class="mb-3 col-md-6">
+        <label class="label">Cliente</label>
+        <nb-form-field>
+          <button nbPrefix nbButton appearance="ghost" type="button" (click)="openBasicPersonDialog()">
+            <nb-icon icon="plus-outline"></nb-icon>
+          </button>
+          <input fieldSize="large" fullWidth (focus)="onSearchFocus('CLIENT','client')"
+
+                 autocomplete="nope"
+                 formControlName="client"
+                 nbInput
+                 type="text"
+                 placeholder="Nome do cliente..."
+                 [status]="(editForm.get('client')!.touched) ? (editForm.get('client')!.invalid || !editForm.get('client')!.value?.id  ? 'danger' : 'success') : 'basic'"
+                 [nbAutocomplete]="autoClient">
+          <nb-autocomplete #autoClient [handleDisplayFn]="viewHandle">
+
+            <nb-option *ngFor="let person of clientPeople;trackBy:clientTrackBy" [value]="person">
+              {{ person?.name|empty }}
+            </nb-option>
+          </nb-autocomplete>
+          <button nbSuffix nbButton ghost type="button"
+                  *ngIf="editForm.get('client')!.value && !editForm.get('client')!.disabled"
+                  (click)="editForm.get('client')!.setValue('',{emitEvent:false})">
+            <nb-icon icon="backspace-outline">
+            </nb-icon>
+          </button>
+        </nb-form-field>
+        <ng-container
+          *ngIf="editForm.get('client')!.invalid && editForm.get('client')!.touched">
+          <p class="text-danger" *ngIf="editForm.get('client')!.errors?.required">
+            Campo obrigatório
+          </p>
+        </ng-container>
+      </div>
+      <div class="mb-3 col-md-6">
+        <label class="label">Vendedor</label>
+        <nb-form-field>
+          <input fieldSize="large" fullWidth (focus)="onSearchFocus('VENDOR','vendor')"
+
+                 autocomplete="nope"
+                 formControlName="vendor"
+                 nbInput
+                 type="text"
+                 placeholder="Nome do vendedor..."
+                 [status]="(editForm.get('vendor')!.touched) ? (editForm.get('vendor')!.invalid  ? 'danger' : 'success') : 'basic'"
+                 [nbAutocomplete]="autoVendor"/>
+          <nb-autocomplete #autoVendor [handleDisplayFn]="viewHandle">
+
+            <nb-option *ngFor="let person of vendorPeople;trackBy:vendorTrackBy" [value]="person">
+              {{ person?.name|empty }}
+            </nb-option>
+          </nb-autocomplete>
+          <button nbSuffix nbButton ghost type="button"
+                  *ngIf="editForm.get('vendor')!.value && !editForm.get('vendor')!.disabled"
+                  (click)="editForm.get('vendor')!.setValue('',{emitEvent:false})">
+            <nb-icon icon="backspace-outline">
+            </nb-icon>
+          </button>
+        </nb-form-field>
+        <ng-container
+          *ngIf="editForm.get('vendor')!.invalid && editForm.get('vendor')!.touched">
+          <p class="text-danger" *ngIf="editForm.get('vendor')!.errors?.required">
+            Campo obrigatório
+          </p>
+        </ng-container>
+      </div>
+      <div class="mb-3 col-md-6">
+        <label class="label">Agência</label>
+        <nb-form-field>
+          <input fieldSize="large" fullWidth (focus)="onSearchFocus('AGENCY','agency')"
+
+                 autocomplete="nope"
+                 formControlName="agency"
+                 nbInput
+                 type="text"
+                 placeholder="Nome da agência..."
+                 [status]="(editForm.get('agency')!.touched) ? (editForm.get('agency')!.invalid  ? 'danger' : 'success') : 'basic'"
+                 [nbAutocomplete]="autoAgency"/>
+
+          <nb-autocomplete #autoAgency [handleDisplayFn]="viewHandle">
+
+            <nb-option *ngFor="let person of agencyPeople;trackBy:agencyTrackBy" [value]="person">
+              {{ person?.name|empty }}
+            </nb-option>
+          </nb-autocomplete>
+          <button nbSuffix nbButton ghost type="button"
+                  *ngIf="editForm.get('agency')!.value && !editForm.get('agency')!.disabled"
+                  (click)="editForm.get('agency')!.setValue('',{emitEvent:false})">
+            <nb-icon icon="backspace-outline">
+            </nb-icon>
+          </button>
+        </nb-form-field>
+        <ng-container
+          *ngIf="editForm.get('agency')!.invalid && editForm.get('agency')!.touched">
+          <p class="text-danger" *ngIf="editForm.get('agency')!.errors?.required">
+            Campo obrigatório
+          </p>
+        </ng-container>
+      </div>
+      <div class="mb-3 col-md-6">
+        <label class="label">Gerente</label>
+        <nb-form-field>
+          <input fieldSize="large" fullWidth (focus)="onSearchFocus('MANAGER','manager')"
+
+                 autocomplete="off"
+                 formControlName="manager"
+                 nbInput
+                 type="text"
+                 name="searchManager"
+                 placeholder="Nome do gerente..."
+                 [status]="(editForm.get('manager')!.touched) ? (editForm.get('manager')!.invalid  ? 'danger' : 'success') : 'basic'"
+                 [nbAutocomplete]="autoManager"/>
+
+          <nb-autocomplete #autoManager [handleDisplayFn]="viewHandle">
+
+            <nb-option *ngFor="let person of managerPeople;trackBy:managerTrackBy" [value]="person">
+              {{ person?.name|empty }}
+            </nb-option>
+          </nb-autocomplete>
+          <button nbSuffix nbButton ghost type="button"
+                  *ngIf="editForm.get('manager')!.value && !editForm.get('manager')!.disabled"
+                  (click)="editForm.get('manager')!.setValue('',{emitEvent:false})">
+            <nb-icon icon="backspace-outline">
+            </nb-icon>
+          </button>
+        </nb-form-field>
+        <ng-container
+          *ngIf="editForm.get('manager')!.invalid && editForm.get('manager')!.touched">
+          <p class="text-danger" *ngIf="editForm.get('manager')!.errors?.required">
+            Campo obrigatório
+          </p>
+        </ng-container>
+      </div>
+    </ng-container>
+    <div class="mb-3 col-md-12" *ngIf="!project?.modelForConception">
+      <label class="label">Tags</label>
+      <nb-form-field>
+        <nb-tag-list (tagRemove)="onTagRemove($event)">
+          <nb-tag *ngFor="let tag of trees" [text]="tag?.name | empty" appearance="outline" removable></nb-tag>
+          <input [formControl]="tagInput" fieldSize="large" placeholder="Nome da competência..."
+                 type="text" nbTagInput fullWidth [nbAutocomplete]="auto">
+          <nb-autocomplete #auto (selectedChange)="onSelectionChange($event)">
+
+            <nb-option *ngFor="let option of filteredOptions" [value]="option">
+              {{ option?.name }}
+            </nb-option>
+
+          </nb-autocomplete>
+        </nb-tag-list>
+        <button nbSuffix nbButton ghost status="control" type="button" *ngIf="trees && trees.size > 0"
+                (click)="trees.clear();getTags()">
+          <nb-icon icon="backspace-outline">
+          </nb-icon>
+        </button>
+      </nb-form-field>
+    </div>
+    <div class="mb-3 col-md-4">
+      <label class="label">Dt. de início</label>
+      <nb-form-field>
+        <input fieldSize="large" type="text" nbInput fullWidth placeholder="Dt. início..."
+               formControlName="startDate" [nbDatepicker]="startDatePicker"
+               [status]="(editForm.get('startDate')!.touched) ? (editForm.get('startDate')!.invalid  ? 'danger' : 'success') : 'basic'">
+        <nb-datepicker #startDatePicker format="DD/MM/yyyy" readonly></nb-datepicker>
+      </nb-form-field>
+      <ng-container
+        *ngIf="editForm.get('startDate')!.invalid && editForm.get('startDate')!.touched">
+        <p class="text-danger" *ngIf="editForm.get('startDate')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class="mb-3 col-md-4">
+      <label class="label">Dt. de término</label>
+      <nb-form-field>
+        <input fieldSize="large" type="text" nbInput fullWidth placeholder="Dt. término..."
+               formControlName="endDate" [nbDatepicker]="endDatePicker"
+               [status]="(editForm.get('endDate')!.touched) ? (editForm.get('endDate')!.invalid  ? 'danger' : 'success') : 'basic'">
+        <nb-datepicker #endDatePicker format="DD/MM/yyyy" readonly></nb-datepicker>
+      </nb-form-field>
+      <ng-container
+        *ngIf="editForm.get('endDate')!.invalid && editForm.get('endDate')!.touched">
+        <p class="text-danger" *ngIf="editForm.get('endDate')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class="mb-3 col-md-4">
+      <label class="label">Dt. de cancelamento</label>
+      <nb-form-field>
+        <input fieldSize="large" type="text" nbInput fullWidth placeholder="Dt. cancelamento..."
+               formControlName="canceledDate" [nbDatepicker]="canceledDatePicker"
+               [status]="(editForm.get('canceledDate')!.dirty || editForm.get('canceledDate')!.touched) ? (editForm.get('canceledDate')!.invalid  ? 'danger' : 'success') : 'basic'">
+        <nb-datepicker #canceledDatePicker format="DD/MM/yyyy" readonly></nb-datepicker>
+      </nb-form-field>
+      <ng-container
+        *ngIf="editForm.get('canceledDate')!.invalid && editForm.get('canceledDate')!.touched">
+        <p class="text-danger" *ngIf="editForm.get('canceledDate')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <ng-container *ngIf="project?.isFinished">
+      <div class="mb-3 col-md-4">
+        <label class="label">cancelUser</label>
+        <nb-form-field>
+          <nb-select size="large" fullWidth placeholder="cancelUser"
+                     formControlName="cancelUser"
+                     [status]="(editForm.get('cancelUser')!.dirty || editForm.get('cancelUser')!.touched) ? (editForm.get('cancelUser')!.invalid  ? 'danger' : 'success') : 'basic'"></nb-select>
+        </nb-form-field>
+        <ng-container
+          *ngIf="editForm.get('cancelUser')!.invalid && editForm.get('cancelUser')!.touched">
+          <p class="text-danger" *ngIf="editForm.get('cancelUser')!.errors?.required">
+            Campo obrigatório
+          </p>
+        </ng-container>
+      </div>
+      <div class="mb-3 col-md-4">
+        <label class="label">videoUrlLowRes</label>
+        <nb-form-field>
+          <input fieldSize="large" type="text" nbInput fullWidth placeholder="Apelido"
+                 formControlName="videoUrlLowRes"
+                 [status]="(editForm.get('videoUrlLowRes')!.dirty || editForm.get('videoUrlLowRes')!.touched) ? (editForm.get('videoUrlLowRes')!.invalid  ? 'danger' : 'success') : 'basic'">
+        </nb-form-field>
+        <ng-container
+          *ngIf="editForm.get('videoUrlLowRes')!.invalid && editForm.get('videoUrlLowRes')!.touched">
+          <p class="text-danger" *ngIf="editForm.get('videoUrlLowRes')!.errors?.required">
+            Campo obrigatório
+          </p>
+        </ng-container>
+      </div>
+      <div class="mb-3 col-md-4">
+        <label class="label">videoUrlHiRes</label>
+        <nb-form-field>
+          <input fieldSize="large" type="text" nbInput fullWidth placeholder="Apelido"
+                 formControlName="videoUrlHiRes"
+                 [status]="(editForm.get('videoUrlHiRes')!.dirty || editForm.get('videoUrlHiRes')!.touched) ? (editForm.get('videoUrlHiRes')!.invalid  ? 'danger' : 'success') : 'basic'">
+        </nb-form-field>
+        <ng-container
+          *ngIf="editForm.get('videoUrlHiRes')!.invalid && editForm.get('videoUrlHiRes')!.touched">
+          <p class="text-danger" *ngIf="editForm.get('videoUrlHiRes')!.errors?.required">
+            Campo obrigatório
+          </p>
+        </ng-container>
+      </div>
+    </ng-container>
+    <div class="mb-3 col-12">
+      <label class="label"></label>
+      <nb-checkbox formControlName="tributeAncine">Imposto Ancine</nb-checkbox>
+    </div>
+  </div>
+
+</form>

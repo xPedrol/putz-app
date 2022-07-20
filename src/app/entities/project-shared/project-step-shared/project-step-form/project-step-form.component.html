@@ -1,0 +1,99 @@
+<form [formGroup]="editForm" (ngSubmit)="emit()">
+  <div class="row">
+    <div class="mb-3 col-md-8">
+      <label class="label">Nome</label>
+      <nb-form-field>
+        <input fieldSize="large" type="text" nbInput fullWidth placeholder="Nome..."
+               formControlName="name"
+               [status]="(editForm.get('name')!.dirty || editForm.get('name')!.touched) ? (editForm.get('name')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container *ngIf="editForm.get('name')!.invalid && editForm.get('name')!.touched">
+        <p class="text-danger" *ngIf="editForm.get('name')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class="mb-3 col-md-4">
+      <label class="label">Dias</label>
+      <nb-form-field>
+        <input fieldSize="large" type="text" nbInput fullWidth placeholder="Dias..."
+               formControlName="days"
+               [status]="(editForm.get('days')!.dirty || editForm.get('days')!.touched) ? (editForm.get('days')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container *ngIf="editForm.get('days')!.invalid && editForm.get('days')!.touched">
+        <p class="text-danger" *ngIf="editForm.get('days')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class="col-md-12">
+      <p><strong>Planejamento</strong></p>
+    </div>
+    <div class="mb-3 col-md-6">
+      <label class="label">Data de início Planejamento</label>
+      <nb-form-field>
+        <input fieldSize="large" type="text" nbInput fullWidth placeholder="Dt. início Planejamento"
+               formControlName="startDateExpected" [nbDatepicker]="startDateExpectedPicker"
+               [status]="(editForm.get('startDateExpected')!.dirty || editForm.get('startDateExpected')!.touched) ? (editForm.get('startDateExpected')!.invalid  ? 'danger' : 'success') : 'basic'">
+        <nb-datepicker #startDateExpectedPicker format="DD/MM/yyyy" readonly></nb-datepicker>
+      </nb-form-field>
+      <ng-container *ngIf="editForm.get('startDateExpected')!.invalid && editForm.get('startDateExpected')!.touched">
+        <p class="text-danger" *ngIf="editForm.get('startDateExpected')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class="mb-3 col-md-6">
+      <label class="label">Data de Fim Planejamento</label>
+      <nb-form-field>
+        <input fieldSize="large" type="text" nbInput fullWidth placeholder="Dt. Fim Planejamento"
+               formControlName="endDateExpected" [nbDatepicker]="endDateExpectedPicker"
+               [status]="(editForm.get('endDateExpected')!.dirty || editForm.get('endDateExpected')!.touched) ? (editForm.get('endDateExpected')!.invalid  ? 'danger' : 'success') : 'basic'">
+        <nb-datepicker #endDateExpectedPicker format="DD/MM/yyyy" readonly></nb-datepicker>
+      </nb-form-field>
+      <ng-container *ngIf="editForm.get('endDateExpected')!.invalid && editForm.get('endDateExpected')!.touched">
+        <p class="text-danger" *ngIf="editForm.get('endDateExpected')!.errors?.required">
+          Campo obrigatório
+        </p>
+        <p class="text-danger" *ngIf="editForm.get('endDateExpected')!.errors?.dataCheck">
+          Data inválida
+        </p>
+      </ng-container>
+    </div>
+    <div class="col-md-12">
+      <p><strong>Execucao</strong></p>
+    </div>
+    <div class="mb-3 col-md-6">
+      <label class="label">Data de início</label>
+      <nb-form-field>
+        <input fieldSize="large" type="text" nbInput fullWidth placeholder="Dt. início"
+               formControlName="startDate" [nbDatepicker]="startDatePicker"
+               [status]="(editForm.get('startDate')!.dirty || editForm.get('startDate')!.touched) ? (editForm.get('startDate')!.invalid  ? 'danger' : 'success') : 'basic'">
+        <nb-datepicker #startDatePicker format="DD/MM/yyyy" readonly></nb-datepicker>
+      </nb-form-field>
+      <ng-container *ngIf="editForm.get('startDate')!.invalid && editForm.get('startDate')!.touched">
+        <p class="text-danger" *ngIf="editForm.get('startDate')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class="mb-3 col-md-6">
+      <label class="label">Data de término</label>
+      <nb-form-field>
+        <input fieldSize="large" type="text" nbInput fullWidth placeholder="Dt. início"
+               formControlName="endDate" [nbDatepicker]="endDatePicker"
+               [status]="(editForm.get('endDate')!.dirty || editForm.get('endDate')!.touched) ? (editForm.get('endDate')!.invalid  ? 'danger' : 'success') : 'basic'">
+        <nb-datepicker #endDatePicker format="DD/MM/yyyy" readonly></nb-datepicker>
+      </nb-form-field>
+      <ng-container *ngIf="editForm.get('endDate')!.invalid && editForm.get('endDate')!.touched">
+        <p class="text-danger" *ngIf="editForm.get('endDate')!.errors?.dataCheck">
+          Data inválida
+        </p>
+      </ng-container>
+    </div>
+    <div class="mb-3 col-12 text-end">
+      <button nbButton status="info" type="submit" size="medium">Salvar
+      </button>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,35 @@
+<div class="row mt-2">
+  <div class="col-12" *ngIf="exportingCsv">
+    <nb-alert accent="primary" class="spinner-no-bg" [nbSpinner]="exportingCsv" nbSpinnerStatus="primary"
+              nbSpinnerMessage="Exportando Csv...">
+      <div class="p-2"></div>
+    </nb-alert>
+  </div>
+  <div class="col-12 spinner-no-bg" [nbSpinner]="isLoading" nbSpinnerStatus="primary" nbSpinnerMessage="Carregando..."
+       [class.spinner-content]="isLoading">
+    <ng-container *ngIf="renderItems && renderItems.length > 0">
+      <app-render-table #renderTableComponent (stateChange)="onSort($event)"></app-render-table>
+      <app-pagination-wrapper>
+        <ngb-pagination
+          [collectionSize]="listTotalSize" [(page)]="state!.page"
+          [pageSize]="state!.size"
+          (pageChange)="pageChange($event)"
+          [maxSize]="5">
+        </ngb-pagination>
+        <nb-form-field>
+          <nb-select [selected]="state!.size" #selectComponent
+                     (selectedChange)="sizeChange(selectComponent.selected)">
+            <nb-option [value]="5">5</nb-option>
+            <nb-option [value]="20">20</nb-option>
+            <nb-option [value]="50">50</nb-option>
+            <nb-option [value]="100">100</nb-option>
+            <nb-option [value]="400">400</nb-option>
+          </nb-select>
+        </nb-form-field>
+      </app-pagination-wrapper>
+    </ng-container>
+    <ng-container *ngIf="(!renderItems || renderItems.length === 0) && !isLoading">
+      <app-simple-not-found></app-simple-not-found>
+    </ng-container>
+  </div>
+</div>

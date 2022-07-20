@@ -1,0 +1,71 @@
+<div class="row h-100 mt-2">
+  <div class="col-12" *ngIf="project?.modelForConception">
+    <nb-alert status="info">Você deve criar um projeto com base nesse modelo antes de alterar esse formulário.
+      Para isso acesse a tab 'Dados Gerais'
+    </nb-alert>
+  </div>
+  <div class="col-lg-7">
+    <nb-card status="basic">
+      <nb-card-header class="">
+        <div class="row align-items-center justify-content-between">
+          <div class="col text-start">
+            <h5 class="poppins header-title">Parametros de Negociação</h5>
+          </div>
+          <div class="col text-end d-flex align-items-center justify-content-end">
+            <nb-toggle status="basic" *nbIsGranted="['view','advanced-conception']"
+                       (checkedChange)="advancedConception = !advancedConception">{{!advancedConception ? 'Modo Simples' : 'Modo Avançado'}}</nb-toggle>
+          </div>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <app-project-conception-form [advancedConception]="advancedConception" #budgetFormComponent [canEdit]="canEdit"
+        ></app-project-conception-form>
+      </nb-card-body>
+      <nb-card-footer class="py-2">
+        <div class="col-md-12 text-end">
+          <button [disabled]="!canEdit" nbButton status="primary" type="button" size="small"
+                  (click)="getNegotiation()" class="m-1">Calcular
+            campos
+          </button>
+          <ng-container *ngIf="!project?.isModel">
+            <button [disabled]="!canEdit" nbButton status="primary" type="button" size="small" class="m-1"
+                    (click)="handleConceptionForm()">Salvar
+            </button>
+          </ng-container>
+        </div>
+      </nb-card-footer>
+    </nb-card>
+  </div>
+  <div class="col-lg-5">
+    <div class="row align-items-center">
+      <div class="col-8 text-start">
+        <h5 class="poppins header-title">Lista de itens</h5>
+      </div>
+      <div class="col-4 text-end mb-1">
+        <ng-container *nbIsGranted="['edit','project-item']">
+          <button nbButton status="primary" appearance="outline" size="medium"
+                  nbTooltip="Adicionar novo item" [disabled]="!canEdit"
+                  *ngIf="!project?.modelForConception"
+                  (click)="openProjectItemDialog()">
+            <nb-icon icon="plus-outline"></nb-icon>
+          </button>
+        </ng-container>
+      </div>
+    </div>
+    <div class="overflow-auto item-list row spinner-content spinner-no-bg" [nbSpinner]="isLoadingPItems"
+         nbSpinnerStatus="primary" nbSpinnerMessage="Carregando...">
+      <ng-container *ngFor="let item of projectItems;trackBy:trackProjectItemsByFn">
+        <app-project-item-compacted-card [canEdit]="canEdit" class="col-12 col-md-6 col-lg-12" [deleteOnBD]="false"
+                                         (itemChanged)="onItemChange($event)"
+                                         [projectItem]="item"></app-project-item-compacted-card>
+      </ng-container>
+    </div>
+    <ng-container
+      *ngIf="!isLoadingPItems && (!(projectItemService.projectItems$ | async)?.projectItems || (projectItemService.projectItems$ | async)?.projectItems!.length === 0)">
+      <app-simple-not-found class="text-center overflow-hidden"></app-simple-not-found>
+    </ng-container>
+  </div>
+  <div class="col-md-12" *nbIsGranted="['view','advanced-conception']">
+    <app-project-budget-summary [isDetailed]="true"></app-project-budget-summary>
+  </div>
+</div>

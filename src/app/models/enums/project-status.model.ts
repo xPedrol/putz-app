@@ -1,0 +1,13 @@
+export enum ProjectStatus {
+  MODEL = 'MODEL',
+
+  CONCEPTION = 'CONCEPTION',
+
+  BRIEFING = 'BRIEFING',
+
+  EXECUTION = 'EXECUTION',
+
+  CANCELED = 'CANCELED',
+
+  CLOSE = 'CLOSE',
+}

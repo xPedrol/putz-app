@@ -1,0 +1,193 @@
+<div class="row my-5">
+  <div class="col-12 col-sm-10 col-lg-8 mx-auto">
+    <div class="header text-center">
+      <img alt="putz_logo" src="assets/images/logo/image4.png"/>
+      <h3 class="mt-5">RELATÓRIO GERENTE DE PROJETOS
+      </h3>
+      <p>Relatório feito na manhã do dia 20/04/22 para apresentar os resultados dos projetos no mês de março e do
+        primeiro trimestre (Q1).</p>
+    </div>
+    <div class="projects_budget">
+      <div class="row align-items-center">
+        <div class="col-12 p-3 project_budget_header mb-4">
+          <h5 class="m-0 fw-bold poppins">CUSTOS PROJETOS</h5>
+        </div>
+      </div>
+      <!--      CARDS DE CUSTO DE PROJETOS POR ETAPAS-->
+      <div class="row g-2">
+        <div class="col-12 col-sm-6 col-md-4" *ngFor="let budgeItem of projectBudgeItems">
+          <div class="project_budget_item">
+            <div class="d-flex align-items-center project_budget_item_header w-100">
+              <h6 class="poppins fw-bold m-0">{{budgeItem.name}}</h6>
+            </div>
+            <hr>
+            <div style="max-height: 300px; overflow: auto">
+              <ng-container *ngIf="budgeItem?.projectBudgetItems && budgeItem.projectBudgetItems.length > 0">
+                <div class="d-flex justify-content-between mb-3"
+                     *ngFor="let budgeItemData of budgeItem.projectBudgetItems">
+                  <span class="m-0 no-wrap">{{budgeItemData.project}}</span>
+                  <span class="m-0 text-end text-nowrap"> {{budgeItemData.value | currency}}</span>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--      GRÁFICO DE CUSTOS DE FREELANCERS-->
+      <ng-container *ngIf="projectBudgetItemFreelancers">
+        <div class="row mt-5 mb-2">
+          <div class="col-12 project_budget_freelancers_chart">
+            <p>Analisando os custos de freelancers separados por categoria temos</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <app-project-report-item-freelancer-pie-chart
+              [projectBudgetItemFreelancer]="projectBudgetItemFreelancers"></app-project-report-item-freelancer-pie-chart>
+          </div>
+        </div>
+      </ng-container>
+      <!--      GRÁFICO DE FREELANCER PERCENTAGE-->
+      <ng-container *ngIf="projectBudgetItemFreelancerPercentages">
+        <div class="row mt-5 mb-2">
+          <div class="col-12 project_budget_freelancers_chart">
+            <p>Podemos observar no gráfico abaixo que as saídas com pagamentos de freelas representou 29,4% do total
+              de
+              saídas do mês de março.</p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <app-project-report-item-freelancer-percentage-pie-chart
+              [projectBudgetItemFreelancer]="projectBudgetItemFreelancerPercentages"></app-project-report-item-freelancer-percentage-pie-chart>
+          </div>
+        </div>
+      </ng-container>
+      <!--      CARDS DE PROJETOS APROVADOS-->
+      <ng-container *ngIf="approvedProjects && approvedProjects.length > 0">
+        <div class="row">
+          <div class="col-12 p-3 mb-4">
+            <div class="project_budget_approved">
+              <p>Entre as datas {{params.start}} e {{params.end}} tivemos {{approvedProjects.length}} projetos
+                aprovados. São eles</p>
+            </div>
+          </div>
+        </div>
+        <div class="row g-2">
+          <div class="col-12 col-md-6 col-lg-4 col-xl-4 col-xxl-3" *ngFor="let approvedProject of approvedProjects">
+            <div class="project_budget_item">
+              <div class="d-flex align-items-center project_budget_item_header w-100">
+                <h6 class="poppins fw-bold m-0">{{approvedProject.cost.project}}</h6>
+              </div>
+              <hr>
+              <div *ngFor="let product of approvedProject.products">
+                <p class="mb-1"><span class="">{{product.product}}:</span> {{product.value | currency}}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <!--      GRÁFICO DE PROJETOS APROVADOS-->
+      <ng-container *ngIf="projectCostAndSaleGraph">
+        <div class="row mt-4">
+          <div class="col-12">
+            <app-project-cost-and-sale-bar-chart
+              [projectCostAndSales]="projectCostAndSaleGraph"></app-project-cost-and-sale-bar-chart>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <ng-container *ngIf="projectBudgetItemFreelancerPercentagesQuarter">
+      <div class="row mt-5 mb-2">
+        <div class="col-12">
+          <h6 class="fw-bold poppins mb-1">Primeiro Trismestre</h6>
+          <p>Compilando os dados do primeiro trimestre temos as seguintes informações:</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <app-project-report-item-freelancer-percentage-pie-chart
+            [projectBudgetItemFreelancer]="projectBudgetItemFreelancerPercentagesQuarter"></app-project-report-item-freelancer-percentage-pie-chart>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-12">
+          <p>Analisando as saídas por função, temos que motion representou o maior percentual dentro do trimestre, com
+            44,7%, seguido da ilustração com 29,6%.</p>
+        </div>
+      </div>
+    </ng-container>
+    <!--      GRÁFICO DE CUSTOS DE FREELANCERS-->
+    <ng-container *ngIf="projectBudgetItemFreelancersQuarter">
+      <div class="row mt-5">
+        <div class="col-12">
+          <app-project-report-item-freelancer-pie-chart
+            [projectBudgetItemFreelancer]="projectBudgetItemFreelancersQuarter"></app-project-report-item-freelancer-pie-chart>
+        </div>
+      </div>
+    </ng-container>
+
+    <!--      GRÁFICO DE CUSTOS DE FREELANCERS BARRA-->
+    <ng-container *ngIf="projectBudgetItemPercentageFreelancerGroupDate">
+      <div class="row mt-5">
+        <div class="col-12">
+          <p>E por fim, tivemos no trimestre uma média de 36,48% de custos com freelancers quando comparados com os
+            valores das vendas dos projetos.</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <app-project-freelancer-cost-bar-chart
+            [freelancerCost]="projectBudgetItemPercentageFreelancerGroupDate"></app-project-freelancer-cost-bar-chart>
+        </div>
+      </div>
+    </ng-container>
+    <div class="projects_deliver_deadline mt-4">
+      <div class="row align-items-center">
+        <div class="col-12 p-3 project_deliver_deadline_header mb-4">
+          <h5 class="m-0 fw-bold poppins">PRAZOS DE ENTREGA</h5>
+        </div>
+        <div class="col-12">
+          <p>Para analisar o KPI de entregas no prazo vamos analisar a partir da data de início em cada projeto.</p>
+        </div>
+      </div>
+      <div class="row g-2">
+        <div class="col-12 col-md-6 col-lg-4" *ngFor="let projectDeadline of projectDeadlines">
+          <div class="project_budget_item">
+            <div class="d-flex align-items-center project_budget_item_header w-100">
+              <h6 class="poppins fw-bold m-0">{{projectDeadline.detail}}</h6>
+            </div>
+            <hr>
+            <div>
+              <p class="mb-1" *ngIf="projectDeadline.start">Data de
+                início: {{projectDeadline.start | convert | date:'dd/MM/yyyy'}}</p>
+              <p class="mb-1" *ngIf="projectDeadline.expected">Data
+                prevista: {{projectDeadline.expected | convert | date:'dd/MM/yyyy'}}</p>
+              <p class="mb-1" *ngIf="projectDeadline.step">Etapa atual: {{projectDeadline.step}}</p>
+              <p class="mb-1" *ngIf="projectDeadline.detail"> Motivo: {{projectDeadline.detail}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-container *ngIf="projectDeadLineGraph">
+        <div class="row mt-5 mb-2">
+          <div class="col-12">
+            <h6 class="fw-bold poppins mb-1">Prazo e Entregas</h6>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <app-project-deadline-pie-chart
+              [projectDeadLine]="projectDeadLineGraph"></app-project-deadline-pie-chart>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-12">
+            <p>Analisando as saídas por função, temos que motion representou o maior percentual dentro do trimestre, com
+              44,7%, seguido da ilustração com 29,6%.</p>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

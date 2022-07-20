@@ -1,0 +1,6 @@
+@use '../../../assets/nb-theme/nb-vars' as *;
+@use '../../../../../../node_modules/@nebular/theme/styles/globals' as *;
+
+.sticky-top-menu {
+  top: 60px;
+}

@@ -1,0 +1,4 @@
+@use "themes"as *;
+.dropzone-background {
+  background-color: nb-theme(input-basic-background-color) !important;
+}

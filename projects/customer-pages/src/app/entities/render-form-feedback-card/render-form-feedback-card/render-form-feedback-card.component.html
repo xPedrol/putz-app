@@ -1,0 +1,71 @@
+<nb-card
+  [status]="renderItem?.videoUrl?'success':(renderItem?.job === null || renderItem?.job?.state === 'error')?'danger':'primary'">
+  <nb-card-header>
+    <div class="d-flex justify-content-between align-items-center">
+      <h6 class="poppins fw-bold overflow-hidden text-overflow">{{renderItem?.name | empty}}</h6>
+      <nb-icon icon="film-outline"></nb-icon>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="row justify-content-between align-items-center">
+      <div class="col text-start mb-1">
+        <div class="mb-1" *ngIf="renderItem?.renderStatus">
+          Situação atual: <span
+          class="poppins fw-bold">{{(('project-render.status.' + renderItem?.renderStatus) | translate)}}</span>
+        </div>
+      </div>
+      <div class="col text-center text-md-end" *ngIf="renderItem?.job && renderItem?.renderStatus  !== renderStatus.FINISHED">
+        <div *ngIf="renderItem?.job?.renderProgress >=0 && renderItem?.job && renderItem?.job?.state !== 'error'">
+          <p class="label m-0">Progresso do vídeo ({{renderItem?.job?.renderProgress}}%)</p>
+          <nb-progress-bar status="primary" [value]="renderItem?.job?.renderProgress??0"></nb-progress-bar>
+        </div>
+      </div>
+    </div>
+    <nb-alert class="mb-0 mt-3" accent="danger"
+              *ngIf="renderItem?.job === null || renderItem?.job?.state === 'error'">
+      <div class="d-flex align-items-center">
+        <nb-icon icon="alert-triangle-outline" class="me-1"></nb-icon>
+        <span>Ocorreu um erro ao obter o progresso do vídeo.</span>
+      </div>
+    </nb-alert>
+
+    <nb-alert class="mb-0 mt-3"
+              *ngIf="renderItem?.job && renderItem?.job?.state !== 'error' && !renderItem?.videoUrl">
+      Você receberá o vídeo no seu telefone assim que estiver pronto.
+    </nb-alert>
+    <ng-container *ngIf="isPreRegistered && renderItem?.renderUid">
+      <nb-alert class="mb-0 mt-3" accent="primary">
+        Putz!!! Sua solicitação seu pedido foi cadastrada!!!
+      </nb-alert>
+      <ol>
+        <li>Fique calmo o vídeo pode demorar aproximadamente 4 minutos para chegar no seu telefone</li>
+        <li>Agora precisamos confimar seu número de telefone!</li>
+        <li>Nosso número Oficial de Whatsapp é: <strong>"{{renderItem?.renderProject?.whatsappBot}}"</strong>
+        </li>
+        <li>Envie pelo aplicativo whatsapp o código abaixo para confirmar seu pedido.
+      </ol>
+      <h1 class="text-center">{{renderItem?.renderUid | empty}}</h1>
+      <div class="row">
+        <div class="col-12 text-center">
+          <a class="m-3" size="large" nbButton outline status="primary" target="_blank"
+             href='https://api.whatsapp.com/send/?phone={{renderItem?.renderProject?.whatsappBot}}&text={{renderItem?.renderUid | empty}}'>
+            <nb-icon icon="phone-call-outline" class="mx-1" status="success"></nb-icon>
+            Enviar Código</a>
+        </div>
+      </div>
+    </ng-container>
+    <nb-alert class="mb-0 mt-3" accent="success" *ngIf="renderItem?.videoUrl">
+      O seu vídeo está pronto!!
+      <a nbButton status="primary" size="small" target="_blank" [disabled]="!renderItem?.videoUrl"
+         [href]="renderItem?.videoUrl">{{renderItem?.videoUrl ? 'Download' : 'Aguardando video...'}}</a>
+    </nb-alert>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="d-flex justify-content-between align-items-center">
+      <small
+        class="header-title d-none d-sm-block">Início: {{renderItem?.createdDate | convert | date:'dd/MM/yyyy HH:mm:ss' | empty}}</small>
+      <small
+        class="header-title">Fim: {{renderItem?.endRenderDate | convert | date:'dd/MM/yyyy HH:mm:ss' | empty}}</small>
+    </div>
+  </nb-card-footer>
+</nb-card>

@@ -1,0 +1,27 @@
+<nb-card class="dialog-content">
+  <nb-card-header class="border-0">
+    <div class="row align-items-center">
+      <div class="col-6 text-start">
+        <h6 class="header-title fw-bold">
+          Criar novo usuário
+        </h6>
+      </div>
+      <div class="col-6 text-end">
+        <button nbButton ghost status="basic" (click)="close()">
+          <nb-icon icon="close-outline"></nb-icon>
+        </button>
+      </div>
+    </div>
+
+  </nb-card-header>
+  <nb-card-body>
+    <app-basic-person-form #basicPersonFormComponent></app-basic-person-form>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="row align-items-center">
+      <div class="col-12 text-end">
+        <button nbButton status="primary" size="medium" (click)="save()">Salvar</button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>

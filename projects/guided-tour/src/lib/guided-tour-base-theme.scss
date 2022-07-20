@@ -1,0 +1,124 @@
+@use "../../../../src/app/shared/themes/themes" as *;
+
+$tour-zindex: 1081 !default;
+$tour-card-body-background-color: nb-theme(background-alternative-color-1) !default;
+$tour-card-header-background-color: nb-theme(background-alternative-color-2) !default;
+$text-color: nb-theme(text-alternate-color) !default;
+$border-color: nb-theme(border-alternative-color-1) !default;
+body.tour-open {
+  overflow: hidden;
+}
+
+@mixin tour-triangle($direction, $color: currentColor, $size: 1rem) {
+
+  @if not index(top right bottom left, $direction) {
+    @error 'Direction must be either `top`, `right`, `bottom` or `left`.';
+  }
+
+  $opposite-direction: top;
+
+  @if $direction==top {
+    $opposite-direction: bottom;
+  }
+
+  @if $direction==bottom {
+    $opposite-direction: top;
+  }
+
+  @if $direction==right {
+    $opposite-direction: left;
+  }
+
+  @if $direction==left {
+    $opposite-direction: right;
+  }
+
+  width: 0;
+  height: 0;
+  content: '';
+  z-index: 2;
+  border-#{$opposite-direction}: $size solid $tour-card-header-background-color;
+  $perpendicular-borders: $size solid transparent;
+  @if $direction==top or $direction==bottom {
+    border-left: $perpendicular-borders;
+    border-right: $perpendicular-borders;
+  } @else if $direction==right or $direction==left {
+    border-bottom: $perpendicular-borders;
+    border-top: $perpendicular-borders;
+  }
+}
+
+ngx-guided-tour {
+  .guided-tour-user-input-mask {
+    z-index: $tour-zindex;
+  }
+
+  nb-card {
+    border: unset !important;
+  }
+
+  nb-card-body {
+    color: $text-color;
+    background-color: $tour-card-body-background-color;
+    //border-color: $border-color !important;
+  }
+
+  nb-card-header {
+    color: $text-color;
+    background-color: $tour-card-header-background-color;
+    border-color: $border-color !important;
+  }
+
+  .guided-tour-spotlight-overlay {
+    z-index: $tour-zindex + 1;
+  }
+
+  .tour-orb {
+    z-index: $tour-zindex - 2;
+    box-shadow: 0 0 0.3rem 0.1rem;
+
+    .tour-orb-ring {
+      &::after {
+        border: 1rem solid $border-color;
+        box-shadow: 0 0 0.1rem 0.1rem;
+      }
+    }
+  }
+
+  .tour-step {
+    z-index: $tour-zindex + 2;
+
+    &.tour-bottom, &.tour-bottom-right, &.tour-bottom-left {
+      .tour-arrow::before {
+        @include tour-triangle(top, $tour-card-header-background-color);
+      }
+    }
+
+    &.tour-top, &.tour-top-right, &.tour-top-left {
+      .tour-arrow::before {
+        @include tour-triangle(bottom, $tour-card-header-background-color);
+      }
+    }
+
+    &.tour-left {
+      .tour-arrow::before {
+        @include tour-triangle(right, $tour-card-header-background-color);
+      }
+    }
+
+    &.tour-right {
+      .tour-arrow::before {
+        @include tour-triangle(left, $tour-card-header-background-color);
+      }
+    }
+
+    .tour-block {
+      //border-color: $border-color;
+
+      //color: $tour-text-color;
+      //background-color: ;
+      //box-shadow: 0 0.4rem 0.6rem $tour-shadow-color;
+    }
+  }
+
+}

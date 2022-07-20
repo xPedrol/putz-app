@@ -1,0 +1,8 @@
+@use '../../../../shared/themes/themes' as *;
+@use '../../../../shared/themes/common' as *;
+.color-unset {
+  color: unset !important;
+}
+.max-width-100p{
+  max-width: 16em;
+}

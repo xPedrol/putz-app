@@ -1,0 +1,40 @@
+<nb-card>
+  <nb-card-body>
+    <h4 putzTranslate="metrics.jvm.threads.title">Threads</h4>
+
+    <span><span putzTranslate="metrics.jvm.threads.runnable">Runnable</span> {{ threadStats.threadDumpRunnable }}</span>
+    <nb-progress-bar status="primary" [value]="threadStats.threadDumpRunnable">
+      <span>{{ (threadStats.threadDumpRunnable * 100) / threadStats.threadDumpAll | number: '1.0-0' }}%</span>
+    </nb-progress-bar>
+
+
+    <span><span
+      putzTranslate="metrics.jvm.threads.timedwaiting">Timed Waiting</span> ({{ threadStats.threadDumpTimedWaiting }}
+      )</span>
+
+    <nb-progress-bar status="primary" [value]="threadStats.threadDumpTimedWaiting">
+      <span>{{ (threadStats.threadDumpTimedWaiting * 100) / threadStats.threadDumpAll | number: '1.0-0' }}%</span>
+    </nb-progress-bar>
+
+    <span><span putzTranslate="metrics.jvm.threads.waiting">Waiting</span> ({{ threadStats.threadDumpWaiting }})</span>
+
+
+    <nb-progress-bar status="primary" [value]="threadStats.threadDumpWaiting">
+      <span>{{ (threadStats.threadDumpWaiting * 100) / threadStats.threadDumpAll | number: '1.0-0' }}%</span>
+    </nb-progress-bar>
+
+
+    <span><span putzTranslate="metrics.jvm.threads.blocked">Blocked</span> ({{ threadStats.threadDumpBlocked }})</span>
+    <nb-progress-bar status="primary" [value]="threadStats.threadDumpBlocked">
+      <span>{{ (threadStats.threadDumpBlocked * 100) / threadStats.threadDumpAll | number: '1.0-0' }}%</span>
+    </nb-progress-bar>
+
+    <div>Total: {{ threadStats.threadDumpAll }}</div>
+
+    <div class="d-flex justify-content-end mt-2">
+      <button nbButton status="primary" size="small" class="hand btn btn-primary btn-sm" (click)="open()" data-toggle="modal" data-target="#threadDump">
+        <span>Expand</span>
+      </button>
+    </div>
+  </nb-card-body>
+</nb-card>

@@ -1,0 +1,4 @@
+<app-render-items-by-month-line-chart *ngIf="projectRenderItemByMonthGraph && projectRenderItemByMonthGraph.length > 0"
+                                      [projectRenderItemByMonthGraph]="projectRenderItemByMonthGraph"></app-render-items-by-month-line-chart>
+<app-detailed-not-found [hasCallback]="false" message="Sem registros para desenhar o gráfico"
+                        *ngIf="!projectRenderItemByMonthGraph ||projectRenderItemByMonthGraph.length === 0"></app-detailed-not-found>

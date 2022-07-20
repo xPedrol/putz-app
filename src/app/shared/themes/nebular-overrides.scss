@@ -1,0 +1,30 @@
+nb-route-tabset > ul {
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 100%;
+  scroll-snap-type: x mandatory !important;
+}
+
+.route-tabset {
+  padding: 2.8px !important;
+}
+
+nb-route-tabset {
+  .li {
+    scroll-snap-align: start !important;
+  }
+}
+
+nb-chat .messages {
+  padding: 0;
+}
+
+nb-list {
+  > :first-child {
+    border-top: none;
+  }
+
+  > :last-child {
+    border-bottom: none;
+  }
+}

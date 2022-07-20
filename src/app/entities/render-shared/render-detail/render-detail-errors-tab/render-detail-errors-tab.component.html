@@ -1,0 +1,21 @@
+<div class="row mt-2">
+  <div class="col-12" [class.spinner-content]="loadingProjectRenderErrors"
+       [class.spinner-no-bg]="loadingProjectRenderErrors"
+       [nbSpinner]="loadingProjectRenderErrors" nbSpinnerStatus="primary" nbSpinnerMessage="Carregando...">
+    <nb-card-body>
+      <div class="row" *ngIf="projectRenderErrors && projectRenderErrors.length > 0">
+        <div class="col-12 col-md-4 col-lg-3" *ngFor="let renderError of projectRenderErrors">
+          <nb-card>
+            <nb-card-body>
+              <p class="mb-1" *ngIf="renderError.daysAfterStart">Dia depois do início: {{renderError.daysAfterStart}}
+              <p class="mb-1" *ngIf="renderError.slugRender">Slug do render: {{renderError.slugRender}}</p>
+              <p class="mb-1" *ngIf="renderError.idProjectRenderError">Id do item do
+                projeto: {{renderError.idProjectRenderError}}</p>
+            </nb-card-body>
+          </nb-card>
+        </div>
+      </div>
+      <app-detailed-not-found *ngIf="(!projectRenderErrors || projectRenderErrors.length === 0) && !loadingProjectRenderErrors" [hasCallback]="false"></app-detailed-not-found>
+    </nb-card-body>
+  </div>
+</div>

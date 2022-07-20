@@ -1,0 +1,72 @@
+<nb-card class="mx-0 mx-xl-5 project-step-card" status="info" *ngIf="isBegin">
+  <nb-card-header class="border-0">
+    <div class="row justify-content-between align-items-center">
+      <div class="col-sm-12 col-md-4 col-lg-6 no-wrap">
+        <h5 class="poppins fw-bold text-light text-center text-md-start mb-md-0">{{projectStep?.name}}</h5>
+        <hr class="d-md-none">
+      </div>
+      <div class="col text-center"
+           [nbTooltip]="cannotMakeChanges?'Atingiu o número máximo de mundaças permitidas':projectStep?.changeNumber+' mundaça(s) feita(s) de '+project?.changeMaxNumber">
+        <div class="d-flex flex-column justify-content-center align-items-center text-center flex-md-row">
+          <div>
+            <nb-icon icon="flip-2-outline" class="mx-1" [status]="cannotMakeChanges?'danger':'control'"></nb-icon>
+          </div>
+          <h6 class="poppins fw-bold" [class.text-light]="!cannotMakeChanges"
+              [class.text-nebular-danger]="cannotMakeChanges">
+            {{((projectStep?.changeNumber ?? 0) + ' / ' + (project?.changeMaxNumber ?? 0))}}
+          </h6>
+        </div>
+      </div>
+      <div class="col text-center">
+        <div class="d-flex flex-column justify-content-center align-items-center text-center flex-md-row">
+          <div>
+            <nb-icon icon="calendar-outline" class="mx-1"></nb-icon>
+          </div>
+          <h6 class="poppins fw-bold text-light"
+              [nbTooltip]="'Data de início do projeto '+(projectStep?.startDate | convert | date:'dd/MM/yyyy HH:mm' | empty)">
+            {{projectStep?.startDate | convert | date:'dd/MM/yyyy' | empty}}</h6>
+        </div>
+      </div>
+      <div class="col text-center">
+        <div class="d-flex flex-column justify-content-center align-items-center text-center flex-md-row">
+          <div>
+            <nb-icon icon="calendar-outline" class="mx-1"></nb-icon>
+          </div>
+          <h6 class="poppins fw-bold text-light"
+              [nbTooltip]="'Data de término do projeto '+(projectStep?.endDate | convert | date:'dd/MM/yyyy HH:mm' | empty)">
+            {{(projectStep?.endDate | convert | date:'dd/MM/yyyy' | empty)}}</h6>
+        </div>
+      </div>
+    </div>
+
+  </nb-card-header>
+  <nb-card-body>
+    <p>{{projectStep?.description}}</p>
+  </nb-card-body>
+</nb-card>
+
+<div class="mx-0 mx-xl-5 project-step-card text-center" *ngIf="!isBegin">
+  <div class="poppins fw-bold d-flex justify-content-center align-items-center" aria-describedby="Mudanças Feitas">
+    <div
+      [nbTooltip]="cannotMakeChanges?'Atingiu o número máximo de mundaças permitidas':projectStep?.changeNumber+' mundaça(s) feita(s) de '+project?.changeMaxNumber">
+      <nb-icon icon="flip-2-outline" class="mx-1"
+               [status]="cannotMakeChanges?'danger':'basic'"></nb-icon>
+      <span
+        [class.text-nebular-danger]="cannotMakeChanges">{{((projectStep?.changeNumber ?? 0) + ' / ' + (project?.changeMaxNumber ?? 0))}}</span>
+    </div>
+    <button nbButton status="primary" class="m-1"
+            [disabled]="!projectStep?.isCurrent && ([]|hasAccess:[authority.ADMIN,authority.MANAGER])"
+            *nbIsGranted="['create','event']"
+            (click)="openTimeLineEventDetailDialog()">
+      <nb-icon icon="plus-outline" class="mx-1"></nb-icon>
+      <span class="d-none d-md-block"> Novo Evento {{projectStep?.name}}</span>
+    </button>
+    <button nbButton status="primary" class="m-1"
+            [disabled]="!projectStep?.isCurrent"
+            *nbIsGranted="['approve','project-step']"
+            (click)="approveProjectStep()">
+      <nb-icon icon="bell-outline" class="mx-1"></nb-icon>
+      <span class="d-none d-md-block"> Entregar Etapa {{projectStep?.name}}</span>
+    </button>
+  </div>
+</div>

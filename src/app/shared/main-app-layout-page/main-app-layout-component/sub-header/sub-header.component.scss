@@ -1,0 +1,36 @@
+@use "../../../themes/themes" as *;
+
+
+.navbar-nav {
+  display: flex;
+  flex-direction: row;
+  list-style: none !important;
+  height: 100% !important;
+
+}
+
+.navbar-nav > a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar-nav > a {
+  padding-inline: 10px;
+  height: 100% !important;
+  cursor: pointer;
+}
+
+.navbar-nav > a:hover {
+  background: nb-theme(color-primary-default) !important;
+  color: white !important;
+
+}
+
+.is-active {
+  background: nb-theme(color-primary-default) !important;
+  color: white !important;
+}

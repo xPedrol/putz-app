@@ -1,0 +1,18 @@
+<div class="row h-100 align-items-center justify-content-center spinner-no-bg" [nbSpinner]="loadingRenderItem"
+     nbSpinnerStatus="primary" nbSpinnerMessage="Carregando...">
+  <div class="col-md-10 col-lg-8 col-xl-6 col-xxl-4 mx-auto">
+    <div class="d-flex justify-content-center">
+      <button nbButton class="my-2" status="primary" (click)="getRenderItem()" [hidden]="loadingRenderItem">Atualizar</button>
+    </div>
+    <app-render-form-feedback-card *ngIf="renderItem && !loadingRenderItem"
+                                   [isPreRegistered]="isPreRegistered"
+                                   [renderId]="renderId"
+                                   [renderItem]="renderItem"
+                                   [renderItemId]="renderItemId"
+    ></app-render-form-feedback-card>
+    <ng-container *ngIf="!renderItem && !loadingRenderItem">
+      <app-detailed-not-found message="Renderização não encontrada"
+                                 [hasCallback]="false"></app-detailed-not-found>
+    </ng-container>
+  </div>
+</div>

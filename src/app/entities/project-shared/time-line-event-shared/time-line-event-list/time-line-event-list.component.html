@@ -1,0 +1,126 @@
+<div class="clearfix layout-content">
+  <div class="row">
+    <div class="col-12 mx-auto">
+      <nb-card status="primary">
+        <nb-card-header class="border-0">
+          <div class="row align-items-center text-light">
+            <div class="col-12 col-sm-8 col-lg-5 text-start order-0">
+              <h5 class="text-light poppins fw-bold">{{project?.name | empty}}</h5>
+              <nb-tag-list>
+                <nb-tag size="tiny" appearance="outline" status="control"
+                        [text]="'Total de etapas: '+ project?.projectSteps?.length | empty"></nb-tag>
+                <nb-tag size="tiny" appearance="outline" status="control"
+                        [text]="'Início: '+(project?.startDate | convert | date:'dd/MM/yyyy' | empty)"></nb-tag>
+                <nb-tag size="tiny" appearance="outline" status="control"
+                        [text]="'Término: '+ (project?.endDate | convert | date:'dd/MM/yyyy' | empty)"></nb-tag>
+              </nb-tag-list>
+            </div>
+            <div class="col-12 col-md-8 col-lg-5 order-2 order-lg-1 mt-sm-2 mt-lg-0 mx-md-auto">
+              <nb-form-field>
+                <nb-select
+                  placeholder="Selecione um cronograma..."
+                  fullWidth
+                  size="large"
+                  status="control"
+
+                  [formControl]="scheduleSearch">
+                  <nb-option *ngFor="let schedule of scheduleNames" [value]="schedule">{{schedule}}</nb-option>
+                </nb-select>
+                <button nbSuffix nbButton ghost status="control" type="button"
+                        *ngIf="!scheduleSearch.value">
+                  <nb-icon icon="search-outline">
+                  </nb-icon>
+                </button>
+                <button nbSuffix nbButton ghost status="control" type="button"
+                        *ngIf="scheduleSearch.value"
+                        (click)="scheduleSearch.reset()">
+                  <nb-icon icon="backspace-outline">
+                  </nb-icon>
+                </button>
+              </nb-form-field>
+            </div>
+            <div class="col-12 col-sm-4 col-lg-2 order-1 order-md-0 order-lg-2 my-2 my-sm-0 text-center text-md-end">
+              <a nbButton outline status="control" size="large" class="m-1"
+                 [routerLink]="['','projects',project?.id,'general']" nbTooltip="Pagina do projeto">
+                <nb-icon icon="home-outline"></nb-icon>
+              </a>
+              <button nbButton outline status="control" size="large" class="m-1" nbTooltip="Recarregar projeto"
+                      (click)="getProject(true);">
+                <nb-icon icon="refresh-outline"></nb-icon>
+              </button>
+            </div>
+            <div class="col-12" *ngIf="false">
+              <nb-tag-list>
+                <nb-tag status="control" appearance="outline" size="tiny"
+                        [text]="'Total de etapas: '+(projectSteps.length)"></nb-tag>
+                <nb-tag status="control" appearance="outline" size="tiny"
+                        [text]="'Total de eventos: '+(projectSteps.length)"></nb-tag>
+                <nb-tag status="control" appearance="outline" size="tiny"
+                        [text]="'Total de anexos: '+(projectSteps.length)"></nb-tag>
+                <nb-tag status="control" appearance="outline" size="tiny"
+                        [text]="'Total de comentários: '+(projectSteps.length)"></nb-tag>
+              </nb-tag-list>
+            </div>
+          </div>
+        </nb-card-header>
+      </nb-card>
+    </div>
+    <div class="col-md-12 spinner-no-bg" *ngIf="project" [class.spinner-content]="loadingProjectSteps" [nbSpinner]="loadingProjectSteps"
+         nbSpinnerStatus="primary" nbSpinnerMessage="Carregando...">
+      <ng-container *ngIf="projectSteps && projectSteps.length > 0">
+
+        <div class="row justify-content-center mt-2" *ngIf="project?.endDate">
+          <div class="col-12 col-md-8 col-lg-6">
+            <nb-card class="mx-0 project-step-card" status="success">
+              <nb-card-header class="border-0">
+                <div class="align-items-center text-center">
+                  <h6 class="poppins fw-bold text-light">
+                    <nb-icon icon="calendar-outline" class="mx-1">
+                    </nb-icon>
+                    {{project?.name}} - Conclusão: {{(project?.endDate | convert | date:'dd/MM/yyyy' | empty)}}
+                  </h6>
+                </div>
+
+              </nb-card-header>
+              <nb-card-body>
+                <p>{{project?.description}}</p>
+              </nb-card-body>
+            </nb-card>
+
+          </div>
+        </div>
+
+        <ng-container *ngFor="let projectStep of projectSteps;trackBy:trackProjectStepsByFn">
+          <app-time-line-project-step [projectStep]="projectStep" [project]="project"
+                                      [refreshComponent$]="refreshComponent$"></app-time-line-project-step>
+        </ng-container>
+
+        <div class="row justify-content-center mt-2" *ngIf="project">
+          <div class="col-12 col-md-8 col-lg-6">
+            <nb-card class="mx-0 mx-xl-5 project-step-card" status="info">
+              <nb-card-header class="border-0">
+                <div class="align-items-center text-center">
+                  <h6 class="poppins fw-bold text-light">
+                    <nb-icon icon="calendar-outline"></nb-icon>
+                    <span class="mx-2">{{project?.name}}
+                      - Início: {{(project?.startDate | convert | date:'dd/MM/yyyy' | empty)}}</span>
+                  </h6>
+                </div>
+
+              </nb-card-header>
+              <nb-card-body>
+                <p>{{project?.description}}</p>
+              </nb-card-body>
+            </nb-card>
+
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <div class="col-12 text-center" *ngIf="error">
+      <nb-icon icon="close-outline" class="font-size-200px" status="danger"></nb-icon>
+      <h2 class="header-title">Erro ao buscar pelo projeto</h2>
+      <h6 class="header-title">Não é possivel completar a solitação e exibir a timeline.</h6>
+    </div>
+  </div>
+</div>

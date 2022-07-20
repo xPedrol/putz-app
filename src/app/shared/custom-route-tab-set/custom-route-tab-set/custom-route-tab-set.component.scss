@@ -1,0 +1,25 @@
+@use "@nebular/theme/styles/core/mixins"as *;
+.route-tabset {
+  display: flex;
+  flex-direction: row;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+:host(.full-width) {
+  .route-tabset {
+    justify-content: space-around;
+  }
+}
+/**
+ * @license
+ * Copyright Akveo. All Rights Reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
+ */
+
+/**
+ * @license
+ * Copyright Akveo. All Rights Reserved.
+ * Licensed under the MIT License. See License.txt in the project root for license information.
+ */

@@ -1,0 +1,121 @@
+<div class="layout-content">
+  <div class="row spinner-content spinner-no-bg" [nbSpinner]="loadingUser" nbSpinnerStatus="primary"
+       nbSpinnerMessage="Carregando...">
+    <ng-container *ngIf="person && !loadingUser">
+      <div class="col-12 col-lg-4 mt-5">
+        <nb-card status="basic">
+          <nb-card-header class="py-2">
+            <div *ngIf="person" class="d-flex flex-column align-items-center margin-top--70px">
+              <div [style]="imgProfile" class="img-profile">
+                <div class="float-end">
+                </div>
+              </div>
+            </div>
+          </nb-card-header>
+          <nb-card-body>
+            <hr>
+            <div class="row mt-4 text-center">
+              <div class="col text-center no-wrap w-100" [title]="person?.slug">
+                <h6 class="poppins header-title">Usuário</h6>
+                <small>{{person?.slug | empty}}</small>
+              </div>
+              <div class="col text-center no-wrap w-100" [title]="person?.phoneCel"
+                   *ngIf="!userLogin">
+                <h6 class="poppins header-title">Celular</h6>
+                <small>{{person?.phoneCel | empty}}</small>
+              </div>
+              <div class="col text-center no-wrap" [title]="person?.email">
+                <h6 class="poppins header-title">Email</h6>
+                <small>{{person?.email | empty}}</small>
+              </div>
+              <div class="col-12 mt-3 text-center">
+                <button nbButton status="primary" size="small" (click)="verifyPhoneWhatsapp()" *ngIf="!person.phoneWhatsappVerification && this.person?.birthday && canVerifyNumber">Verificar telefone</button>
+                <nb-tag size="small" status="success" *ngIf="person.phoneWhatsappVerification" text="Telefone verificado">
+                </nb-tag>
+
+              </div>
+            </div>
+          </nb-card-body>
+        </nb-card>
+      </div>
+      <div class="col-12 col-lg-8">
+        <nb-tabset>
+          <nb-tab tabTitle="Dados Gerais">
+            <nb-card status="basic">
+              <nb-card-header class="-3">
+                <h5 class="poppins header-title">Informações Gerais</h5>
+              </nb-card-header>
+              <nb-card-body>
+                <div class="row mt-3 max-width-100p">
+                  <div class="col-12 col-md-4 text-center" [title]="person?.name">
+                    <nb-icon class="font-size-25px" status="info" icon="person-outline"></nb-icon>
+                    <p><strong>Nome completo {{person.birthday ? '/ Dt.nascimento' : ''}}</strong></p>
+                    <p class="header-title no-wrap">{{person?.name| empty}}</p>
+                    <p *ngIf="person?.birthday"
+                       class="header-title no-wrap margin-top--15px font-size-13px">{{person?.birthday | convert | date:'dd/MM/yyyy' | empty}}</p>
+                  </div>
+                  <div class="col-12 col-md-4 text-center" [title]="person?.addressUf">
+                    <nb-icon class="font-size-25px" status="info" icon="map-outline"></nb-icon>
+                    <p><strong>Localização</strong></p>
+                    <p class="header-title no-wrap max-width-100p">{{person?.addressUf}}</p>
+                  </div>
+                  <div class="col-12 col-md-4 text-center"
+                       [title]="(person.email??'---')+' / '+(person.phoneWhatsapp??'---')">
+                    <nb-icon class="font-size-25px" status="info" icon="phone-call-outline"></nb-icon>
+                    <p><strong>Contato</strong></p>
+                    <p class="header-title no-wrap">{{person.email ? person.email : 'Não informado'}}</p>
+                    <p *ngIf="person.phoneWhatsapp"
+                       class="header-title no-wrap margin-top--15px font-size-13px">{{person.phoneWhatsapp | mask: '(00) 00000-0000'}}</p>
+                  </div>
+                </div>
+              </nb-card-body>
+            </nb-card>
+            <nb-card *ngIf="!userLogin" status="basic">
+              <nb-card-header class="">
+                <h5 class="poppins header-title">Editar perfil</h5>
+              </nb-card-header>
+              <nb-card-body>
+                <app-edit-person #editPersonComponent></app-edit-person>
+              </nb-card-body>
+              <nb-card-footer class="py-2">
+                <div class="row align-items-center">
+                  <div class="col-6">
+                    <nb-tag status="success" text="Telefone verificado" *ngIf="person?.phoneWhatsappVerification"></nb-tag>
+                  </div>
+                  <div class="col-6 text-end">
+                    <button nbButton status="primary" type="submit" size="medium" (click)="handlePerson()" class="m-1">
+                      Salvar
+                    </button>
+                  </div>
+                </div>
+              </nb-card-footer>
+            </nb-card>
+          </nb-tab>
+          <nb-tab tabTitle="Segurança" *ngIf="!userLogin">
+            <nb-card status="basic">
+              <nb-card-header class="">
+                <h5 class="poppins header-title">Trocar senha</h5>
+              </nb-card-header>
+              <nb-card-body>
+                <app-edit-password (updatePassword)="updatePassword($event)"></app-edit-password>
+              </nb-card-body>
+            </nb-card>
+          </nb-tab>
+          <nb-tab tabTitle="Trocar foto" *ngIf="!userLogin">
+            <nb-card status="basic">
+              <nb-card-header class="">
+                <h5 class="poppins header-title">Trocar foto</h5>
+              </nb-card-header>
+              <nb-card-body>
+                <app-edit-profile-image (updateUser)="savePhoto($event)"></app-edit-profile-image>
+              </nb-card-body>
+            </nb-card>
+          </nb-tab>
+        </nb-tabset>
+      </div>
+    </ng-container>
+  </div>
+  <ng-container *ngIf="!person &&  !loadingUser">
+    <app-simple-not-found class=""></app-simple-not-found>
+  </ng-container>
+</div>

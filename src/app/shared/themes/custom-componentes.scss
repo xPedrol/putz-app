@@ -1,0 +1,4 @@
+@use '../custom-route-tab-set/custom-route-tab-set/custom-route-tabset-theme'as *;
+@mixin custom-theme-components() {
+  @include app-custom-route-tabset-theme();
+}

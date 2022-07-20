@@ -1,0 +1,26 @@
+<div class="layout-content">
+<div class="row">
+  <div class="col-12 text-center align-items-center" *ngIf="!faqQuestions && !loadingFaq">
+    <nb-card>
+      <nb-card-body>
+        <nb-icon icon="search-outline" style="font-size: 40px"></nb-icon>
+        <h6 class="poppins fw-bold">Selecione uma pergunta para continuar</h6>
+        <p>Lorem Ipsum é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo
+          utilizado desde o século XVI, quando um impresso</p>
+      </nb-card-body>
+    </nb-card>
+  </div>
+  <ng-container *ngIf="faqQuestions && faqQuestions.length > 0">
+    <div class="col-6" *ngFor="let faq of faqQuestions;trackBy:trackByFaqId">
+      <nb-card status="basic">
+        <nb-card-header class="py-2">
+          <h6 class="poppins fw-bold">{{faq.ask}}</h6>
+        </nb-card-header>
+        <nb-card-body>
+          {{faq.answer}}
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </ng-container>
+</div>
+</div>

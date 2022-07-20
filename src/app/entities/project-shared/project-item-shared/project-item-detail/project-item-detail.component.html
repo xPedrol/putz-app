@@ -1,0 +1,115 @@
+<div class="layout-content">
+  <nb-tabset>
+    <nb-tab tabTitle="Início" tabId="initial" class="m-0 overflow-hidden">
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <nb-card>
+            <nb-card-header class="border-0 mb-2">
+              <div class="row align-items-center">
+                <div class="col-md-8 text-start">
+                  <h6 class="poppins header-title">Item do projeto</h6>
+                </div>
+              </div>
+            </nb-card-header>
+            <nb-card-body>
+              <div class="row m-0">
+                <div class="col-12">
+                  <nb-tag-list>
+                    <nb-tag status="primary" size="small" appearance="outline"
+                            [text]="'Nome: '+(projectItem?.name | empty)"></nb-tag>
+                    <nb-tag status="primary" size="small" appearance="outline"
+                            [text]="'Quantidade: '+(projectItem?.quantity | empty)"></nb-tag>
+                    <nb-tag status="primary" size="small" appearance="outline"
+                            [text]="'Projeto: '+(projectItem?.project?.name | empty)"></nb-tag>
+                    <nb-tag status="primary" size="small" appearance="outline"
+                            [text]="'Valor: '+(projectItem?.value | empty)"></nb-tag>
+                    <!--                  <nb-tag status="primary" size="small" appearance="outline" class="m-1"-->
+                    <!--                          [text]="'Início: '+(projectItem && projectItem!.startDate ? (projectItem?.startDate!.toISOString() | date:'dd/MM/yyyy') : '-&#45;&#45;')"></nb-tag>-->
+                    <!--                  <nb-tag status="primary" size="small" appearance="outline" class="m-1"-->
+                    <!--                          [text]="'Término: '+(projectItem && projectItem!.closeDate ? (projectItem?.closeDate!.toISOString() | date:'dd/MM/yyyy') : '-&#45;&#45;')"></nb-tag>-->
+                    <nb-tag status="primary" size="small" appearance="outline"
+                            [text]="'Avaliação.: '+(projectItem?.customerRate | empty)"></nb-tag>
+                    <nb-tag status="primary" size="small" appearance="outline"
+                            [text]="'Item: '+(projectItem?.product?.name | empty)"></nb-tag>
+                  </nb-tag-list>
+
+                  <hr>
+                  <p *ngIf="projectItem?.description | empty:'boolean'">{{projectItem?.description | empty}}</p>
+                  <p *ngIf="!(projectItem?.description | empty:'boolean')" class="text-center">
+                    <nb-tag status="danger" size="small" appearance="outline" class="m-1"
+                            text="Sem descrição"></nb-tag>
+                  </p>
+                </div>
+              </div>
+            </nb-card-body>
+            <nb-card-footer class="border-0">
+              <div class="row m-0 m-0 small header-title">
+                <div class="col-6 text-start">
+                  Início:
+                  <strong>{{projectItem?.startDate | convert | date:'dd/MM/yyyy' | empty}}</strong>
+                </div>
+                <div class="col-6 text-end">
+                  Término:
+                  <strong>{{projectItem?.closeDate | convert | date:'dd/MM/yyyy' | empty}}</strong>
+                </div>
+              </div>
+            </nb-card-footer>
+          </nb-card>
+        </div>
+        <div class="col-12 col-md-6">
+          <nb-card>
+            <nb-card-header class="border-0 mb-2">
+              <div class="row align-items-center">
+                <div class="col-md-8 text-start">
+                  <h6 class="poppins header-title">Etapa - {{projectItem?.projectStep?.name | empty}}</h6>
+                </div>
+              </div>
+            </nb-card-header>
+            <nb-card-body>
+              <p>{{projectItem?.projectStep?.description | empty}}</p>
+              <hr>
+              <nb-list>
+                <nb-list-item class="row m-0 border-0">
+                  <div class="col-md-6 text-start">
+                    <span class="header-title font-weight-700">Nome</span>
+                  </div>
+                  <div class="col-md-6 text-end border-0">
+                    <nb-tag appearance="outline" status="primary" size="tiny"
+                            [text]="projectItem?.projectStep?.name | empty"></nb-tag>
+                  </div>
+                </nb-list-item>
+                <nb-list-item class="row m-0 border-0">
+                  <div class="col-md-6 text-start">
+                    <span class="header-title font-weight-700">Total de dias</span>
+                  </div>
+                  <div class="col-md-6 text-end">
+                    <nb-tag appearance="outline" status="primary" size="tiny"
+                            [text]="projectItem?.projectStep?.calcTotalDays | empty"></nb-tag>
+                  </div>
+                </nb-list-item>
+                <nb-list-item class="row m-0 border-0">
+                  <div class="col-md-6 text-start">
+                    <span class="header-title font-weight-700">Dias aprovados</span>
+                  </div>
+                  <div class="col-md-6 text-end">
+                    <nb-tag appearance="outline" status="primary" size="tiny"
+                            [text]="projectItem?.projectStep?.calcAprovDays | empty"></nb-tag>
+                  </div>
+                </nb-list-item>
+                <nb-list-item class="row m-0 border-0">
+                  <div class="col-md-6 text-start">
+                    <span class="header-title font-weight-700">Dias extras</span>
+                  </div>
+                  <div class="col-md-6 text-end">
+                    <nb-tag appearance="outline" status="primary" size="tiny"
+                            [text]="projectItem?.projectStep?.calcExtradays | empty"></nb-tag>
+                  </div>
+                </nb-list-item>
+              </nb-list>
+            </nb-card-body>
+          </nb-card>
+        </div>
+      </div>
+    </nb-tab>
+  </nb-tabset>
+</div>

@@ -1,0 +1,35 @@
+<nb-card status="basic">
+  <nb-card-header class="py-2">
+    <h6 class="poppins fw-bold">{{projectItem?.name}}</h6>
+  </nb-card-header>
+  <nb-card-body>
+    <p class="my-1"><span class="fw-bold">Valor:</span> {{projectItem.value | currency}}</p>
+    <p class="my-1"><span class="fw-bold">Nível:</span> {{('product-admin.level.'+projectItem.product.level) | translate}}</p>
+    <p class="my-1"><span class="fw-bold">Projeto:</span> {{projectItem.project.name}}</p>
+<!--    <p class="my-1"><span class="fw-bold">Status do projeto:</span> {{projectItem.project.projectStatus}}</p>-->
+    <p class="my-1"><span class="fw-bold">Etapa:</span> {{projectItem.projectStep.name}}</p>
+    <p class="my-1"><span class="fw-bold">Descrição da etapa:</span> {{projectItem.projectStep.description}}</p>
+    <p class="my-1" *ngIf="projectItem.startDate"><span class="fw-bold">Início:</span> {{projectItem.startDate | convert | date:'dd/MM/yyyy'}}</p>
+    <p class="my-1" *ngIf="projectItem.endDate"><span class="fw-bold">Fim:</span> {{projectItem.endDate | convert | date:'dd/MM/yyyy'}}</p>
+    <p class="my-1"><span class="fw-bold">Descrição geral:</span> {{projectItem.description}}</p>
+  </nb-card-body>
+  <nb-card-footer class="py-2">
+    <div class="row">
+      <div class="col-12 text-end">
+        <nb-tag appearance="outline" status="danger" size="tiny" *ngIf="!projectItem?.isActive"
+                [text]="'Item desativado'"></nb-tag>
+        <ng-container *ngIf="!project?.modelForConception">
+          <button nbButton ghost status="danger" type="button" (click)="deleteProject()" size="small"
+                  *nbIsGranted="['edit','project-item']">
+            Excluir
+          </button>
+        </ng-container>
+        <a class="" ghost nbButton status="primary" size="small"
+           [routerLink]="isOpportunity?['','opportunities','items',projectItem?.id]:['','projects',project?.id,'items',projectItem?.id]">Detalhes</a>
+        <button ghost class="m-1" nbButton status="primary" size="small"
+                (click)="openOpportunityRequestDialog()">Solicitar serviço
+        </button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>

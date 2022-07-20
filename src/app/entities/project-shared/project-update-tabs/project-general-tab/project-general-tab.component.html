@@ -1,0 +1,47 @@
+<div class="row mt-2">
+  <div class="col-lg-12">
+    <nb-card status="basic">
+      <nb-card-header class="">
+        <div class="row align-items-center">
+          <div class="col-md-8 text-start">
+            <h5 class="poppins header-title">{{project ? 'Editar' : 'Novo'}}</h5>
+          </div>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <app-project-general-form [project]="project" [canEdit]="canEdit" #projectGeneralForm></app-project-general-form>
+      </nb-card-body>
+      <nb-card-footer class="py-2">
+        <div class="row">
+          <div class="col-md-12 text-end">
+            <button *ngIf="canClose" nbButton status="danger" type="button"
+                    size="small" (click)="closeProject()" class="m-1">Fechar projeto
+            </button>
+            <ng-container *ngIf="project?.projectStatus === projectStatus.BRIEFING">
+              <button nbButton status="danger" type="button" (click)="cancelBriefing()"
+                      size="small" class="m-1">Cancelar planejamento
+              </button>
+              <button nbButton status="success" type="button" (click)="approveBriefing()"
+                      size="small" class="m-1">Aprovar planejamento
+              </button>
+              <button nbButton status="info" type="button" (click)="resetBriefingToConception()"
+                      size="small" class="m-1">Retornar para orçamento
+              </button>
+            </ng-container>
+            <ng-container *ngIf="project?.projectStatus === projectStatus.CONCEPTION">
+              <button nbButton status="danger" type="button" (click)="cancelConception()"
+                      size="small" class="m-1">Cancelar orçamento
+              </button>
+              <button nbButton status="success" type="button" (click)="approveConception()"
+                      size="small" class="m-1">Aprovar orçamento
+              </button>
+            </ng-container>
+            <button nbButton status="info" type="button" size="small"
+                    (click)="handleGeneralForm()" class="m-1">Salvar
+            </button>
+          </div>
+        </div>
+      </nb-card-footer>
+    </nb-card>
+  </div>
+</div>

@@ -1,0 +1,76 @@
+<div class="clearfix layout-content">
+  <nb-card status="primary">
+    <nb-card-header class="border-0">
+      <div class="row align-items-center text-light">
+        <div class="col-6 col-md-4 text-start order-0">
+          <h5 class="text-light poppins fw-bold">Inscrições</h5>
+          <nb-tag size="tiny" appearance="outline" status="control"
+                  [text]="'Total: '+ listTotalSize"></nb-tag>
+        </div>
+        <div class="col-12 col-md-5 order-2 order-md-0 mt-4 mt-md-0 text-end">
+          <nb-form-field>
+            <input [formControl]="searchFormControl" fullWidth type="text" nbInput placeholder="Pesquisar..."
+                   fieldSize="large"
+                   status="control"
+
+                   value="">
+            <button nbSuffix nbButton ghost status="control" type="button"
+                    *ngIf="!searchFormControl.value">
+              <nb-icon icon="search-outline">
+              </nb-icon>
+            </button>
+            <button nbSuffix nbButton ghost status="control" type="button"
+                    *ngIf="searchFormControl.value"
+                    (click)="searchFormControl.reset()">
+              <nb-icon icon="backspace-outline">
+              </nb-icon>
+            </button>
+          </nb-form-field>
+        </div>
+        <div class="col-6 col-md-3 order-1 order-md-0 text-end">
+          <a nbButton outline status="control" size="large"
+             [routerLink]="['','opportunities','opened','list']">
+            <nb-icon icon="plus-outline"></nb-icon>
+          </a>
+          <button nbButton outline status="control" size="large" class="m-1"
+                  (click)="tableView = !tableView" nbTooltip="Formato de listagem">
+            <nb-icon [icon]="!tableView?'list-outline':'layers-outline'"></nb-icon>
+          </button>
+        </div>
+      </div>
+    </nb-card-header>
+  </nb-card>
+  <div class="row">
+    <div class="col-12 spinner-no-bg" [nbSpinner]="isLoading" nbSpinnerStatus="primary"
+         nbSpinnerMessage="Carregando..." [class.spinner-content]="isLoading">
+      <ng-container *ngIf="opportunities && opportunities.length > 0">
+        <ng-container *ngIf="tableView">
+          <app-opportunity-table (stateChange)="onSort($event)"></app-opportunity-table>
+        </ng-container>
+        <ng-container *ngIf="!tableView">
+          <app-opportunity-list></app-opportunity-list>
+        </ng-container>
+      </ng-container>
+      <app-pagination-wrapper *ngIf="listTotalSize">
+          <ngb-pagination
+            [collectionSize]="listTotalSize"
+            [(page)]="state!.page"
+            [pageSize]="state!.size"
+            (pageChange)="pageChange($event)"
+            [maxSize]="5">
+          </ngb-pagination>
+        <nb-form-field>
+          <nb-select fullWidth [selected]="state!.size"
+                     (selectedChange)="sizeChange($event)">
+            <nb-option [value]="5">5</nb-option>
+            <nb-option [value]="10">10</nb-option>
+            <nb-option [value]="15">15</nb-option>
+            <nb-option [value]="20">20</nb-option>
+          </nb-select>
+        </nb-form-field>
+      </app-pagination-wrapper>
+    </div>
+  </div>
+  <app-simple-not-found class="text-center"
+                 *ngIf="(!opportunities || opportunities.length === 0) && !isLoading"></app-simple-not-found>
+</div>

@@ -1,0 +1,53 @@
+<nb-card status="basic" class="dialog-content width-800px z-index-999">
+  <nb-card-header class="py-2">
+    <div class="row align-items-center justify-content-end">
+      <div class="col-8">
+        <h6 class="fw-bold poppins">Filtros</h6>
+      </div>
+      <div class="col-4 text-end">
+        <button nbButton status="basic" appearance="ghost" size="medium" (click)="close()" class="m-1">
+          <nb-icon icon="close-outline"></nb-icon>
+        </button>
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body class="">
+    <div class="row" [formGroup]="filterForm">
+      <div class="col-12 mb-3">
+        <label class="label">Intervalo de datas</label>
+        <nb-form-field>
+          <input nbInput fullWidth placeholder="Intervalo de datas..." [nbDatepicker]="formRangePicker"
+                 formControlName="dataRangeSearch"
+                 fieldSize="large"
+
+          >
+          <nb-rangepicker format="DD/MM/yyyy" #formRangePicker></nb-rangepicker>
+        </nb-form-field>
+      </div>
+      <div class="col-12 col-lg-8 mb-3">
+        <label class="label">Nome</label>
+        <nb-form-field>
+          <input nbInput formControlName="name" fieldSize="large" fullWidth placeholder="Nome...">
+        </nb-form-field>
+      </div>
+      <div class="col-12 col-lg-4 mb-3">
+        <label class="label">Status</label>
+        <nb-form-field>
+          <nb-select fullWidth placeholder="Status..." formControlName="statusSearch"
+                     size="large"
+          >
+            <nb-option *ngFor="let status of projectRenderItemStatus"
+                       [value]="status.id">{{status.name}}</nb-option>
+            <nb-option [value]="'inProgress'">Em progresso</nb-option>
+          </nb-select>
+        </nb-form-field>
+      </div>
+    </div>
+  </nb-card-body>
+  <nb-card-footer class="py-2">
+    <div class="d-flex align-items-center justify-content-end">
+      <button nbButton status="primary" size="medium" (click)="search()" class="m-1">Pesquisar</button>
+      <button nbButton status="basic" size="medium" (click)="resetFilterForm()" class="m-1">Limpar</button>
+    </div>
+  </nb-card-footer>
+</nb-card>

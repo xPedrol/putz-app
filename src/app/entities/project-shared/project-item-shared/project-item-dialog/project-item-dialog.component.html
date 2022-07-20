@@ -1,0 +1,29 @@
+<nb-card class="dialog-content" status="basic">
+  <nb-card-header class="py-2">
+    <div class="row align-items-center">
+      <div class="col-6 text-start">
+        <h6 class="poppins header-title">
+          <ng-container *ngIf="projectItem">Editar - {{projectItem?.name}}</ng-container>
+          <ng-container *ngIf="!projectItem">Novo item</ng-container>
+        </h6>
+        <small class="header-title">Projeto: {{project?.name| empty}}</small>
+      </div>
+      <div class="col-6 text-end">
+        <button nbButton ghost status="basic" (click)="close()">
+          <nb-icon icon="close-outline"></nb-icon>
+        </button>
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <app-project-item-form #projectItemFormComponent [projectItem]="projectItem"></app-project-item-form>
+  </nb-card-body>
+  <nb-card-footer class="py-2">
+    <div class="row">
+      <div class="col-12 text-end">
+        <button nbButton status="info" type="button" (click)="save()" size="small">Salvar
+        </button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>

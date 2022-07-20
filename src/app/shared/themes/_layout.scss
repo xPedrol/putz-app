@@ -1,0 +1,43 @@
+@use "@nebular/theme/styles/global/breakpoints" as *;
+@mixin ngx-layout() {
+  nb-sidebar{
+    z-index: 999 !important;
+  }
+  nb-spinner{
+    z-index: 998 !important;
+  }
+  @include media-breakpoint-down(is) {
+    .row {
+      margin-left: -10px;
+      margin-right: -10px;
+    }
+
+  }
+  .dialog-content {
+    width: 95vw;
+    max-height: 85vh;
+    margin: auto;
+    overflow-y: auto;
+  }
+
+
+  @include media-breakpoint-up(md) {
+    .layout-content {
+      max-width: 1350px;
+      margin: auto;
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+    .dialog-content {
+      width: 600px;
+
+    }
+  }
+  .label{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+}

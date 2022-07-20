@@ -1,0 +1,22 @@
+@use 'themes'as *;
+
+/* Track */
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: nb-theme(scrollbar-background-color);
+}
+
+/* Handle */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: nb-theme(sidebar-scrollbar-color);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: nb-theme(sidebar-scrollbar-color);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 8px;
+}

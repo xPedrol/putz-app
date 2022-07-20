@@ -1,0 +1,138 @@
+<h6 class="poppins header-title">Receba o vídeo de teste Consultor Franq Open Banking!!</h6>
+<form [formGroup]="uploadForm">
+  <div class="row mt-3">
+    <div class="mb-3 col-12 col-sm-6 col-lg-3">
+      <label class="label">País</label>
+      <nb-form-field>
+        <nb-select #select size="large" formControlName="country">
+          <nb-option *ngFor="let countryCode of countryCodes"
+                     [value]="countryCode.dial_code">{{countryCode.name}}</nb-option>
+        </nb-select>
+      </nb-form-field>
+      <ng-container *ngIf="uploadForm.get('country')!.invalid && uploadForm.get('country')!.touched">
+        <small class="text-danger d-block" *ngIf="uploadForm.get('country')!.errors?.required">
+          Campo obrigatório
+        </small>
+        <small class="text-danger d-block" *ngIf="uploadForm.get('country')!.errors?.apiValidation">
+          {{ uploadForm.get('country')!.errors?.apiValidation}}
+        </small>
+      </ng-container>
+    </div>
+    <div class="mb-3 col-12 col-sm-6 col-lg-3">
+      <label class="label">
+        <nb-icon nbPrefix icon="phone-call-outline" status="success"></nb-icon>
+        Whatsapp <span class="text-danger">
+        *
+      </span></label>
+      <nb-form-field>
+        <input type="tel" status="success" nbInput fullWidth placeholder="Número de celular" formControlName="whatsapp"
+               fieldSize="large" [mask]="countryMasks[selectedCountry?.code]"
+               [status]="(uploadForm.get('whatsapp')!.dirty || uploadForm.get('whatsapp')!.touched) ? (uploadForm.get('whatsapp')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container *ngIf="uploadForm.get('whatsapp')!.invalid && uploadForm.get('whatsapp')!.touched">
+        <small class="text-danger d-block" *ngIf="uploadForm.get('whatsapp')!.errors?.required">
+          Campo obrigatório
+        </small>
+        <small class="text-danger d-block" *ngIf="uploadForm.get('whatsapp')!.errors?.apiValidation">
+          {{ uploadForm.get('whatsapp')!.errors?.apiValidation}}
+        </small>
+      </ng-container>
+    </div>
+    <div class="mb-3 col-12 col-sm-6 col-lg-3">
+      <label class="label">Nome Consultor</label>
+      <nb-form-field>
+        <input type="text" nbInput fullWidth placeholder="Digite um nome..." formControlName="name"
+               fieldSize="large"
+               [status]="(uploadForm.get('name')!.dirty || uploadForm.get('name')!.touched) ? (uploadForm.get('name')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container *ngIf="uploadForm.get('name')!.invalid && uploadForm.get('name')!.touched">
+        <small class="text-danger d-block" *ngIf="uploadForm.get('name')!.errors?.required">
+          Campo obrigatório
+        </small>
+        <small class="text-danger d-block" *ngIf="uploadForm.get('name')!.errors?.apiValidation">
+          {{ uploadForm.get('name')!.errors?.apiValidation}}
+        </small>
+      </ng-container>
+    </div>
+    <div class="mb-3 col-12 col-sm-6 col-lg-3">
+      <label class="label">Email Consultor</label>
+      <nb-form-field>
+        <input type="text" nbInput fullWidth placeholder="Digite seu email..." formControlName="email"
+               fieldSize="large"
+               [status]="(uploadForm.get('email')!.dirty || uploadForm.get('email')!.touched) ? (uploadForm.get('email')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container *ngIf="uploadForm.get('email')!.invalid && uploadForm.get('email')!.touched">
+        <small class="text-danger d-block" *ngIf="uploadForm.get('email')!.errors?.required">
+          Campo obrigatório
+        </small>
+        <small class="text-danger d-block" *ngIf="uploadForm.get('email')!.errors?.apiValidation">
+          {{ uploadForm.get('email')!.errors?.apiValidation}}
+        </small>
+      </ng-container>
+    </div>
+    <div class="mb-3 col-12 col-sm-6 col-lg-3">
+      <label class="label"><strong>Telefone Consultor</strong></label>
+      <nb-form-field>
+        <input type="tel" status="success" nbInput fullWidth placeholder="Número de celular..." formControlName="phone"
+               fieldSize="large" [mask]="countryMasks[selectedCountry?.code]"
+               [status]="(uploadForm.get('phone')!.dirty || uploadForm.get('phone')!.touched) ? (uploadForm.get('phone')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container *ngIf="uploadForm.get('phone')!.invalid && uploadForm.get('phone')!.touched">
+        <small class="text-danger d-block" *ngIf="uploadForm.get('phone')!.errors?.required">
+          Campo obrigatório
+        </small>
+        <small class="text-danger d-block" *ngIf="uploadForm.get('phone')!.errors?.apiValidation">
+          {{ uploadForm.get('phone')!.errors?.apiValidation}}
+        </small>
+      </ng-container>
+    </div>
+    <div class="mb-3 col-12 col-sm-6 col-lg-3">
+      <label class="label">Gênero</label>
+      <nb-form-field>
+        <nb-select size="large" formControlName="gender">
+          <nb-option *ngFor="let gender of genders"
+                     [value]="gender.value">{{gender.displayName}}</nb-option>
+        </nb-select>
+      </nb-form-field>
+      <ng-container *ngIf="uploadForm.get('gender')!.invalid && uploadForm.get('gender')!.touched">
+        <small class="text-danger d-block" *ngIf="uploadForm.get('gender')!.errors?.required">
+          Campo obrigatório
+        </small>
+        <small class="text-danger d-block" *ngIf="uploadForm.get('gender')!.errors?.apiValidation">
+          {{ uploadForm.get('gender')!.errors?.apiValidation}}
+        </small>
+      </ng-container>
+    </div>
+    <div class="mb-3 col-12 col-sm-6 col-lg-4">
+      <label class="label">Imagem</label>
+      <br>
+      <label for="fileInput" id="fileLabel">Escolha um arquivo</label>
+      <input id="fileInput" #inputElement (change)="fileChangeEvent($event)" type='file'>
+      <button nbButton appearance="ghost" status="danger" *ngIf="this.uploadForm.get('urlPhoto')?.value"
+              (click)="fileChangeEvent(null);inputElement.value = ''">
+        <nb-icon icon="trash-outline"></nb-icon>
+      </button>
+      <image-cropper *ngIf="this.uploadForm.get('urlPhoto')?.value"
+                     [imageChangedEvent]="this.uploadForm.get('urlPhoto')?.value"
+                     [maintainAspectRatio]="true"
+                     [aspectRatio]="1"
+                     format="png"
+                     (imageCropped)="imageCropped($event)"
+                     (imageLoaded)="imageLoaded($event)"
+                     [resizeToHeight]="500"
+                     [resizeToWidth]="500"
+                     (cropperReady)="cropperReady()"
+                     (loadImageFailed)="loadImageFailed()"
+      ></image-cropper>
+      <ng-container *ngIf="uploadForm.get('urlPhoto')!.invalid && uploadForm.get('urlPhoto')!.touched">
+        <small class="text-danger d-block" *ngIf="uploadForm.get('urlPhoto')!.errors?.required">
+          Campo obrigatório
+        </small>
+        <small class="text-danger d-block" *ngIf="uploadForm.get('urlPhoto')!.errors?.apiValidation">
+          {{ uploadForm.get('urlPhoto')!.errors?.apiValidation}}
+        </small>
+      </ng-container>
+      <!--            <img [src]="croppedImage" alt="image">-->
+    </div>
+  </div>
+</form>

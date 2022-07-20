@@ -1,0 +1,24 @@
+<nb-layout>
+
+  <nb-layout-header fixed>
+    <!-- Insert header here -->
+    <div class="container">
+      <app-header></app-header>
+    </div>
+  </nb-layout-header>
+  <nb-layout-header subheader class="subheader d-none d-lg-block">
+    <div class="container">
+<!--      <app-costumer-pages-sub-header></app-costumer-pages-sub-header>-->
+      <app-sub-header></app-sub-header>
+    </div>
+  </nb-layout-header>
+  <nb-sidebar (stateChange)="sidebarService.changed($event)" fixed responsive
+              [collapsedBreakpoints]="['xs', 'is', 'sm','md','lg','xl','xxl','xxxl']" [compactedBreakpoints]="[]"
+              state="collapsed" tag="menu-sidebar">
+    <app-sidebar></app-sidebar>
+  </nb-sidebar>
+  <nb-layout-column class="mt-lg-5">
+    <router-outlet></router-outlet>
+  </nb-layout-column>
+
+</nb-layout>

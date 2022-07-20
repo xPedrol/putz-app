@@ -1,0 +1,88 @@
+<div class="m-auto w-100 spinner-no-bg" nbSpinnerStatus="primary" [nbSpinner]="loadingLogs" nbSpinnerMessage="Carregando...">
+  <h2 class="poppins fw-bold m-0 p-0">Logs</h2>
+  <hr>
+  <div class="d-flex align-items-center justify-content-between mb-2" *ngIf="loggers">
+    <h5 id="spring-configuration" class="poppins fw-bold">There are {{ loggers.length }} loggers.</h5>
+    <div>
+      <span class="me-1">Filter</span>
+      <input nbInput type="text" status="primary"  [(ngModel)]="filter" (ngModelChange)="filterAndSort()"/>
+    </div>
+  </div>
+  <ng-container *ngIf="loggers">
+
+    <table class="table table-striped table-bordered table-responsive d-table w-100"
+           aria-describedby="logs-page-heading">
+      <thead>
+      <!--    <tr putzSort [(predicate)]="orderProp" [(ascending)]="ascending" [callback]="filterAndSort.bind(this)">-->
+      <tr>
+        <th putzSortBy="name" scope="col"><span>Name</span></th>
+        <th putzSortBy="level" scope="col"><span putzTranslate="logs.table.level">Level</span></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let logger of filteredAndOrderedLoggers;trackBy:identify">
+        <td>
+          <small>{{ logger.name | slice: 0:140 }}</small>
+        </td>
+        <td>
+          <nb-button-group size="small" *ngIf="logger?.name" status="basic">
+            <button status="primary" #traceButton nbButtonToggle value="TRACE" [pressed]="traceButton.value === logger?.level" (click)="updateSingleSelectGroupValue(traceButton.value,logger?.name)">TRACE</button>
+            <button status="primary" #debugButton  nbButtonToggle value="DEBUG" [pressed]="debugButton.value === logger?.level" (click)="updateSingleSelectGroupValue(debugButton.value,logger?.name)">DEBUG</button>
+            <button status="info" #infoButton  nbButtonToggle value="INFO" [pressed]="infoButton.value === logger?.level" (click)="updateSingleSelectGroupValue(infoButton.value,logger?.name)">INFO</button>
+            <button status="warning" #warnButton  nbButtonToggle value="WARN" [pressed]="warnButton.value === logger?.level" (click)="updateSingleSelectGroupValue(warnButton.value,logger?.name)">WARN</button>
+            <button status="danger" #errorButton  nbButtonToggle value="ERROR" [pressed]="errorButton.value === logger?.level" (click)="updateSingleSelectGroupValue(errorButton.value,logger?.name)">ERROR</button>
+            <button status="control" #offButton  nbButtonToggle value="OFF" [pressed]="offButton.value === logger?.level" (click)="updateSingleSelectGroupValue(offButton.value,logger?.name)">OFF</button>
+          </nb-button-group>
+          <!--        <button-->
+          <!--          (click)="changeLevel(logger.name, 'TRACE')"-->
+          <!--          [ngClass]="logger.level === 'TRACE' ? 'btn-primary' : 'btn-light'"-->
+          <!--          class="btn btn-sm"-->
+          <!--        >-->
+          <!--          TRACE-->
+          <!--        </button>-->
+
+          <!--        <button-->
+          <!--          (click)="changeLevel(logger.name, 'DEBUG')"-->
+          <!--          [ngClass]="logger.level === 'DEBUG' ? 'btn-success' : 'btn-light'"-->
+          <!--          class="btn btn-sm"-->
+          <!--        >-->
+          <!--          DEBUG-->
+          <!--        </button>-->
+
+          <!--        <button-->
+          <!--          (click)="changeLevel(logger.name, 'INFO')"-->
+          <!--          [ngClass]="logger.level === 'INFO' ? 'btn-info' : 'btn-light'"-->
+          <!--          class="btn btn-sm"-->
+          <!--        >-->
+          <!--          INFO-->
+          <!--        </button>-->
+
+          <!--        <button-->
+          <!--          (click)="changeLevel(logger.name, 'WARN')"-->
+          <!--          [ngClass]="logger.level === 'WARN' ? 'btn-warning' : 'btn-light'"-->
+          <!--          class="btn btn-sm"-->
+          <!--        >-->
+          <!--          WARN-->
+          <!--        </button>-->
+
+          <!--        <button-->
+          <!--          (click)="changeLevel(logger.name, 'ERROR')"-->
+          <!--          [ngClass]="logger.level === 'ERROR' ? 'btn-danger' : 'btn-light'"-->
+          <!--          class="btn btn-sm"-->
+          <!--        >-->
+          <!--          ERROR-->
+          <!--        </button>-->
+
+          <!--        <button-->
+          <!--          (click)="changeLevel(logger.name, 'OFF')"-->
+          <!--          [ngClass]="logger.level === 'OFF' ? 'btn-secondary' : 'btn-light'"-->
+          <!--          class="btn btn-sm"-->
+          <!--        >-->
+          <!--          OFF-->
+          <!--        </button>-->
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </ng-container>
+</div>

@@ -1,0 +1,24 @@
+<li *ngIf="disabled; else enabled"
+    [class.responsive]="responsive"
+    class="route-tab disabled"
+    tabindex="-1">
+  <a tabindex="-1" class="tab-link">
+    <nb-icon *ngIf="icon" [config]="icon"></nb-icon>
+    <span *ngIf="title" class="tab-text">{{ title }}</span>
+  </a>
+</li>
+<ng-template #enabled>
+  <li (click)="$event.preventDefault();"
+      [routerLink]="route"
+      [routerLinkActiveOptions]="{exact:true}"
+      routerLinkActive="active"
+      [class.responsive]="responsive"
+      [queryParams]="queryParams"
+      tabindex="0"
+      class="route-tab">
+    <a tabindex="-1" class="tab-link">
+      <nb-icon *ngIf="icon" [icon]="icon"></nb-icon>
+      <span *ngIf="title" class="tab-text">{{ title }}</span>
+    </a>
+  </li>
+</ng-template>

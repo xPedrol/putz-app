@@ -1,0 +1,5 @@
+@use "themes"as *;
+
+image-cropper {
+  --cropper-overlay-color: nb-theme(--layout-background-color) !important;
+}

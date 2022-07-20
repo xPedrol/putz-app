@@ -1,0 +1,137 @@
+<div class="layout-content">
+  <div class="d-flex justify-content-between align-items-center m- p-0">
+    <h4 class="poppins text-uppercase m-0 p-0 font-weight-800">Painel de controle</h4>
+  </div>
+  <hr class="m-0 p-0 mb-3 mt-1">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-6 col-lg-4 mx-auto">
+      <app-dashboard-status-card class="cursor-pointer" [routerLink]="['','projects','dashboard']"
+                                 nbTooltip="Ir para projetos ativos"
+                                 message="Projetos em execução"
+                                 [value]="projectCount?.execution??'---'">
+
+        <nb-icon icon="bulb-outline" class="font-size-35"></nb-icon>
+      </app-dashboard-status-card>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-between align-items-center">
+    <h5 class="poppins text-uppercase m-0 p-0 font-weight-800">Trabalhos abertos</h5>
+    <div>
+      <a nbButton [routerLink]="['','projects']" nbTooltip="Ir para projetos" appearance="ghost" status="basic">
+        <nb-icon icon="external-link-outline"></nb-icon>
+      </a>
+      <button nbButton nbTooltip="Recarregar ultimos itens" appearance="ghost" status="basic"
+              (click)="getProjectCountByStatus();getOpenedProjectItems()">
+        <nb-icon icon="refresh-outline"></nb-icon>
+      </button>
+    </div>
+  </div>
+  <hr class="m-0 p-0 mb-3 mt-1">
+  <div class="row spinner-no-bg spinner-content z-index-0" [nbSpinner]="loadingOpenedProjectItems"
+       nbSpinnerStatus="primary"
+       nbSpinnerMessage="Carregando..."
+       [class.spinner-content]="loadingOpenedProjectItems">
+    <!--    <ng-container *ngIf="!loadingProject && (projects && projects.length > 0)">-->
+    <div class="col-12 col-md-6" *ngFor="let projectItem of openedProjectItems;trackBy:trackProjectItemsByFn">
+      <!--      <app-project-resume-card [project]="project"></app-project-resume-card>-->
+      <app-project-item-freelancer-card [projectItem]="projectItem"></app-project-item-freelancer-card>
+    </div>
+    <!--    </ng-container>-->
+    <ng-container *ngIf="!loadingOpenedProjectItems && (!openedProjectItems || openedProjectItems.length === 0)">
+      <div class="col-12">
+        <app-simple-not-found></app-simple-not-found>
+      </div>
+    </ng-container>
+  </div>
+
+
+  <div class="d-flex justify-content-between align-items-center">
+    <h5 class="poppins text-uppercase m-0 p-0 font-weight-800">Trabalhos fechados</h5>
+    <div>
+      <a nbButton [routerLink]="['','projects']" nbTooltip="Ir para projetos" appearance="ghost" status="basic">
+        <nb-icon icon="external-link-outline"></nb-icon>
+      </a>
+      <button nbButton nbTooltip="Recarregar ultimos itens" appearance="ghost" status="basic"
+              (click)="getProjectCountByStatus();getFinishedProjectItems()">
+        <nb-icon icon="refresh-outline"></nb-icon>
+      </button>
+    </div>
+  </div>
+  <hr class="m-0 p-0 mb-3 mt-1">
+  <div class="row spinner-no-bg spinner-content z-index-0" [nbSpinner]="loadingFinishedProjectItems"
+       nbSpinnerStatus="primary"
+       nbSpinnerMessage="Carregando..."
+       [class.spinner-content]="loadingFinishedProjectItems">
+    <!--    <ng-container *ngIf="!loadingProject && (projects && projects.length > 0)">-->
+    <div class="col-12 col-md-6" *ngFor="let projectItem of finishedProjectItems;trackBy:trackProjectItemsByFn">
+      <!--      <app-project-resume-card [project]="project"></app-project-resume-card>-->
+      <app-project-item-freelancer-card [projectItem]="projectItem"></app-project-item-freelancer-card>
+    </div>
+    <!--    </ng-container>-->
+    <ng-container *ngIf="!loadingFinishedProjectItems && (!finishedProjectItems || finishedProjectItems.length === 0)">
+      <div class="col-12">
+        <app-simple-not-found></app-simple-not-found>
+      </div>
+    </ng-container>
+  </div>
+
+
+  <div class="d-flex justify-content-between align-items-center">
+    <h5 class="poppins text-uppercase m-0 p-0 font-weight-800">Últimas Inscrições</h5>
+    <div>
+      <a nbButton [routerLink]="['','opportunities']" nbTooltip="Ir para portfólios" appearance="ghost"
+         status="basic">
+        <nb-icon icon="external-link-outline"></nb-icon>
+      </a>
+      <button nbButton nbTooltip="Recarregar portfólios" appearance="ghost" status="basic"
+              (click)="getOpportunities()">
+        <nb-icon icon="refresh-outline"></nb-icon>
+      </button>
+    </div>
+  </div>
+  <hr class="m-0 p-0 mb-3 mt-1">
+  <div class="row spinner-no-bg spinner-content z-index-0" [nbSpinner]="loadingOpportunities"
+       nbSpinnerStatus="primary"
+       nbSpinnerMessage="Carregando..."
+       [class.spinner-content]="loadingOpportunities">
+    <div class="col-12 col-md-12 col-lg-6" *ngFor="let opportunity of opportunities;trackBy:trackOpportunitiesByFn">
+      <app-opportunity-card [opportunity]="opportunity"></app-opportunity-card>
+    </div>
+    <ng-container *ngIf="!loadingOpportunities && (!opportunities || opportunities.length === 0)">
+      <div class="col-12">
+        <app-simple-not-found></app-simple-not-found>
+      </div>
+    </ng-container>
+  </div>
+
+
+  <div class="d-flex justify-content-between align-items-center">
+    <h5 class="poppins text-uppercase m-0 p-0 font-weight-800">Oportunidades de trabalho</h5>
+    <div>
+      <a nbButton [routerLink]="['','opportunities','opened','list']" nbTooltip="Ir para portfólios" appearance="ghost"
+         status="basic">
+        <nb-icon icon="external-link-outline"></nb-icon>
+      </a>
+      <button nbButton nbTooltip="Recarregar portfólios" appearance="ghost" status="basic"
+              (click)="getOpenedOpportunities()">
+        <nb-icon icon="refresh-outline"></nb-icon>
+      </button>
+    </div>
+  </div>
+  <hr class="m-0 p-0 mb-3 mt-1">
+  <div class="row spinner-no-bg spinner-content z-index-0" [nbSpinner]="loadingOpenedOpportunities"
+       nbSpinnerStatus="primary"
+       nbSpinnerMessage="Carregando..."
+       [class.spinner-content]="loadingOpenedOpportunities">
+    <div class="col-12 col-md-12 col-lg-6"
+         *ngFor="let opportunity of openedOpportunities;trackBy:trackOpportunitiesByFn">
+      <app-opportunity-card [opportunity]="opportunity"></app-opportunity-card>
+    </div>
+    <ng-container *ngIf="!loadingOpenedOpportunities && (!openedOpportunities || openedOpportunities.length === 0)">
+      <div class="col-12">
+        <app-simple-not-found></app-simple-not-found>
+      </div>
+    </ng-container>
+  </div>
+</div>

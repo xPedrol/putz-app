@@ -1,0 +1,145 @@
+@use "../../../../shared/themes/themes"as *;
+
+.timeline {
+  width: 100%;
+  position: relative;
+  padding: 1px 0;
+  list-style: none;
+  font-weight: 500
+}
+
+.timeline:before {
+  border-right-style: solid
+}
+
+.timeline:before,
+.timeline:after {
+  content: " ";
+  display: block
+}
+
+.timeline:after {
+  clear: both
+}
+
+.timeline:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 50%;
+  height: 100% !important;
+  margin-left: 2px;
+  border-right-width: 4px;
+  border-right-style: solid;
+  border-right-color: nb-theme(timeline-before-color)
+}
+
+.timeline .timeline-label .label {
+  background-color: #e76c90;
+  border-radius: 35px;
+  color: #fff;
+  display: inline;
+  font-size: .85rem;
+  font-weight: 600;
+  line-height: 1;
+  padding: .65rem 1.4rem;
+  text-align: center;
+  vertical-align: baseline;
+  white-space: nowrap
+}
+
+.timeline.timeline-line-solid:before {
+  border-right-style: solid
+}
+
+.timeline.timeline-line-dotted:before {
+  border-right-style: dotted
+}
+
+.timeline.timeline-line-dashed:before {
+  border-right-style: dashed
+}
+
+.timeline .timeline-label {
+  position: relative;
+  float: left;
+  clear: left;
+  margin-bottom: 20px;
+  top: 1px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0;
+  text-align: center
+}
+
+.timeline .timeline-label:before,
+.timeline .timeline-label:after {
+  content: "";
+  display: table
+}
+
+.timeline .timeline-label:after {
+  clear: both
+}
+
+.timeline .timeline-label:last-child {
+  margin-bottom: 0 !important
+}
+
+.timeline .timeline-label + .timeline-item {
+  margin-top: 0
+}
+
+.timeline .timeline-label + .timeline-item + .timeline-item {
+  margin-top: 40px
+}
+
+.timeline .time-right {
+  color: rgba(52, 40, 104, .5);
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  font-size: .85rem;
+  font-weight: 500
+}
+
+.timeline .time-left {
+  color: rgba(52, 40, 104, .5);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  font-size: .85rem;
+  font-weight: 500
+}
+
+@media screen and (max-width: 576px) {
+  .timeline.timeline:before {
+    left: 50% !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .timeline.timeline {
+    width: 100%;
+    max-width: 100%
+  }
+  .timeline.timeline:before {
+    left: 42px;
+    width: 0;
+    margin-left: -1px
+  }
+  .timeline.timeline .timeline-label {
+    transform: translateX(-50%);
+    margin: 0 0 20px 42px
+  }
+  .timeline.timeline .timeline-label + .timeline-item + .timeline-item {
+    margin-top: 0
+  }
+
+  .timeline .time-right {
+    left: 0
+  }
+}

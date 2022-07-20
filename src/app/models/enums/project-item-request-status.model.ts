@@ -1,0 +1,7 @@
+export enum ProjectItemRequestStatus {
+  SUBSCRIBED = 'SUBSCRIBED',
+  APPROVED = 'APPROVED',
+  BACKUP = 'BACKUP',
+  DECLINED = 'DECLINED',
+  REPLACED = 'REPLACED'
+}

@@ -1,0 +1,137 @@
+<nb-card class="dialog-content h-100">
+  <nb-card-header class="border-0">
+    <div class="row align-items-center">
+      <div class="col-8 text-start">
+        <h6 class="poppins header-title">{{approve ? 'Aprovar ' : 'Solicitar mudança(s) para '}}
+          evento {{event?.title}}</h6>
+      </div>
+      <div class="col-4 text-end">
+        <button nbButton ghost status="basic" (click)="close()">
+          <nb-icon icon="close-outline"></nb-icon>
+        </button>
+      </div>
+    </div>
+
+  </nb-card-header>
+  <nb-card-body class="overflow-auto">
+    <form [formGroup]="editForm" (ngSubmit)="save()">
+      <div class="row">
+        <div class="mb-3 col-12">
+          <label class="label">Título</label>
+          <nb-form-field>
+            <input type="text" nbInput fullWidth placeholder="Título..." formControlName="conclusionTitle"
+                   fieldSize="large"
+                   [status]="(editForm.get('conclusionTitle')!.dirty || editForm.get('conclusionTitle')!.touched) ? (editForm.get('conclusionTitle')!.invalid  ? 'danger' : 'success') : 'basic'">
+          </nb-form-field>
+          <ng-container *ngIf="editForm.get('conclusionTitle')!.invalid && editForm.get('conclusionTitle')!.touched">
+            <p class="text-danger" *ngIf="editForm.get('conclusionTitle')!.errors?.required">
+              Campo obrigatório
+            </p>
+          </ng-container>
+        </div>
+        <div class="mb-3 col-12">
+          <label class="label">Nota</label>
+          <br>
+          <ngb-rating formControlName="customerRate" [max]="5">
+            <ng-template let-fill="fill" let-index="index">
+              <span class="star" [class.filled]="fill === 100">&#9733;</span>
+            </ng-template>
+          </ngb-rating>
+          <ng-container
+            *ngIf="editForm.get('customerRate')!.invalid && editForm.get('customerRate')!.touched">
+            <p class="text-danger" *ngIf="editForm.get('customerRate')!.errors?.required">
+              Campo obrigatório
+            </p>
+          </ng-container>
+        </div>
+        <div class="mb-3 col-12">
+          <label class="label" *ngIf="approve">Observação</label>
+          <div class="d-flex align-items-center justify-content-between mb-2" *ngIf="!approve"
+               [nbTooltip]="generalDescription?'Trocar para descrições por cena':'Trocar para descrição geral'">
+            <nb-toggle status="primary" (checkedChange)="changeDescriptionMethod()"><label
+              class="label">{{generalDescription ? 'Observação' : 'Observações por cena'}}</label></nb-toggle>
+          </div>
+          <ng-container *ngIf="!generalDescription && !approve">
+            <div class="row align-content-between">
+              <div class="col-10">
+                <nb-form-field>
+                  <input type="number" nbInput fullWidth placeholder="Número da cena..."
+                         [formControl]="titleInput"
+                         fieldSize="large"
+                         [status]="(titleInput.dirty || titleInput.touched) ? (titleInput.invalid  ? 'danger' : 'success') : 'basic'">
+                </nb-form-field>
+                <ng-container *ngIf="titleInput.invalid && titleInput.touched">
+                  <p class="text-danger" *ngIf="titleInput.errors?.required">
+                    Campo obrigatório
+                  </p>
+                </ng-container>
+              </div>
+              <div class="col-2 text-end">
+                <button nbButton appearance="outline" status="primary" size="medium"
+                        (click)="addDescription()" type="button">
+                  <nb-icon icon="plus-outline"></nb-icon>
+                </button>
+              </div>
+              <div class="col-12 mt-2">
+                <nb-form-field>
+                        <textarea rows="5" nbInput fullWidth placeholder="Descrição..."
+                                  [formControl]="descriptionInput"
+                                  fieldSize="large"
+                                  [status]="(descriptionInput.dirty || descriptionInput.touched) ? (descriptionInput.invalid  ? 'danger' : 'success') : 'basic'">
+                        </textarea>
+                </nb-form-field>
+                <ng-container
+                  *ngIf="descriptionInput.invalid && descriptionInput.touched">
+                  <p class="text-danger" *ngIf="descriptionInput.errors?.required">
+                    Campo obrigatório
+                  </p>
+                </ng-container>
+              </div>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="generalDescription">
+            <nb-form-field>
+                <textarea rows="5" nbInput fullWidth placeholder="Descrição..." formControlName="conclusionDescription"
+                          fieldSize="large"
+                          [status]="(editForm.get('conclusionDescription')!.dirty || editForm.get('conclusionDescription')!.touched) ? (editForm.get('conclusionDescription')!.invalid  ? 'danger' : 'success') : 'basic'">
+                </textarea>
+            </nb-form-field>
+            <ng-container
+              *ngIf="editForm.get('conclusionDescription')!.invalid && editForm.get('conclusionDescription')!.touched">
+              <p class="text-danger" *ngIf="editForm.get('conclusionDescription')!.errors?.required">
+                Campo obrigatório
+              </p>
+            </ng-container>
+          </ng-container>
+        </div>
+        <ng-container *ngIf="descriptions.size > 0 && !generalDescription">
+          <div class="col-12" *ngFor="let desc of descriptions">
+            <nb-alert>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="d-flex flex-column">
+                  <h6 class="header-title poppins">Cena: {{desc.title | empty}}</h6>
+                  <!--                  <nb-tag size="tiny" status="primary" appearance="outline" [text]="'Cena: '+(desc.title | empty)"></nb-tag>-->
+                  <span>{{desc?.description | empty}}</span>
+                </div>
+                <div>
+                  <button nbButton ghost status="danger" size="medium" (click)="removeDescription(desc)">
+                    <nb-icon icon="trash-outline"></nb-icon>
+                  </button>
+                </div>
+              </div>
+            </nb-alert>
+          </div>
+        </ng-container>
+      </div>
+      <div class="row align-items-center">
+        <div class="col-12 mb-3 text-end">
+          <button nbButton status="info" type="submit" size="medium">Salvar
+          </button>
+        </div>
+      </div>
+    </form>
+  </nb-card-body>
+</nb-card>
+
+
+

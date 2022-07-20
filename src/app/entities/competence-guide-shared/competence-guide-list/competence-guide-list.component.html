@@ -1,0 +1,51 @@
+<div class="row competence-guide-list">
+  <div class="col-12 col-md-6" *ngFor="let competenceGuide of competenceGuides;trackBy:trackCompetenceGuidesByFn">
+    <nb-card>
+      <nb-card-header class="border-0">
+        <div class="row">
+          <div class="col-6">
+            <h5 class="poppins header-title">{{competenceGuide?.name | empty}}</h5>
+          </div>
+          <div class="col-6 text-end">
+            <nb-tag-list>
+              <nb-tag appearance="outline" status="primary" size="tiny"
+                      [text]="competenceGuide?.competence?.name | empty"></nb-tag>
+              <nb-tag appearance="outline" status="primary" size="tiny"
+                      [text]="competenceGuide?.level?('level.'+competenceGuide?.level | translate):'---'"></nb-tag>
+            </nb-tag-list>
+          </div>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+
+        <div class="row">
+          <div class="col-12">
+            <p>{{competenceGuide?.description | empty}}</p>
+          </div>
+        </div>
+        <!--        <div class="row mt-3 small header-title">-->
+        <!--          <div class="col-6 text-start">-->
+        <!--            Criação:-->
+        <!--            <strong>{{competenceGuide?.createdDate | convert | date:'dd/MM/yyyy' | empty}}</strong>-->
+        <!--          </div>-->
+        <!--          <div class="col-6 text-end">-->
+        <!--            Modificação:-->
+        <!--            <strong>{{competenceGuide?.lastModifiedDate | convert | date:'dd/MM/yyyy' | empty}}</strong>-->
+        <!--          </div>-->
+        <!--        </div>-->
+      </nb-card-body>
+      <nb-card-footer>
+        <div class="row">
+          <div class="col-12 text-end">
+            <a class="m-1" nbButton size="small" outline status="primary"
+               [routerLink]="['','portfolios','new']"
+               [queryParams]="{competenceGuide:competenceGuide?.id}">Criar portfolio</a>
+            <a class="m-1" nbButton size="small" outline status="primary"
+               [routerLink]="['','competences','guides',competenceGuide?.id]"
+            >Detalhes</a>
+          </div>
+        </div>
+      </nb-card-footer>
+    </nb-card>
+  </div>
+</div>

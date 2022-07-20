@@ -1,0 +1,139 @@
+@use './guided-tour-base-theme' as *;
+@use '../../../../src/app/shared/themes/themes' as *;
+ngx-guided-tour {
+  .buttons-div {
+    button {
+      margin: 4px;
+    }
+  }
+
+  .guided-tour-spotlight-overlay {
+    position: fixed;
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, .7), 0 0 1.5rem rgba(0, 0, 0, .5);
+    border-radius: nb-theme(border-radius);
+  }
+
+  .tour-orb {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+
+    .tour-orb-ring {
+      width: 35px;
+      height: 35px;
+      position: relative;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: pulse 2s linear infinite;
+
+      &:after {
+        content: '';
+        display: inline-block;
+        height: 100%;
+        width: 100%;
+        border-radius: 50%;
+      }
+    }
+
+    @keyframes pulse {
+      from {
+        transform: translate(-50%, -50%) scale(0.45);
+        opacity: 1.0;
+      }
+      to {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.0;
+      }
+    }
+  }
+
+  .tour-step {
+    border-radius: nb-theme(border-radius);
+    position: fixed;
+    &.page-tour-step {
+      max-width: 400px;
+      width: 50%;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%)
+    }
+
+    &.tour-bottom, &.tour-bottom-right, &.tour-bottom-left {
+      .tour-arrow::before {
+        position: absolute;
+      }
+
+      .tour-block {
+        margin-top: 15px;
+      }
+    }
+
+    &.tour-top, &.tour-top-right, &.tour-top-left {
+      margin-bottom: 10px;
+
+      .tour-arrow::before {
+        position: absolute;
+        bottom: 0;
+      }
+
+      .tour-block {
+        margin-bottom: 15px;
+      }
+    }
+
+    &.tour-bottom, &.tour-top {
+      .tour-arrow::before {
+        transform: translateX(-50%);
+        left: 50%;
+      }
+    }
+
+    &.tour-bottom-right, &.tour-top-right {
+      .tour-arrow::before {
+        transform: translateX(-100%);
+        left: calc(100% - 5px);
+      }
+    }
+
+    &.tour-bottom-left, &.tour-top-left {
+      .tour-arrow::before {
+        left: 5px;
+      }
+    }
+
+    &.tour-left {
+      .tour-arrow::before {
+        position: absolute;
+        left: 100%;
+        transform: translateX(-100%);
+        top: 5px;
+      }
+
+      .tour-block {
+        margin-right: 15px;
+      }
+    }
+
+    &.tour-right {
+      .tour-arrow::before {
+        position: absolute;
+        left: 0;
+        top: 5px;
+      }
+
+      .tour-block {
+        margin-left: 15px;
+      }
+    }
+
+    .tour-progress-indicator {
+      padding-bottom: 15px;
+    }
+
+    .tour-content {
+      min-height: 80px;
+    }
+  }
+}

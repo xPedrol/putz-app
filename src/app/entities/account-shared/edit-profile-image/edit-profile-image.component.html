@@ -1,0 +1,17 @@
+<div class="row mt-3">
+  <div class="col-12 col-md-12 mb-3">
+    <ngx-dropzone (change)="onSelect($event)" class="dropzone-background" [multiple]="false"
+                  accept="image/jpeg,image/jpg,image/png,image/gif">
+      <ngx-dropzone-label>Coloque sua imagem aqui</ngx-dropzone-label>
+      <ngx-dropzone-image-preview [file]="photo"
+                                  *ngIf="photo" [removable]="true" (removed)="onRemove()">
+        <!--            <ngx-dropzone-label>Imagem de perfil ({{ photo?.type }})</ngx-dropzone-label>-->
+      </ngx-dropzone-image-preview>
+    </ngx-dropzone>
+  </div>
+  <div class="col-12 col-md-12 text-end">
+    <button nbButton status="info" type="button" size="medium" (click)="savePersonPhoto()" [disabled]="!photo">
+      Salvar
+    </button>
+  </div>
+</div>

@@ -1,0 +1,64 @@
+<div class="wrap-table100">
+  <div class="scroll">
+    <div class="table">
+      <div class="row header custom-sticky-header">
+        <ng-container *ngFor="let column of columns">
+          <div class="cell" [sortable]="column.name" [ngClass]="column.class" *ngIf="!column.hidden"
+               (sort)="onSort($event)">
+            <nb-icon
+              *ngIf="column.title && column.name === sort?.column && sort?.icon"
+              [icon]="sort?.icon??''" class="table-header-icon mx-2"
+              status="basic"></nb-icon>
+            <span class="labe font-size-small" l>{{column?.title}}</span>
+          </div>
+        </ng-container>
+      </div>
+      <ng-container *ngIf="projectSteps && projectSteps.length > 0">
+        <div class="row" *ngFor="let projectStep of projectSteps;trackBy:trackById" [libTableRow]="columns">
+          <div class="cell text-start" data-title="ID" *libTableCell="'id'">
+            <nb-tag status="basic" appearance="outline" size="small"
+                    [text]="projectStep?.id | empty"></nb-tag>
+          </div>
+          <div class="cell text-start" data-title="Nome" *libTableCell="'name'">
+            {{projectStep?.name | empty}}
+          </div>
+          <div class="cell text-start" data-title="StartDateExp" *libTableCell="'startDateExpected'">
+            {{projectStep?.startDateExpected | convert | date:'dd/MM/yyyy' | empty}}
+          </div>
+          <div class="cell text-start" data-title="StartDate" *libTableCell="'startDate'">
+            {{projectStep?.startDate | convert | date:'dd/MM/yyyy' | empty}}
+          </div>
+          <div class="cell text-start" data-title="EndDateExpected" *libTableCell="'endDateExpected'">
+            {{projectStep?.endDateExpected | convert | date:'dd/MM/yyyy' | empty}}
+          </div>
+          <!--          <div class="cell text-start" data-title="forecastFreelaEndDate" *libTableCell="'forecastFreelaEndDate'">-->
+          <!--            {{projectStep?.forecastFreelaEndDate | convert | date:'dd/MM/yyyy'}}-->
+          <!--          </div>-->
+          <div class="cell text-start" data-title="forecastEndDate" *libTableCell="'forecastEndDate'">
+            {{projectStep?.forecastEndDate | convert | date:'dd/MM/yyyy' | empty}}
+          </div>
+          <div class="cell text-start" data-title="endDate" *libTableCell="'endDate'">
+            {{projectStep?.endDate | convert | date:'dd/MM/yyyy' | empty}}
+          </div>
+          <div class="cell text-start" data-title="Status" *libTableCell="'days'">
+            {{projectStep.days ?? "--"}} / {{projectStep.calcTotalDays ?? "--"}}
+            <!--            <nb-tag status="info" appearance="outline" size="small"-->
+            <!--                    [text]="projectStep?.calcTotalDays | empty"></nb-tag>-->
+          </div>
+          <div class="cell text-start text-md-end" data-title="" *libTableCell="'actions'">
+            <button nbButton ghost status="info" type="button" *nbIsGranted="['edit','project']" nbTooltip="Detalhes"
+                    class="mx-1"
+                    (click)="openProjectStepDialog(projectStep)" [disabled]="!canEdit">
+              <nb-icon icon="edit-2-outline"></nb-icon>
+            </button>
+            <button nbButton ghost status="danger" type="button" (click)="deleteProject(projectStep)"
+                    [disabled]="!canEdit" class="mx-1"
+                    *nbIsGranted="['edit','project']" nbTooltip="Excluir">
+              <nb-icon icon="trash-outline"></nb-icon>
+            </button>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

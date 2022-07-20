@@ -1,0 +1,174 @@
+<form [formGroup]="editForm" (ngSubmit)="validateAndGetRaw()">
+  <div class="row">
+    <div class="mb-3 col-md-6">
+      <label class="label">Item</label>
+      <nb-form-field>
+        <input fieldSize="large"
+               fullWidth
+               nbInput
+               type="text"
+               placeholder="Escolha um item..."
+               [formControl]="productSearch"
+               [status]="(editForm.get('productId')!.dirty || editForm.get('productId')!.touched) ? (editForm.get('productId')!.invalid  ? 'danger' : 'success') : 'basic'"
+               [nbAutocomplete]="projectItemAuto" />
+
+        <nb-autocomplete #projectItemAuto [handleDisplayFn]="projectItemHandleDisplay">
+
+          <nb-option *ngFor="let option of products" [value]="option">
+            {{ option?.name | empty }}
+          </nb-option>
+
+        </nb-autocomplete>
+      </nb-form-field>
+      <ng-container *ngIf="editForm.get('productId')!.invalid && editForm.get('productId')!.touched">
+        <p class="text-danger" *ngIf="editForm.get('productId')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class="mb-3 col-md-6">
+      <label class="label">Etapa</label>
+      <nb-form-field>
+        <nb-select formControlName="projectStepId" fullWidth size="large" placeholder="Escolha uma etapa..."
+                   [status]="(editForm.get('projectStepId')!.dirty || editForm.get('projectStepId')!.touched) ? (editForm.get('projectStepId')!.invalid  ? 'danger' : 'success') : 'basic'">
+          <nb-option *ngFor="let step of projectSteps" [value]="step?.id">{{step?.name}}</nb-option>
+        </nb-select>
+      </nb-form-field>
+      <ng-container *ngIf="editForm.get('projectStepId')!.invalid && editForm.get('projectStepId')!.touched">
+        <p class="text-danger" *ngIf="editForm.get('projectStepId')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+
+    <div class="mb-3 col-md-6">
+      <label class="label">Nome</label>
+      <nb-form-field>
+        <input type="text" nbInput fullWidth placeholder="Nome do item" formControlName="name" fieldSize="large"
+               [status]="(editForm.get('name')!.dirty || editForm.get('name')!.touched) ? (editForm.get('name')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container *ngIf="editForm.get('name')!.invalid && editForm.get('name')!.touched">
+        <p class="text-danger" *ngIf="editForm.get('name')!.errors?.required">
+          Campo obrigatório
+        </p>
+        <p class="text-danger" *ngIf="editForm.get('name')!.errors?.minlength || editForm.get('name')!.errors?.maxlength">
+          Tamanho deve ser entre 3 e 63
+        </p>
+      </ng-container>
+    </div>
+    <div class="mb-3 col-md-6">
+      <label class="label">Freelancer</label>
+      <nb-form-field>
+        <input fieldSize="large"
+               fullWidth
+               nbInput
+               type="text"
+               placeholder="Escolha um item..."
+               [formControl]="freelancerSearch"
+               [status]="(freelancerSearch.dirty || freelancerSearch.touched) ? (editForm.get('freelancerId')!.invalid  ? 'danger' : 'success') : 'basic'"
+               [nbAutocomplete]="freelancerAuto" />
+
+        <nb-autocomplete #freelancerAuto [handleDisplayFn]="freelancerHandleDisplay" [activeFirst]="true">
+
+          <nb-option *ngFor="let option of people" [value]="option">
+            {{ option?.name | empty }}
+          </nb-option>
+
+        </nb-autocomplete>
+        <button nbSuffix nbButton ghost  type="button" *ngIf="freelancerSearch.value"
+                (click)="freelancerSearch.setValue('')">
+          <nb-icon icon="backspace-outline">
+          </nb-icon>
+        </button>
+      </nb-form-field>
+      <ng-container *ngIf="editForm.get('freelancerId')!.invalid && freelancerSearch.touched">
+        <p class="text-danger" *ngIf="editForm.get('freelancerId')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class="mb-3 col-12">
+      <label class="label">Descrição</label>
+      <nb-form-field>
+      <textarea rows="5" nbInput fullWidth placeholder="Descrição..." formControlName="description" fieldSize="large"
+                [status]="(editForm.get('description')!.dirty || editForm.get('description')!.touched) ? (editForm.get('description')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </textarea>
+      </nb-form-field>
+      <ng-container *ngIf="editForm.get('description')!.invalid && editForm.get('description')!.touched">
+        <p class="text-danger" *ngIf="editForm.get('description')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class="mb-3 col-md-6" *nbIsGranted="['edit','advanced-project-item']">
+      <label class="label">Valor</label>
+      <nb-form-field>
+        <input type="text" nbInput fullWidth placeholder="Valor do item..." formControlName="value" fieldSize="large" currencyMask [options]="{ align :'left',prefix: 'R$ ', thousands: '.', decimal: ',' }"
+               [status]="(editForm.get('value')!.dirty || editForm.get('value')!.touched) ? (editForm.get('value')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container *ngIf="editForm.get('value')!.invalid && editForm.get('value')!.touched">
+        <p class="text-danger" *ngIf="editForm.get('value')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class="mb-3 col-md-6">
+      <label class="label">Quantidade</label>
+      <nb-form-field>
+        <input type="text" nbInput fullWidth placeholder="Quantidade..." formControlName="quantity" fieldSize="large"
+               [status]="(editForm.get('quantity')!.dirty || editForm.get('quantity')!.touched) ? (editForm.get('quantity')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container *ngIf="editForm.get('quantity')!.invalid && editForm.get('quantity')!.touched">
+        <p class="text-danger" *ngIf="editForm.get('quantity')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+
+    <div class="mb-3 col-md-3"  *nbIsGranted="['edit','advanced-project-item']">
+      <label class="label">Posição</label>
+      <nb-form-field>
+        <input type="number" nbInput fullWidth placeholder="Posição do item..." formControlName="itemIndex" fieldSize="large"
+               [status]="(editForm.get('itemIndex')!.dirty || editForm.get('itemIndex')!.touched) ? (editForm.get('itemIndex')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container *ngIf="editForm.get('itemIndex')!.invalid && editForm.get('itemIndex')!.touched">
+        <p class="text-danger" *ngIf="editForm.get('itemIndex')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+
+    <div class="mb-3 col-md-3"  *nbIsGranted="['edit','advanced-project-item']">
+      <div class="row">
+        <div class="col-12">
+          <label></label>
+        </div>
+      </div>
+        <nb-checkbox formControlName="isOpportunity"
+                     [status]="(editForm.get('isOpportunity')!.dirty || editForm.get('isOpportunity')!.touched) ? (editForm.get('isOpportunity')!.invalid  ? 'danger' : 'info') : 'basic'">
+          Oportunidade
+        </nb-checkbox>
+      <ng-container *ngIf="editForm.get('isOpportunity')!.invalid && editForm.get('isOpportunity')!.touched">
+        <p class="text-danger" *ngIf="editForm.get('isOpportunity')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class="mb-3 col-md-3" >
+      <div class="row">
+        <div class="col-12">
+          <label></label>
+        </div>
+      </div>
+      <nb-checkbox formControlName="isExtraItem"
+                   [status]="(editForm.get('isExtraItem')!.dirty || editForm.get('isExtraItem')!.touched) ? (editForm.get('isExtraItem')!.invalid  ? 'danger' : 'info') : 'basic'">
+        Item Extra
+      </nb-checkbox>
+      <ng-container *ngIf="editForm.get('isExtraItem')!.invalid && editForm.get('isExtraItem')!.touched">
+        <p class="text-danger" *ngIf="editForm.get('isExtraItem')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+  </div>
+</form>

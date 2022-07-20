@@ -1,0 +1,8 @@
+export const enum FaqType {
+  PUTZ = 'PUTZ',
+  HYPER_PERSONALIZATION = 'HYPER_PERSONALIZATION',
+  SOLUTIONS = 'SOLUTIONS',
+  PLATFORM  = 'PLATFORM'
+}
+
+export const FaqTypeArray = [FaqType.PUTZ, FaqType.HYPER_PERSONALIZATION, FaqType.SOLUTIONS, FaqType.PLATFORM];

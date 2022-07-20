@@ -1,0 +1,65 @@
+<div class="clearfix layout-content">
+  <nb-card status="primary">
+    <nb-card-header class="border-0">
+      <div class="row align-items-center text-light">
+        <div class="col-6 col-md-4 text-start order-0">
+          <h5 class="text-light poppins fw-bold">
+            <ng-container *ngIf="!personLogin">Meu Portfólio</ng-container>
+            <ng-container *ngIf="personLogin">Portfólio de {{personLogin}}</ng-container>
+          </h5>
+          <nb-tag size="tiny" appearance="outline" status="control"
+                  [text]="'Total: '+ listTotalSize"></nb-tag>
+        </div>
+        <div class="col-6 col-md-8 order-1 order-md-0 text-end">
+          <a nbButton outline status="control" size="large" class="m-1"
+             [routerLink]="['','competences','dashboard']" nbTooltip="Criar novo portfolio">
+            <nb-icon icon="plus-outline"></nb-icon>
+          </a>
+          <button nbButton outline status="control" size="large" class="m-1"
+                  (click)="tableView = !tableView" nbTooltip="Formato de listagem">
+            <nb-icon [icon]="!tableView?'list-outline':'layers-outline'"></nb-icon>
+          </button>
+          <button nbButton outline status="control" size="large" class="m-1"
+                  (click)="openPortfolioInfoDialog()" nbTooltip="Informações para freelancers">
+            <nb-icon icon="info"></nb-icon>
+          </button>
+        </div>
+      </div>
+    </nb-card-header>
+  </nb-card>
+  <div class="row spinner-no-bg" [nbSpinner]="isLoading" nbSpinnerStatus="primary" nbSpinnerMessage="Carregando..."
+       [class.spinner-content]="isLoading">
+    <div class="col-12">
+      <ng-container *ngIf="portfolios && portfolios.length > 0">
+        <ng-container *ngIf="tableView">
+          <app-portfolio-manager-table (stateChange)="onSort($event)"></app-portfolio-manager-table>
+        </ng-container>
+        <ng-container *ngIf="!tableView">
+          <app-portfolio-manager-card-list></app-portfolio-manager-card-list>
+        </ng-container>
+        <app-pagination-wrapper *ngIf="listTotalSize">
+          <ngb-pagination
+            [collectionSize]="listTotalSize"
+            [(page)]="state!.page"
+            [pageSize]="state!.size"
+            (pageChange)="pageChange($event)"
+            [maxSize]="5">
+         </ngb-pagination>
+          <nb-form-field>
+            <nb-select [selected]="state!.size"
+                       (selectedChange)="sizeChange($event)">
+              <nb-option [value]="5">5</nb-option>
+              <nb-option [value]="10">10</nb-option>
+              <nb-option [value]="15">15</nb-option>
+              <nb-option [value]="20">20</nb-option>
+            </nb-select>
+          </nb-form-field>
+        </app-pagination-wrapper>
+      </ng-container>
+      <ng-container *ngIf="(!portfolios || portfolios.length === 0) && !isLoading">
+        <app-simple-not-found class="text-center"></app-simple-not-found>
+      </ng-container>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,10 @@
+@use "../../../../shared/themes/scrollbar"as *;
+nb-accordion {
+  width: 100%;
+  overflow: auto;
+  max-height: 65vh;
+  @extend .custom-scrollbar !optional;
+}
+.w-95 {
+  width: 95% !important;
+}

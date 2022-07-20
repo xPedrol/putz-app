@@ -1,0 +1,64 @@
+<div class="layout-content">
+  <nb-card status="primary">
+    <nb-card-header class="border-0">
+      <div class="row align-items-center text-light">
+        <div class="col-6 col-md-4 text-start order-0">
+          <h5 class="text-light poppins fw-bold">Produtos</h5>
+          <nb-tag size="tiny" appearance="outline" status="control" [text]="'Total: '+ listTotalSize"></nb-tag>
+        </div>
+        <div class="col-12 col-md-5 order-2 order-md-0 mt-4 mt-md-0 text-end">
+          <nb-form-field>
+            <input [formControl]="projectCaseSearch" fullWidth type="text" nbInput placeholder="Pesquisar..."
+                   fieldSize="large"
+                   status="control"
+
+                   value="">
+            <button nbSuffix nbButton ghost status="control" type="button"
+                    *ngIf="!projectCaseSearch.value">
+              <nb-icon icon="search-outline">
+              </nb-icon>
+            </button>
+            <button nbSuffix nbButton ghost status="control" type="button" *ngIf="projectCaseSearch.value"
+                    (click)="projectCaseSearch.reset()">
+              <nb-icon icon="backspace-outline">
+              </nb-icon>
+            </button>
+          </nb-form-field>
+        </div>
+        <div class="col-6 col-md-3 order-1 order-lg-0 text-end">
+          <a nbButton outline status="control" size="large" class="m-1"
+             [routerLink]="['','admin','project','cases','new']" *nbIsGranted="['edit','project-case']"
+             nbTooltip="Novo Project Case">
+            <nb-icon icon="plus-outline"></nb-icon>
+          </a>
+        </div>
+      </div>
+    </nb-card-header>
+  </nb-card>
+  <div class="row projectCase-list spinner-no-bg" [nbSpinner]="loadingProjectCases" nbSpinnerStatus="primary"
+       nbSpinnerMessage="Carregando..." [class.spinner-content]="loadingProjectCases">
+    <div class="col-12" *ngIf="projectCases && projectCases.length > 0">
+      <app-project-case-table (stateChange)="onSort($event)"></app-project-case-table>
+<!--      <app-projectCase-table (stateChange)="onSort($event)"></app-projectCase-table>-->
+    </div>
+  </div>
+  <app-pagination-wrapper *ngIf="listTotalSize > 0">
+    <ngb-pagination *ngIf="state?.page"
+                    [collectionSize]="listTotalSize"
+                    [(page)]="state!.page"
+                    [pageSize]="state!.size"
+                    (pageChange)="pageChange($event)"
+                    [maxSize]="5">
+    </ngb-pagination>
+    <nb-form-field>
+      <nb-select [selected]="state!.size" #selectComponent
+                 (selectedChange)="sizeChange(selectComponent.selected)">
+        <nb-option [value]="5">5</nb-option>
+        <nb-option [value]="10">10</nb-option>
+        <nb-option [value]="15">15</nb-option>
+        <nb-option [value]="20">20</nb-option>
+      </nb-select>
+    </nb-form-field>
+  </app-pagination-wrapper>
+  <app-simple-not-found *ngIf="(!projectCases || projectCases.length === 0) && !loadingProjectCases"></app-simple-not-found>
+</div>

@@ -1,0 +1,17 @@
+<div class="d-flex flex-column align-items-center justify-content-center">
+  <div>
+    <nb-icon icon="close-outline" status="danger" class="font-size-70px"></nb-icon>
+  </div>
+  <h5 class="text-uppercase poppins fw-bold letter-spacing-5px">{{title}}</h5>
+  <p class="text-center">{{message}}.
+    <ng-container *ngIf="hasCallback">
+      <ng-container *ngIf="!callBack">
+        <span *ngIf="isAuthenticated"> Clique <a [routerLink]="['','dashboard']">aqui</a> para voltar ao painel de controle</span>
+        <span *ngIf="!isAuthenticated"> Clique <a [routerLink]="['','auth','login']">aqui</a> para voltar para pagina de login</span>
+      </ng-container>
+      <ng-container *ngIf="callBack">
+        <span> Clique <a [routerLink]="callBack">aqui</a> {{callBackMessage}}</span>
+      </ng-container>
+    </ng-container>
+  </p>
+</div>

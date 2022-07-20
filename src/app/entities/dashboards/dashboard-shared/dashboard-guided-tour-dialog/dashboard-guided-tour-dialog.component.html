@@ -1,0 +1,73 @@
+<nb-card size="medium" class="dialog-content width-800px z-index-999">
+  <!--  <nb-card-header class="border-0"></nb-card-header>-->
+  <nb-card-body class="mt-3 d-flex">
+    <nb-stepper orientation="horizontal">
+      <nb-step label="Bem-Vindo">
+        <div class="text-center">
+          <h2 class="poppins text-uppercase font-weight-800">Bem-vindo a Putz Filmes</h2>
+          <small class="lorem">
+            Obrigado por se juntar a Putz Filmes. Este é um guia rápido para você começar a usar o sistema.
+          </small>
+        </div>
+        <hr>
+        <p>
+          Você está no Painel de controle. Nesta tela temos informações sobre seu portfólio, inscrições as quais você
+          se cadastrou em uma lista de todos os projetos com sua participação.
+        </p>
+        <p>
+          A plataforma possui dois cabeçalhos. Como pode ser visto, o primeiro é o mais clássico, com um ícone para
+          alteração de tema e sua foto de perfil. Logo abaixo deste, se encontra o sub-cabeçalho, que possui links para
+          as várias páginas do sistema.
+        </p>
+        <div class="d-flex justify-content-end mt-3">
+          <button nbButton nbStepperNext class="m-1">Prox.</button>
+        </div>
+      </nb-step>
+      <nb-step label="Como Usar">
+        <div class="text-center">
+          <h2 class="poppins text-uppercase font-weight-800">Como utilizar a plataforma?</h2>
+          <small class="lorem">
+            Aqui você verá um passo a passo de como se preparar para concorrer às oportunidades de trabalho.
+          </small>
+        </div>
+        <hr>
+        <p class="">
+          Como freelancer, você pode acessar a página de projetos, onde é possível ver todos os projetos aos quais
+          você foi aprovado. Mas primeiro, é preciso organizar bem seu portfólio, para isso, basta clicar no link de
+          portfólio, depois no botão de adição perto da tabela e começar a enviar seus dados. Logo depois, você terá que
+          se cadastrar às oportunidades, o que
+          pode ser feito clicando no link de Inscrições e depois pesquisando por uma que atenda aos seus requisitos.
+          E lembre-se que você será escolhido conforme a qualidade de seu portfólio.
+        </p>
+
+        <p class="">
+          Após aprovação em determinada oportunidade de trabalho, você receberá autorização para entrar em um
+          projeto. Entretanto, só será possível acessar a etapa a qual vc se cadastrou, uma vez que outros freelancers
+          trabalham em outras etapas do mesmo projeto.
+        </p>
+        <div class="d-flex justify-content-end mt-3">
+          <button nbButton nbStepperPrevious class="m-1">Voltar</button>
+          <button nbButton nbStepperNext class="m-1">Prox.</button>
+        </div>
+      </nb-step>
+      <nb-step label="Isso é Tudo">
+        <div class="text-center">
+          <h2 class="poppins text-uppercase font-weight-800">Isso é tudo!</h2>
+          <small class="lorem">
+            Você está pronto para utilizar a plataforma :).
+          </small>
+        </div>
+        <hr>
+        <p class="lorem">
+          Caso ainda tenha alguma dúvida, existem botões de ajuda que você pode clicar para obter mais informações. O
+          sub-cabeçalho mesmo possui um. Clicando nele um guia explicando cada página será exibido. Boa sorte!
+        </p>
+        <div class="d-flex justify-content-end mt-3">
+          <button nbButton nbStepperPrevious class="m-1">Voltar</button>
+          <button nbButton status="primary" size="medium" (click)="close()" class="m-1">Fechar</button>
+        </div>
+      </nb-step>
+    </nb-stepper>
+  </nb-card-body>
+
+</nb-card>

@@ -1,0 +1,65 @@
+<div class="row mt-2">
+<!--  <div class="col-12">-->
+<!--    <strong>Data Início:</strong> {{project?.startDate | convert | date:'dd/MM/yyyy'}} / <strong>Data Fim:</strong> {{project?.endDate | convert | date:'dd/MM/yyyy'}}-->
+<!--  </div>-->
+  <div class="col-12">
+    <nb-card status="primary">
+      <nb-card-header class="border-0">
+        <div class="row align-items-center text-light">
+          <div class="col-6 col-md-4 text-start order-0">
+            <h5 class="text-light poppins fw-bold">Etapas por cronograma</h5>
+            <nb-tag size="tiny" appearance="outline" status="control"
+                    [text]="'Total: '+ listTotalSize"></nb-tag>
+          </div>
+          <div class="col-12 col-md-5 order-2 order-md-0 mt-4 mt-md-0 text-end">
+            <nb-form-field>
+              <nb-select [formControl]="scheduleSearch" size="large"
+                         status="control"
+                         >
+                <nb-option *ngFor="let scheduleName of scheduleNames"
+                           [value]="scheduleName">{{scheduleName}}</nb-option>
+              </nb-select>
+            </nb-form-field>
+          </div>
+          <div class="col-6 col-md-3 order-1 order-md-0 text-end">
+            <button nbButton outline status="control" size="large"  class="m-1"
+                    nbTooltip="Estilo da listagem"
+                    (click)="tableView = !tableView">
+              <nb-icon [icon]="!tableView?'list-outline':'layers-outline'"></nb-icon>
+            </button>
+            <button nbButton outline status="control" size="large"  class="m-1"
+                    nbTooltip="Sincronizar datas com o projeto" [disabled]="!canEdit"
+                    (click)="synchronizeSchedule()">
+              <nb-icon icon="calendar-outline"></nb-icon>
+            </button>
+          </div>
+        </div>
+      </nb-card-header>
+    </nb-card>
+  </div>
+  <div class="col-12">
+    <ng-container *ngIf="!tableView">
+      <app-project-steps-list></app-project-steps-list>
+    </ng-container>
+    <ng-container *ngIf="tableView">
+      <app-project-step-table [canEdit]="canEdit" (stateChange)="onSort($event)"></app-project-step-table>
+    </ng-container>
+    <app-pagination-wrapper *ngIf="listTotalSize">
+      <ngb-pagination
+        [collectionSize]="listTotalSize" [(page)]="state!.page"
+        [pageSize]="state!.size"
+        (pageChange)="pageChange($event)"
+        [maxSize]="5">
+     </ngb-pagination>
+      <nb-form-field>
+        <nb-select [selected]="state!.size" #selectComponent
+                   (selectedChange)="sizeChange(selectComponent.selected)">
+          <nb-option [value]="5">5</nb-option>
+          <nb-option [value]="10">10</nb-option>
+          <nb-option [value]="15">15</nb-option>
+          <nb-option [value]="20">20</nb-option>
+        </nb-select>
+      </nb-form-field>
+    </app-pagination-wrapper>
+  </div>
+</div>

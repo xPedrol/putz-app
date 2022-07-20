@@ -1,0 +1,100 @@
+<div class="header-container">
+  <div class="logo-container">
+    <a class="logo poppins text-uppercase" [routerLink]="['']">Putz Filmes</a>
+  </div>
+</div>
+
+<div class="header-container">
+  <nb-actions size="medium" class="menu-actions">
+    <nb-action [icon]="!(sidebarService.isSideBarCollapsed | async) ?'close-outline':'menu-outline'"
+               (click)="sidebarService.toggleSidebar(false,'menu-sidebar')">
+    </nb-action>
+  </nb-actions>
+  <nb-actions size="small" class="control-item">
+    <nb-action title="Tamanho da fonte">
+      <nb-button-group size="small" status="basic" appearance="outline">
+        <button nbButton nbTooltip="Aumentar fonte da pagina" (click)="setFontSize(true)">
+          <nb-icon style="font-size:1.3rem" icon="plus-outline"></nb-icon>
+        </button>
+        <button nbButton nbTooltip="Restaurar fonte padrão da pagina" (click)="setFontSize(undefined)">A</button>
+        <button nbButton nbTooltip="Diminuir fonte da pagina" (click)="setFontSize(false)">
+          <nb-icon style="font-size:1.3rem" icon="minus-outline"></nb-icon>
+        </button>
+      </nb-button-group>
+      <!--      <button nbButton status="basic" ghost (click)="setFontSize(true)">-->
+      <!--        <nb-icon style="font-size:1.3rem" icon="plus-outline"></nb-icon>-->
+      <!--      </button>-->
+      <!--      <span class="" style="font-size: 1.3rem">A</span>-->
+      <!--      <button nbButton status="basic" ghost (click)="setFontSize(false)">-->
+      <!--        <nb-icon style="font-size:1.3rem" icon="minus-outline"></nb-icon>-->
+      <!--      </button>-->
+    </nb-action>
+    <nb-action icon="settings-2-outline" *ngIf="isAdmin && appConfig.config.isMainApp"
+               nbContextMenuTag="adminConfigMenu" title="Configurações"
+               [nbContextMenu]="adminConfigMenu">
+    </nb-action>
+    <nb-action icon="unlock-outline" nbContextMenuTag="accessPermissionMenu" title="Permissões de acesso"
+               *ngIf="isAdmin && appConfig.config.isMainApp"
+               [nbContextMenu]="accessPermissionMenu">
+    </nb-action>
+    <nb-action icon="smartphone-outline" *nbIsGranted="['view','bot']" (click)="canHandleBots()"
+               title="Lista de bots de renderização"
+               [nbPopover]="botList">
+    </nb-action>
+    <nb-action [icon]="currentTheme === 'default'?'moon-outline':'sun-outline'" (click)="toggleTheme()"
+               title="Alterar tema">
+    </nb-action>
+
+    <nb-action class="user-action" *nbIsGranted="['view','profile']">
+      <nb-user [nbContextMenu]="userMenu" *ngIf="account"
+               [onlyPicture]="userPictureOnly"
+               [name]="account.login"
+               [picture]="account.imageUrl"
+               nbContextMenuTag="userMenu">
+      </nb-user>
+    </nb-action>
+    <nb-action *nbIsGranted="['view','auth-buttons']">
+      <ng-container *ngIf="appConfig.config.isMainApp">
+        <a nbButton ghost size="medium" status="primary" [routerLink]="['/auth/login']">Login</a>
+        <a nbButton ghost size="medium" status="primary" [routerLink]="['/auth/register']">Registrar
+        </a>
+      </ng-container>
+      <ng-container *ngIf="!appConfig.config.isMainApp">
+        <a nbButton ghost size="medium" status="primary" [href]="mainUrl+'/auth/login'">Login</a>
+        <a nbButton ghost size="medium" status="primary" [href]="mainUrl+'/auth/register'">Registrar
+        </a>
+      </ng-container>
+    </nb-action>
+  </nb-actions>
+</div>
+<ng-template #botList>
+  <nb-card class="m-0 min-width-350px" status="basic">
+    <nb-card-header class="py-2">
+      <div class="d-flex justify-content-between align-items-center">
+        <h6 class="poppins header-title">Renderizadores</h6>
+        <button nbButton size="small" status="primary" ghost nbTooltip="Atualizar bots" [disabled]="loadingBots"
+                (click)="this.handleBots(this.getBots())">
+          <nb-icon icon="refresh-outline"></nb-icon>
+        </button>
+      </div>
+    </nb-card-header>
+    <nb-card-body class="p-0 spinner-content" [nbSpinner]="loadingBots" nbSpinnerStatus="primary"
+                  nbSpinnerMessage="Carregando..." [class.spinner-no-bg]="!bots">
+      <nb-list class="bot-list">
+        <nb-list-item class="d-block" *ngFor="let bot of bots">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h6 class="m-0 p-0 fw-bold">{{bot?.name | empty}}</h6>
+              <small class="header-title">Ultima vez
+                em {{bot?.lastModifiedDate| convert | date:'dd/MM/yyyy HH:mm:ss' | empty }}</small>
+            </div>
+            <div>
+              <nb-tag *ngIf="bot?.status" [status]="bot.status.color" size="tiny" appearance="filled"
+                      [text]="bot?.status?.name | empty"></nb-tag>
+            </div>
+          </div>
+        </nb-list-item>
+      </nb-list>
+    </nb-card-body>
+  </nb-card>
+</ng-template>

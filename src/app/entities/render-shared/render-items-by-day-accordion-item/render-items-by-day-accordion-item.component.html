@@ -1,0 +1,4 @@
+<app-render-items-by-day-line-chart *ngIf="projectRenderItemByDayGraph && projectRenderItemByDayGraph.length > 0"
+                                    [projectRenderItemByDayGraph]="projectRenderItemByDayGraph"></app-render-items-by-day-line-chart>
+<app-detailed-not-found [hasCallback]="false" message="Sem registros para desenhar o gráfico"
+                        *ngIf="!projectRenderItemByDayGraph ||projectRenderItemByDayGraph.length === 0"></app-detailed-not-found>

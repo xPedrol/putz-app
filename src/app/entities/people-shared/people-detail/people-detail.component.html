@@ -1,0 +1,66 @@
+<div class="layout-content">
+  <div class="row">
+    <div class="col-12">
+      <nb-tabset>
+        <nb-tab tabTitle="Pessoa">
+          <nb-card status="basic">
+            <nb-card-header class="py-3">
+              <h6
+                class="poppins header-title">{{personLogin ? ('Editar ' + (person?.name | empty)) : 'Criar pessoa'}}</h6>
+            </nb-card-header>
+            <nb-card-body>
+              <app-edit-person #editPersonComponent></app-edit-person>
+            </nb-card-body>
+            <nb-card-footer class="py-2">
+              <div class="row align-items-center">
+                <div class="col-6">
+                  <nb-tag status="success" text="Telefone verificado" *ngIf="person?.phoneWhatsappVerification"></nb-tag>
+                </div>
+                <div class="col-6 text-end">
+                  <button nbButton status="primary" type="submit" size="medium" class="m-1"
+                          (click)="copyPhoneWhatsappVerifyLinkToClipboard()"
+                          *ngIf="person && person.personType === personType.F && !person?.phoneWhatsappVerification"
+                          nbTooltip="Ao clicar no botão, o link de verificação será copiado para sua área de transferência. Dessa forma, você pode enviá-lo para o usuário confirmar seu número de telefone.">
+                    Link de verificação
+                  </button>
+                  <button nbButton status="primary" type="submit" size="medium" (click)="handlePerson()" class="m-1">
+                    Salvar
+                  </button>
+                </div>
+              </div>
+            </nb-card-footer>
+          </nb-card>
+        </nb-tab>
+        <nb-tab tabTitle="Usuário" *ngIf="this.personLogin">
+          <nb-card status="basic">
+            <nb-card-header class="py-3">
+              <h6
+                class="poppins header-title">{{personLogin ? ('Editar ' + (person?.name | empty)) : 'Criar usuário'}}</h6>
+            </nb-card-header>
+            <nb-card-body>
+              <app-user-form #userFormComponent (updateUser)="saveUser($event)"></app-user-form>
+            </nb-card-body>
+          </nb-card>
+          <nb-card>
+            <nb-card-header class="border-0">
+              <h6 class="poppins header-title">Trocar senha</h6>
+            </nb-card-header>
+            <nb-card-body>
+              <app-edit-password [isAdmin]="true" (updatePassword)="updatePassword($event)"></app-edit-password>
+            </nb-card-body>
+          </nb-card>
+        </nb-tab>
+        <nb-tab tabTitle="Trocar imagem" class="overflow-hidden" *ngIf="this.personLogin">
+          <nb-card status="basic">
+            <nb-card-header class="py-3">
+              <h6 class="poppins header-title">Trocar foto de {{person?.name | empty}}</h6>
+            </nb-card-header>
+            <nb-card-body>
+              <app-edit-profile-image (updateUser)="savePicture($event)"></app-edit-profile-image>
+            </nb-card-body>
+          </nb-card>
+        </nb-tab>
+      </nb-tabset>
+    </div>
+  </div>
+</div>

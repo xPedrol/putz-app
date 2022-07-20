@@ -1,0 +1,32 @@
+<div class="layout-content h-100">
+  <div class="row align-items-center h-100 spinner-content spinner-no-bg" [nbSpinner]="loadingAccount"
+       nbSpinnerStatus="primary"
+       nbSpinnerSize="giant">
+    <div class="col-8 m-auto" *ngIf="!loadingAccount">
+      <app-detailed-not-found [isAuthenticated]="false" *ngIf="!invalidAccount && !account"
+                                 message="A página não foi encontrada"></app-detailed-not-found>
+      <ng-container *ngIf="account">
+        <div class="d-flex flex-column align-items-center justify-content-center" *ngIf="invalidAccount">
+          <div>
+            <nb-icon icon="close-outline" status="danger" class="font-size-70px"></nb-icon>
+          </div>
+          <h5 class="text-uppercase poppins fw-bold letter-spacing-5px">Sua conta está invalida</h5>
+          <p class="text-center">Não é possivel acessar a plataforma. Sua conta não está configurada corretamente, o que
+            iriá resultar no mal funcionamento da plataforma.<span> Clique <span class="span-redirect-method"
+                                                                                 (click)="handleInvalidAccount()">aqui</span> para voltar
+    à pagina de login.</span></p>
+        </div>
+
+        <div class="d-flex flex-column align-items-center justify-content-center" *ngIf="!invalidAccount">
+          <div>
+            <nb-icon icon="checkmark-outline" status="success" class="font-size-70px"></nb-icon>
+          </div>
+          <h5 class="text-uppercase poppins fw-bold letter-spacing-5px">Sua conta é valida</h5>
+          <p class="text-center">Você pode acessar a plafatorma sem problema algum!<span> Clique <a
+            [routerLink]="['','auth','login']">aqui</a> para voltar
+    ao painel de controle</span></p>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

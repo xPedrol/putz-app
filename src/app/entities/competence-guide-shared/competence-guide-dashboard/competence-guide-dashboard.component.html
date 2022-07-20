@@ -1,0 +1,64 @@
+<div class="layout-content">
+  <nb-card status="primary">
+    <nb-card-header class="border-0">
+      <div class="row align-items-center text-light">
+        <div class="col-6 col-md-4 text-start order-0">
+          <h5 class="text-light poppins fw-bold">Guias da competência</h5>
+          <nb-tag size="tiny" appearance="outline" status="control"
+                  [text]="'Total: '+ listTotalSize"></nb-tag>
+        </div>
+        <div class="col-12 col-md-5 order-2 order-md-0 mt-4 mt-md-0 text-end" *ngIf="!competenceId">
+          <nb-form-field>
+            <nb-tag-list (tagRemove)="onTagRemove($event)">
+              <nb-tag *ngFor="let tag of tags" [text]="tag" removable></nb-tag>
+              <input #autoInput fieldSize="large" status="control" placeholder="Nome da competência..."
+                     type="text" nbTagInput (input)="onChange()" fullWidth [nbAutocomplete]="auto">
+              <nb-autocomplete #auto (selectedChange)="onSelectionChange($event)">
+
+                <nb-option *ngFor="let option of filteredCompetences;trackBy:trackTagsByFn" [value]="option.name">
+                  {{ option?.name }}
+                </nb-option>
+
+              </nb-autocomplete>
+            </nb-tag-list>
+            <button nbSuffix nbButton ghost status="control" type="button"
+                    *ngIf="!tags || tags.size === 0">
+              <nb-icon icon="search-outline">
+              </nb-icon>
+            </button>
+            <button nbSuffix nbButton ghost status="control" type="button" *ngIf="tags && tags.size > 0"
+                    (click)="tags.clear();getCompetenceGuides()">
+              <nb-icon icon="backspace-outline">
+              </nb-icon>
+            </button>
+          </nb-form-field>
+        </div>
+      </div>
+    </nb-card-header>
+  </nb-card>
+  <div [nbSpinner]="loadingCGuide" nbSpinnerStatus="primary"
+       class="spinner-no-bg"
+       nbSpinnerMessage="Carregando..." [class.spinner-content]="loadingCGuide">
+    <app-competence-guide-list #competenceGuideList
+                               [defaultSize]="defaultListSize"></app-competence-guide-list>
+    <app-simple-not-found class="text-center" *ngIf="!listTotalSize && !loadingCGuide"></app-simple-not-found>
+  </div>
+  <app-pagination-wrapper *ngIf="listTotalSize > 0">
+    <ngb-pagination *ngIf="state?.page"
+                    [collectionSize]="listTotalSize"
+                    [(page)]="state!.page"
+                    [pageSize]="state!.size"
+                    (pageChange)="pageChange($event)"
+                    [maxSize]="5">
+    </ngb-pagination>
+    <nb-form-field>
+      <nb-select [selected]="state!.size" #selectComponent
+                 (selectedChange)="sizeChange(selectComponent.selected)">
+        <nb-option [value]="5">5</nb-option>
+        <nb-option [value]="10">10</nb-option>
+        <nb-option [value]="15">15</nb-option>
+        <nb-option [value]="20">20</nb-option>
+      </nb-select>
+    </nb-form-field>
+  </app-pagination-wrapper>
+</div>

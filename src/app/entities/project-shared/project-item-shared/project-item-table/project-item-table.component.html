@@ -1,0 +1,87 @@
+<div class="wrap-table100">
+  <div class="scroll">
+    <div class="table">
+      <div class="row header w-100">
+        <ng-container *ngFor="let column of columns">
+          <ng-container *ngIf="!column.hidden">
+            <div class="cell" [sortable]="column.name" [ngClass]="column.class" *ngIf="column.sort"
+                 (sort)="onSort($event)">
+              <nb-icon
+                *ngIf="column.title && column.name === sort?.column && sort?.icon"
+                [icon]="sort?.icon??''" class="table-header-icon mx-2"
+                status="basic"></nb-icon>
+              <span class="label font-size-small">{{column?.title}}</span>
+            </div>
+            <div class="cell" [ngClass]="column.class" *ngIf="!column.sort">
+              <span class="label font-size-small">{{column?.title}}</span>
+            </div>
+          </ng-container>
+        </ng-container>
+      </div>
+      <ng-container *ngIf="projectItems | empty:'boolean'">
+        <div class="row w-100" *ngFor="let projectItem of projectItems;trackBy:trackByFn" [libTableRow]="columns">
+          <div class="cell text-start no-wrap" data-title="ID" *libTableCell="'id'">
+            <nb-tag status="basic" appearance="outline" size="small"
+                    [text]="projectItem?.id | empty"></nb-tag>
+          </div>
+          <div class="cell text-start max-width-170px" data-title="Nome" *libTableCell="'name'">
+            <span class="">{{projectItem?.name}}</span>
+            <ng-container *ngIf="projectItem?.name !== projectItem?.product?.name"> / {{projectItem?.product?.name}}
+            </ng-container>
+          </div>
+          <div class="cell text-md-center" data-title="Quantidade" *libTableCell="'quantity'">
+            <span class="">{{projectItem?.quantity}}</span>
+          </div>
+          <div class="cell text-start no-wrap max-width-170px" data-title="Projeto" *libTableCell="'project'">
+            {{projectItem?.project?.name | empty}}
+          </div>
+          <div class="cell text-start" data-title="Etapa" *libTableCell="'projectStep'">
+            {{projectItem?.projectStep?.name | empty}}
+          </div>
+          <div class="cell text-start" data-title="Freelancer" *libTableCell="'freelancer'">
+            {{projectItem?.freelancer?.name | empty}}
+          </div>
+          <div class="cell text-start text-md-center" data-title="Oportunidade" *libTableCell="'isOpportunity'">
+            <nb-icon *ngIf="projectItem?.isOpportunity" status="success" icon="checkmark-outline"></nb-icon>
+            <nb-icon *ngIf="!projectItem?.isOpportunity" status="danger" icon="close-outline"></nb-icon>
+          </div>
+          <div class="cell text-start text-md-center" data-title="Concluído" *libTableCell="'isClosed'">
+            <nb-icon *ngIf="projectItem?.isClosed" status="success" icon="checkmark-outline"></nb-icon>
+            <nb-icon *ngIf="!projectItem?.isClosed" status="danger" icon="close-outline"></nb-icon>
+          </div>
+          <div class="cell text-start" data-title="Valor" *libTableCell="'value'">
+            {{projectItem?.value  | currency}}
+            <ng-container *ngIf="projectItem?.valueDiference !== projectItem?.value">
+              / {{projectItem?.valueDiference | currency}}</ng-container>
+          </div>
+          <div class="cell text-start" data-title="Fecha em" *libTableCell="'closeDate'">
+            <nb-tag status="basic" appearance="outline" size="small"
+                    [text]="(projectItem?.closeDate | convert | date: 'dd/MM/yyyy')??'---'"></nb-tag>
+          </div>
+          <div class="cell text-start text-md-end" data-title="" *libTableCell="'actions'">
+            <a nbButton ghost status="info" type="button" *nbIsGranted="['view','project-item']"
+               [routerLink]="isOpportunity?['','opportunities','items',projectItem?.id]:['','projects',project?.id,'items',projectItem?.id]"
+               nbTooltip="Ir para pagina">
+              <nb-icon icon="external-link-outline"></nb-icon>
+            </a>
+            <button nbButton class="m-1" ghost status="info" size="small" type="button" *ngIf="isOpportunity" [disabled]="!canEdit"
+                    (click)="openOpportunityRequestDialog(projectItem)">Solicitar serviço
+            </button>
+            <button nbButton class="m-1" ghost status="info" type="button" nbTooltip="Editar" [disabled]="!canEdit"
+                    (click)="openUpdateProjectItemDialog(projectItem)">
+              <nb-icon icon="edit-2-outline"></nb-icon>
+            </button>
+            <ng-container *ngIf="!project?.modelForConception">
+              <button nbButton ghost status="danger" type="button" (click)="deleteProjectItem(projectItem)"
+                      nbTooltip="Excluir" [disabled]="!canEdit"
+                      *nbIsGranted="['edit','project-item']">
+                <nb-icon icon="trash-outline"></nb-icon>
+              </button>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+</div>

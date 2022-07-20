@@ -1,0 +1,4 @@
+@use "../../../../shared/themes/themes" as *;
+.text-nebular-danger{
+  color: nb-theme(color-danger-default) !important;
+}

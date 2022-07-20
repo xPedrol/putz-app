@@ -1,0 +1,55 @@
+<div class="d-flex align-items-lg-center justify-content-center h-100">
+  <div class="width-500px">
+    <div class="text-center mb-5">
+      <img alt="logo-putz" src="../../../../../assets/images/logo/logo-putz.png">
+    </div>
+    <nb-card accent="info">
+      <nb-card-body class="py-4 spinner-no-bg" [nbSpinner]="submitted" nbSpinnerStatus="info" nbSpinnerSize="giant"
+                    nbSpinnerMessage="Carregando...">
+        <nb-auth-block class="m-auto">
+          <h1 id="title" class="title fw-bold poppins">Ativar usuário</h1>
+          <nb-alert outline="warning">
+            Você tentou logar com um usuário que não foi ativado. Para proseguir, informe o email cadastrado para receber um link de ativação.
+          </nb-alert>
+
+          <nb-alert status="success" closable *ngIf="success">Um email foi enviado para sua caixa de mensagem</nb-alert>
+          <form (ngSubmit)="requestReset()" [formGroup]="formGroup" aria-labelledby="title">
+            <div class="row">
+              <div class="mb-3 col-12">
+                <label class="label" for="input-email">Nome de usuário</label>
+                <input nbInput
+                       fullWidth
+                       formControlName="email"
+                       name="email"
+                       id="input-email"
+                       placeholder="Digite seu email"
+                       type="email"
+                       autofocus
+                       [status]="(formGroup.get('email')!.dirty || formGroup.get('email')!.touched) ? (formGroup.get('email')!.invalid  ? 'danger' : 'success') : 'basic'"
+                       [required]="true"
+                       [attr.aria-invalid]="formGroup.get('email')!.invalid && formGroup.get('email')!.touched ? true : null">
+                <ng-container *ngIf="formGroup.get('email')!.invalid && formGroup.get('email')!.touched">
+                  <p class="text-danger" *ngIf="formGroup.get('email')!.errors?.required">
+                    Campo obrigatório
+                  </p>
+                  <p class="text-danger" *ngIf="formGroup.get('email')!.errors?.email">
+                    Email inválido
+                  </p>
+                </ng-container>
+              </div>
+              <div class="mb-3 col-12">
+                <button nbButton
+                        fullWidth
+                        status="primary"
+                        [class.btn-pulse]="submitted"
+                >
+                  Ativar usuário
+                </button>
+              </div>
+            </div>
+          </form>
+        </nb-auth-block>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

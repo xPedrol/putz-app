@@ -1,0 +1,117 @@
+{
+  "template":{
+     "src":"file:///c:/Users/Administrator/Documents/putzrender/render/tmp/ProjetoTeste/ProjetoTeste.aep",
+     "composition":"main",
+     "outputExt":"avi",
+     "output":"avi"
+  },
+  "assets":[
+     {
+        "src":"https://images.unsplash.com/photo-1494548162494-384bba4ab999?ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8aG9yaXpvbnxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80",
+        "type":"image",
+        "layerName":"background"
+     },
+     {
+        "src":"https://putz.juninho.com.br/assets/examples/audio/audio1.mp3",
+        "type":"audio",
+        "layerName":"soundtrack"
+     },
+     {
+        "type":"data",
+        "layerName":"text",
+        "property":"Source Text",
+        "value":"Alesssio"
+     },
+     {
+        "type":"data",
+        "layerName":"text",
+        "property":"Source Text.font",
+        "value":"Arial-BoldItalicMT"
+     },
+     {
+        "type":"data",
+        "layerName":"text",
+        "property":"Source Text.fontSize",
+        "value":38
+     },
+     {
+        "type":"data",
+        "layerName":"text",
+        "property":"Source Text.fillColor",
+        "value":[
+           1,
+           0,
+           0
+        ]
+     },
+     {
+        "type":"data",
+        "layerName":"subtitle",
+        "property":"Source Text",
+        "value":"texto2"
+     },
+     {
+        "type":"data",
+        "layerName":"subtitle",
+        "property":"Source Text.font",
+        "value":"Arial-BoldItalicMT"
+     },
+     {
+        "type":"data",
+        "layerName":"subtitle",
+        "property":"Source Text.fontSize",
+        "value":38
+     },
+     {
+        "type":"data",
+        "layerName":"subtitle",
+        "property":"Source Text.fillColor",
+        "value":[
+           1,
+           0,
+           0
+        ]
+     },
+     {
+        "type":"data",
+        "layerName":"description",
+        "property":"Source Text",
+        "value":"texto1"
+     },
+     {
+        "type":"data",
+        "layerName":"description",
+        "property":"Source Text.font",
+        "value":"Arial-BoldItalicMT"
+     },
+     {
+        "type":"data",
+        "layerName":"description",
+        "property":"Source Text.fontSize",
+        "value":38
+     },
+     {
+        "type":"data",
+        "layerName":"description",
+        "property":"Source Text.fillColor",
+        "value":[
+           1,
+           0,
+           0
+        ]
+     }
+  ],
+  "actions":{
+     "postrender":[
+        {
+           "module":"@nexrender/action-encode",
+           "preset":"mp4",
+           "output":"result.mp4",
+           "params":{
+              "-vcodec":"libx264",
+              "-r":25
+           }
+        }
+     ]
+  }
+}

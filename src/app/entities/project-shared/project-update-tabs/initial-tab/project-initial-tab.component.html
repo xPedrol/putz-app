@@ -1,0 +1,29 @@
+<div class="row mt-2">
+  <div class="col-12">
+    <nb-card>
+      <nb-card-header class="border-0 mb-2">
+        <div class="row align-items-center">
+          <div class="col-md-8 text-start">
+            <h5 class="poppins header-title">Etapas</h5>
+          </div>
+          <div class="col-md-4 text-end">
+            <button nbButton status="basic" appearance="ghost"
+                    (click)="projectStepTimeLine = !projectStepTimeLine">
+              <nb-icon [icon]="projectStepTimeLine?'list-outline':'layers'"></nb-icon>
+            </button>
+          </div>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <!--                <lib-project-timeline *ngIf="projectStepTimeLine"></lib-project-timeline>-->
+        <ng-container *ngIf="projectSteps && projectSteps.length > 0">
+        <app-project-step-timeline-test *ngIf="projectStepTimeLine"></app-project-step-timeline-test>
+        <app-project-steps-list *ngIf="!projectStepTimeLine"></app-project-steps-list>
+        </ng-container>
+        <ng-container *ngIf="!projectSteps || projectSteps.length === 0">
+          <app-simple-not-found class="text-center"></app-simple-not-found>
+        </ng-container>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

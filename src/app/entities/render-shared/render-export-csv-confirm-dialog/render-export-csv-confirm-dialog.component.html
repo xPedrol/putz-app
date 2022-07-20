@@ -1,0 +1,38 @@
+<nb-card class="dialog-content">
+  <nb-card-header class="border-0">
+    <div class="d-flex justify-content-between align-items-center">
+      <h6 class="header-title poppins m-0">Confirmar exportação</h6>
+      <button nbButton ghost status="basic" (click)="close()">
+        <nb-icon icon="close-outline"></nb-icon>
+      </button>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="row">
+      <div class="col-12">
+        <nb-checkbox [checked]="justTableFilter" (checkedChange)="justTableFilter = !justTableFilter">
+          Exportar {{listTotalSize > listTableSize ? listTableSize : listTotalSize}} linhas (paginação da tabela)
+        </nb-checkbox>
+      </div>
+      <div class="col-12">
+        <nb-checkbox [checked]="!justTableFilter" (checkedChange)="justTableFilter = !justTableFilter">
+          Exportar {{listTotalSize}} linhas (Todas)
+        </nb-checkbox>
+      </div>
+      <div class="col-12 mt-4">
+        <nb-alert accent="warning">
+          A exportação é feita de acordo com os filtros da tabela, entretanto você deve escolher exportar somente as
+          linhas da tabela ou todas as linhas.
+        </nb-alert>
+      </div>
+    </div>
+  </nb-card-body>
+  <nb-card-footer class="border-0">
+    <div class="row">
+      <div class="col-12 text-end">
+        <button nbButton status="basic" size="medium" class="m-1" (click)="close()">Fechar</button>
+        <button nbButton status="primary" size="medium" class="m-1" (click)="close(true)">Exportar</button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>

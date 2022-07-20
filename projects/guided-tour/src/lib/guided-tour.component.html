@@ -1,0 +1,94 @@
+<div *ngIf="currentTourStep && selectedElementRect && isOrbShowing"
+     (mouseenter)="handleOrb()"
+     class="tour-orb tour-{{ currentTourStep.orientation }}"
+     [style.top.px]="orbTopPosition"
+     [style.left.px]="orbLeftPosition"
+     [style.transform]="orbTransform">
+  <div class="tour-orb-ring"></div>
+</div>
+<div *ngIf="currentTourStep && !isOrbShowing">
+  <div class="guided-tour-user-input-mask" (click)="backdropClick($event)"></div>
+  <div class="guided-tour-spotlight-overlay"
+       [style.top.px]="overlayTop"
+       [style.left.px]="overlayLeft"
+       [style.height.px]="overlayHeight"
+       [style.width.px]="overlayWidth">
+  </div>
+</div>
+<div *ngIf="currentTourStep && !isOrbShowing">
+  <div #tourStep *ngIf="currentTourStep"
+       class="tour-step tour-{{ currentTourStep.orientation }}"
+       [ngClass]="{
+                    'page-tour-step': !currentTourStep.selector
+                }"
+       [style.top.px]="(currentTourStep.selector && selectedElementRect ? topPosition : null)"
+       [style.left.px]="(currentTourStep.selector && selectedElementRect ? leftPosition : null)"
+       [style.width.px]="(currentTourStep.selector && selectedElementRect ? calculatedTourStepWidth : null)"
+       [style.transform]="(currentTourStep.selector && selectedElementRect ? transform : null)">
+    <div *ngIf="currentTourStep.selector" class="tour-arrow"></div>
+    <nb-card class="tour-block">
+      <nb-card-header>
+        <div class="d-flex justify-content-between align-items-center">
+          <div *ngIf="
+                        progressIndicatorLocation === progressIndicatorLocations.TopOfTourBlock
+                        && !guidedTourService.onResizeMessage"
+               class="tour-progress-indicator">
+            <ng-container *ngTemplateOutlet="progress"></ng-container>
+          </div>
+          <span class="fw-bold" *ngIf="currentTourStep.title">
+              {{ currentTourStep.title }}
+            </span>
+          <button nbButton ghost size="small" (click)="guidedTourService.skipTour()" [nbTooltip]="closeText??'---'">
+            <nb-icon icon="close-outline"></nb-icon>
+          </button>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <div class="" [innerHTML]="currentTourStep.content"></div>
+        <div class="d-flex justify-content-center mt-4 buttons-div">
+          <!--              <button nbButton *ngIf="!guidedTourService.onResizeMessage" status="primary" appearance="outline" size="small"-->
+          <!--                      (click)="guidedTourService.skipTour()">-->
+          <!--                {{ skipText }}-->
+          <!--              </button>-->
+          <button nbButton *ngIf="!guidedTourService.onFirstStep && !guidedTourService.onResizeMessage"
+                  status="primary" appearance="outline" size="small"
+                  class="back-button link-button"
+                  (click)="guidedTourService.backStep()">
+            {{ backText }}
+          </button>
+          <button nbButton *ngIf="!guidedTourService.onLastStep && !guidedTourService.onResizeMessage"
+                  status="primary" appearance="outline" size="small"
+                  (click)="guidedTourService.nextStep()">
+            {{ nextText }}
+            <ng-container *ngIf="progressIndicatorLocation === progressIndicatorLocations.InsideNextButton">
+              <ng-container *ngTemplateOutlet="progress"></ng-container>
+            </ng-container>
+          </button>
+          <button nbButton *ngIf="guidedTourService.onLastStep" status="primary" appearance="outline" size="small"
+                  class="next-button"
+                  (click)="guidedTourService.nextStep()">
+            {{ doneText }}
+          </button>
+
+          <button nbButton *ngIf="guidedTourService.onResizeMessage" status="primary" appearance="outline"
+                  size="small"
+                  class="next-button"
+                  (click)="guidedTourService.resetTour()">
+            {{ closeText }}
+          </button>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>
+<ng-template #progress>
+  <ng-container *ngTemplateOutlet="
+                progressIndicator || defaultProgressIndicator;
+                context: { currentStepNumber: guidedTourService.currentTourStepDisplay, totalSteps: guidedTourService.currentTourStepCount }
+            "></ng-container>
+</ng-template>
+<ng-template #defaultProgressIndicator let-currentStepNumber="currentStepNumber" let-totalSteps="totalSteps">
+  <ng-container *ngIf="progressIndicatorLocation === progressIndicatorLocations.InsideNextButton">&nbsp;
+  </ng-container>
+  {{ currentStepNumber }}/{{ totalSteps }}
+</ng-template>

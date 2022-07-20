@@ -1,0 +1,84 @@
+<nb-card status="basic" class="dialog-content width-800px z-index-999">
+  <nb-card-header class="py-2">
+    <div class="row align-items-center justify-content-end">
+      <div class="col-8">
+        <h6 class="fw-bold poppins">Filtros</h6>
+      </div>
+      <div class="col-4 text-end">
+        <button nbButton status="basic" appearance="ghost" size="medium" (click)="close()" class="m-1">
+          <nb-icon icon="close-outline"></nb-icon>
+        </button>
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body class="">
+    <div class="row" [formGroup]="filterForm">
+      <div class="col-12 mb-3">
+        <nb-form-field>
+          <input
+            formControlName="personSearch"
+            fullWidth type="text" nbInput placeholder="Pesquisar..."
+            fieldSize="large"
+            [nbAutocomplete]="PersonAutoComplete"/>
+
+          <nb-autocomplete #PersonAutoComplete [handleDisplayFn]="viewPersonHandle">
+
+            <nb-option *ngFor="let option of people;trackBy:trackPeopleByFn" [value]="option">
+              {{ option?.name | empty }}
+            </nb-option>
+
+          </nb-autocomplete>
+          <button nbSuffix nbButton ghost status="control" type="button"
+                  *ngIf="!filterForm.get('personSearch').value">
+            <nb-icon icon="search-outline"></nb-icon>
+          </button>
+          <button nbSuffix nbButton ghost status="control" type="button" *ngIf="filterForm.get('personSearch').value"
+                  (click)="filterForm.get('personSearch').reset()">
+            <nb-icon icon="backspace-outline">
+            </nb-icon>
+          </button>
+        </nb-form-field>
+      </div>
+      <div class="col-6 mb-3">
+        <nb-form-field>
+          <nb-select fullWidth size="large" placeholder="Tipo de portfolio..." formControlName="portfolioLevel">
+            <nb-option [value]="projectType"
+                       *ngFor="let projectType of portfolioLevelItems">{{projectType | empty}}</nb-option>
+          </nb-select>
+        </nb-form-field>
+      </div>
+      <div class="col-6 mb-3">
+        <nb-form-field>
+          <input nbInput
+                 fullWidth type="text" placeholder="Competência..." formControlName="competenceSearch"
+                 fieldSize="large"
+                 [nbAutocomplete]="CompetenceAutoComplete"/>
+
+          <nb-autocomplete #CompetenceAutoComplete [handleDisplayFn]="viewCompetenceHandle">
+
+            <nb-option *ngFor="let option of competences;trackBy:trackCompetenceByFn" [value]="option">
+              {{ option?.name | empty }}
+            </nb-option>
+
+          </nb-autocomplete>
+          <button nbSuffix nbButton ghost status="control" type="button"
+                  *ngIf="!filterForm.get('competenceSearch').value">
+            <nb-icon icon="search-outline"></nb-icon>
+          </button>
+          <button nbSuffix nbButton ghost status="control" type="button"
+                  *ngIf="filterForm.get('competenceSearch').value"
+                  (click)="filterForm.get('competenceSearch').reset()">
+            <nb-icon icon="backspace-outline">
+            </nb-icon>
+          </button>
+        </nb-form-field>
+      </div>
+    </div>
+  </nb-card-body>
+  <nb-card-footer class="py-2">
+    <div class="d-flex align-items-center justify-content-end">
+      <button nbButton status="primary" size="medium" (click)="search()" class="m-1">Pesquisar</button>
+      <button nbButton status="basic" size="medium" (click)="resetFilterForm()" class="m-1">Limpar</button>
+    </div>
+  </nb-card-footer>
+</nb-card>

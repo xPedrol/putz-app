@@ -1,0 +1,117 @@
+{
+  "template":{
+     "src":"https://sambavideos.putzfilmes.com/static/videos/ProjetoTeste/ProjetoTeste.aep",
+     "composition":"main",
+     "outputExt":"avi",
+     "output":"avi"
+  },
+  "assets":[
+     {
+        "src":"##IMAGEM##",
+        "type":"image",
+        "layerName":"background"
+     },
+     {
+        "src":"##AUDIO##",
+        "type":"audio",
+        "layerName":"soundtrack"
+     },
+     {
+        "type":"data",
+        "layerName":"text",
+        "property":"Source Text",
+        "value":"##TEXTO_NOME##"
+     },
+     {
+        "type":"data",
+        "layerName":"text",
+        "property":"Source Text.font",
+        "value":"Arial-BoldItalicMT"
+     },
+     {
+        "type":"data",
+        "layerName":"text",
+        "property":"Source Text.fontSize",
+        "value":38
+     },
+     {
+        "type":"data",
+        "layerName":"text",
+        "property":"Source Text.fillColor",
+        "value":[
+           1,
+           0,
+           0
+        ]
+     },
+     {
+        "type":"data",
+        "layerName":"subtitle",
+        "property":"Source Text",
+        "value":"##TEXTO_NOVO##"
+     },
+     {
+        "type":"data",
+        "layerName":"subtitle",
+        "property":"Source Text.font",
+        "value":"Arial-BoldItalicMT"
+     },
+     {
+        "type":"data",
+        "layerName":"subtitle",
+        "property":"Source Text.fontSize",
+        "value":38
+     },
+     {
+        "type":"data",
+        "layerName":"subtitle",
+        "property":"Source Text.fillColor",
+        "value":[
+           1,
+           0,
+           0
+        ]
+     },
+     {
+        "type":"data",
+        "layerName":"description",
+        "property":"Source Text",
+        "value":"##TEXTO_DATA##"
+     },
+     {
+        "type":"data",
+        "layerName":"description",
+        "property":"Source Text.font",
+        "value":"Arial-BoldItalicMT"
+     },
+     {
+        "type":"data",
+        "layerName":"description",
+        "property":"Source Text.fontSize",
+        "value":38
+     },
+     {
+        "type":"data",
+        "layerName":"description",
+        "property":"Source Text.fillColor",
+        "value":[
+           1,
+           0,
+           0
+        ]
+     }
+  ],
+  "actions":{
+     "postrender":[
+        {
+           "module":"@nexrender/action-encode",
+           "preset":"mp4",
+           "output":"result.mp4",
+           "params":{
+              "-vcodec":"libx264",
+              "-r":25
+           }
+        }
+     ]
+  }
+}

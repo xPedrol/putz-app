@@ -1,0 +1,234 @@
+<div class="layout-content">
+  <div class="row overflow-hidden">
+    <div class="col-12 col-md-12">
+      <nb-card>
+        <nb-card-header class="border-0 mb-2">
+          <div class="row align-items-center">
+            <div class="col-md-8 text-start">
+              <h5 class="poppins header-title">Início</h5>
+            </div>
+          </div>
+        </nb-card-header>
+        <nb-card-body>
+          <div class="row">
+            <div class="col-12">
+              <nb-tag-list>
+                <nb-tag status="primary" size="small" appearance="outline"
+                        [text]="'Nome: '+(portfolio?.name | empty)"></nb-tag>
+                <nb-tag status="primary" size="small" appearance="outline"
+                        [text]="'Level: '+ (portfolio?.level?('level.'+portfolio?.level | translate):'---')"></nb-tag>
+                <nb-tag status="primary" size="small" appearance="outline"
+                        [text]="'Competência: '+(portfolio?.competence?.name | empty)"></nb-tag>
+                <nb-tag status="warning" size="small" appearance="outline"
+                        [text]="'Freelancer: '+(portfolio?.person?.name | empty)"></nb-tag>
+              </nb-tag-list>
+              <ng-container *ngIf="!portfolio?.file && !portfolio?.fileLink">
+                <app-simple-not-found class="float-lg-end" message="Sem arquivo" size="small"
+                                      appearance="outline"></app-simple-not-found>
+              </ng-container>
+              <ng-container *ngIf=" portfolio?.fileLink">
+                <div class="float-lg-end">
+                  <a nbButton status="primary" class="m-1" size="small" target="_blank" [href]="portfolio?.fileLink">Arquivo via
+                    link
+                    externo</a>
+                  <a *ngIf="portfolio?.person" class="m-1" nbButton status="primary" size="small"
+                     [routerLink]="['','account','profile',portfolio.person.slug]" target="_blank">Pefil do freelancer</a>
+                </div>
+              </ng-container>
+            </div>
+            <div class="col-12">
+              <hr>
+              <p *ngIf="portfolio?.description">{{portfolio?.description}}</p>
+              <p
+                *ngIf="!portfolio?.description && portfolio?.competence?.description">{{portfolio?.competence?.description}}</p>
+              <p *ngIf="!portfolio?.description && !portfolio?.competence?.description" class="text-center">
+                <nb-tag status="danger" size="small" appearance="outline"
+                        text="Sem descrição"></nb-tag>
+              </p>
+            </div>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
+    <div class="col-12">
+      <nb-card [nbSpinner]="loadingPortfolioUpdate" nbSpinnerStatus="primary" nbSpinnerMessage="Carregando..."
+               [class.spinner-content]="loadingPortfolioUpdate">
+        <nb-card-header class="border-0 mb-2">
+          <div class="row align-items-center">
+            <div class="col-md-8 text-start">
+              <h5 class="poppins header-title">Formulário</h5>
+            </div>
+          </div>
+        </nb-card-header>
+        <nb-card-body>
+          <form [formGroup]="editForm" (ngSubmit)="save()">
+            <div class="row">
+              <div class="mb-3 col-md-4" *ngIf="competenceGuideId || portfolioId">
+                <label class="label">Status</label>
+                <nb-form-field>
+                  <nb-select size="large" fullWidth placeholder="Status..." formControlName="requestStatus">
+                    <nb-option [value]="status" *ngFor="let status of portfolioRequestStatusEnumArray">
+                      {{('portfolio.requestStatus.' + status) | translate}}
+                    </nb-option>
+                  </nb-select>
+                </nb-form-field>
+              </div>
+              <div class="mb-3 col-md-4" *ngIf="competenceGuideId || portfolioId">
+                <label class="label">Competência</label>
+                <nb-form-field>
+                  <input fieldSize="large" type="text" nbInput fullWidth placeholder="Competência"
+                         [value]="portfolio?.competence?.name | empty" [readOnly]="true">
+                </nb-form-field>
+              </div>
+              <div class="mb-3 col-md-4" *ngIf="!portfolioId && !competenceGuideId">
+                <label class="label">Competências</label>
+                <nb-form-field>
+                  <input
+                    #inputCompetenceGuideSearch
+                    nbInput
+                    fullWidth
+                    fieldSize="large"
+                    [formControl]="competenceGuideInput"
+                    type="text"
+                    placeholder="Selecione uma competência..."
+                    [nbAutocomplete]="competenceAuto"
+                    [status]="(editForm.get('competence')!.dirty || editForm.get('competence')!.touched) ? (editForm.get('competence')!.invalid  ? 'danger' : 'success') : 'basic'">
+
+                  <nb-autocomplete #competenceAuto>
+
+                    <nb-option *ngFor="let option of competenceGuides;trackBy:trackCompetenceGuidesByFn"
+                               [value]="option?.name">
+                      {{ option?.name }}
+                    </nb-option>
+
+                  </nb-autocomplete>
+                  <button nbSuffix nbButton ghost *ngIf="competenceGuideInput.dirty"
+                          (click)="competenceGuideInput.reset();inputCompetenceGuideSearch.value = ''">
+                    <nb-icon [icon]="'backspace-outline'">
+                    </nb-icon>
+                  </button>
+                </nb-form-field>
+                <ng-container
+                  *ngIf="editForm.get('competence')!.invalid && editForm.get('competence')!.touched">
+                  <p class="text-danger" *ngIf="editForm.get('competence')!.errors?.required">
+                    Campo obrigatório
+                  </p>
+                </ng-container>
+              </div>
+              <div class="mb-3 col-md-4">
+                <label class="label">Nível</label>
+                <nb-form-field>
+                  <input fieldSize="large" type="text" nbInput fullWidth placeholder="Nível do portfolio"
+                         [readOnly]="true" [value]="editForm.get('level')!.value"
+                         [status]="(editForm.get('level')!.dirty || editForm.get('level')!.touched) ? (editForm.get('level')!.invalid  ? 'danger' : 'success') : 'basic'">
+                </nb-form-field>
+                <ng-container
+                  *ngIf="editForm.get('level')!.invalid && editForm.get('level')!.touched">
+                  <p class="text-danger" *ngIf="editForm.get('level')!.errors?.required">
+                    Campo obrigatório
+                  </p>
+                </ng-container>
+              </div>
+              <div class="mb-3 col-md-12">
+                <label class="label">Tags</label>
+                <nb-form-field>
+                  <nb-tag-list (tagRemove)="onTagRemove($event)">
+                    <nb-tag *ngFor="let tag of selectedTags" [text]="tag.name | empty" [id]="tag!.id" [role]="''+tag.id"
+                            appearance="outline" size="small"
+                            removable></nb-tag>
+                    <input #inputTagSearch [formControl]="tagInput" fieldSize="large"
+                           placeholder="Escolha tags para o portfolio..." type="text" nbTagInput fullWidth
+                           [nbAutocomplete]="auto">
+                    <nb-autocomplete #auto (selectedChange)="onTagAdd($event,inputTagSearch);">
+
+                      <nb-option *ngFor="let option of tags;trackBy:trackTagsByFn" [value]="option">
+                        {{ option?.name }}
+                      </nb-option>
+
+                    </nb-autocomplete>
+                  </nb-tag-list>
+                </nb-form-field>
+              </div>
+              <div class="mb-3 col-md-6">
+                <label class="label">Descrição</label>
+                <nb-form-field>
+              <textarea fieldSize="large" type="text" nbInput fullWidth placeholder="Descrição"
+                        formControlName="description"
+                        rows="6"
+                        [status]="(editForm.get('description')!.dirty || editForm.get('description')!.touched) ? (editForm.get('description')!.invalid  ? 'danger' : 'success') : 'basic'">
+              </textarea>
+                </nb-form-field>
+                <ng-container
+                  *ngIf="editForm.get('description')!.invalid && editForm.get('description')!.touched">
+                  <p class="text-danger" *ngIf="editForm.get('description')!.errors?.required">
+                    Campo obrigatório
+                  </p>
+                </ng-container>
+              </div>
+              <div class="mb-3 col-md-6">
+                <label class="label">Arquivo</label>
+                <ng-container *ngIf="fileType === 'file'">
+                  <ngx-dropzone (change)="onSelect($event)" class="dropzone-background" [multiple]="false"
+                                (keyup)="editForm.get('file')!.markAsTouched()"
+                                (blur)="editForm.get('file')!.markAsTouched()">
+                    <ngx-dropzone-label>Coloque seu arquivo aqui</ngx-dropzone-label>
+                    <ngx-dropzone-preview [file]="editForm.get('file')!.value" *ngIf="editForm.get('file')!.value"
+                                          [removable]="true" (removed)="onRemove()">
+                      <ngx-dropzone-label>{{ editForm.get('file')!.value.name }} ({{ editForm.get('file')!.value?.type }}
+                        )
+                      </ngx-dropzone-label>
+                    </ngx-dropzone-preview>
+                    <!--              <ngx-dropzone-image-preview [file]="editForm.get('file')!.value"-->
+                    <!--                                          *ngIf="file" [removable]="true" (removed)="onRemove()">-->
+                    <!--            <ngx-dropzone-label>Imagem de perfil ({{ photo?.type }})</ngx-dropzone-label>-->
+                    <!--              </ngx-dropzone-image-preview>-->
+                  </ngx-dropzone>
+                  <ng-container
+                    *ngIf="editForm.get('file')!.invalid && editForm.get('file')!.touched">
+                    <p class="text-danger" *ngIf="editForm.get('file')!.errors?.required">
+                      Campo obrigatório
+                    </p>
+                    <p class="text-danger" *ngIf="editForm.get('file')!.errors?.requiredValidation">
+                      Insira um arquivo ou um link
+                    </p>
+                  </ng-container>
+                </ng-container>
+                <ng-container *ngIf="fileType === 'link'">
+                  <nb-form-field>
+                    <input fieldSize="large" type="text" nbInput fullWidth placeholder="Digite o link do arquivo..."
+                           formControlName="fileLink"
+                           [status]="(editForm.get('fileLink')!.dirty || editForm.get('fileLink')!.touched) ? (editForm.get('fileLink')!.invalid  ? 'danger' : 'success') : 'basic'">
+                  </nb-form-field>
+                  <ng-container
+                    *ngIf="editForm.get('fileLink')!.invalid && editForm.get('fileLink')!.touched">
+                    <p class="text-danger" *ngIf="editForm.get('fileLink')!.errors?.required">
+                      Campo obrigatório
+                    </p>
+                    <p class="text-danger" *ngIf="editForm.get('fileLink')!.errors?.minlength">
+                      Muito curto
+                    </p>
+                    <p class="text-danger" *ngIf="editForm.get('fileLink')!.errors?.requiredValidation">
+                      Insira um arquivo ou um link
+                    </p>
+                  </ng-container>
+                </ng-container>
+                <div class="d-flex mt-2 justify-content-end">
+                  <nb-toggle status="basic"
+                             (checkedChange)="changeFileType()">{{fileType === 'link' ? 'Trocar para arquivo' : 'Trocar para link'}}</nb-toggle>
+                </div>
+
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12 text-end">
+                <button class="spinner-no-bg" nbButton size="medium" status="primary" type="submit"
+                        [disabled]="loadingPortfolioUpdate">Enviar
+                </button>
+              </div>
+            </div>
+          </form>
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </div>
+</div>

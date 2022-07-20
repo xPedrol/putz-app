@@ -1,0 +1,29 @@
+<div class="row">
+  <div class="col-md-6 step-card" *ngFor="let projectStep of projectSteps;trackBy:trackByFn"
+       [routerLink]="['','projects',project?.projectStatusRouteParam,project?.id,'steps',projectStep?.id,'events']">
+    <nb-card>
+      <nb-card-body>
+        <div class="row">
+          <div class="col-12">
+            <h6 class="header-title">{{projectStep?.name}}</h6>
+          </div>
+          <nb-tag-list>
+            <nb-tag size="tiny" status="primary" appearance="outline"
+                    [text]="'Início:' +(projectStep!.startDate | convert | date:'dd/MM/yyyy' | empty)"></nb-tag>
+            <nb-tag size="tiny" status="primary" appearance="outline"
+                    [text]="'Previsão:'+(projectStep!.endDate | convert | date:'dd/MM/yyyy' | empty)"></nb-tag>
+          </nb-tag-list>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-6 text-start">
+            Total de dias: <strong>{{projectStep?.calcTotalDays ? projectStep?.calcTotalDays : 0}}</strong>
+          </div>
+          <div class="col-6 text-end">
+            Dias extras: <strong>{{projectStep?.calcExtradays ? projectStep?.calcExtradays : 0}}</strong>
+          </div>
+        </div>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

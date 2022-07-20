@@ -1,0 +1,94 @@
+{
+  "template": {
+    "src": "https://sambavideos.putzfilmes.com/static/videos/CREDITAS/CREDITAS.aep",
+    "composition": "_MAIN",
+    "outputExt": "avi",
+    "output": "avi"
+  },
+  "assets": [
+    {
+      "src": "https://sambavideos.putzfilmes.com/static/videos/CREDITAS/(Footage)/VIDEO_BASE.mp4",
+      "type": "video",
+      "layerName": "VIDEO_BASE"
+    },
+    {
+      "value": "São Paulo\nSP",
+      "type": "data",
+      "property": "Source Text",
+      "layerName": "TEXTO_CELULAR"
+    },
+    {
+      "value": "dia\n09",
+      "type": "data",
+      "property": "Source Text",
+      "layerName": "TEXTO_POST_IT"
+    },
+    {
+      "composition": "VIDEO_NOTEBOOK",
+      "value": "50mil",
+      "type": "data",
+      "property": "Source Text",
+      "layerName": "TEXTO_VALOR"
+    },
+    {
+      "composition": "VIDEO_NOTEBOOK",
+      "value": "0,99%",
+      "type": "data",
+      "property": "Source Text",
+      "layerName": "TEXTO_TAXA"
+    },
+    {
+      "composition": "VIDEO_NOTEBOOK",
+      "value": "2,5mil",
+      "type": "data",
+      "property": "Source Text",
+      "layerName": "TEXTO_PARCELA"
+    },
+    {
+      "src": "https://sambavideos.putzfilmes.com/static/videos/CREDITAS/(Footage)/Garantias/Garantia_VEICULO.mp3",
+      "type": "audio",
+      "layerName": "AUDIO_GARANTIA"
+    },
+    {
+      "value": "Fazer sua viagem dos Sonhos",
+      "type": "data",
+      "property": "Source Text",
+      "layerName": "INSERT_TEXTO"
+    },
+    {
+      "src": "https://sambavideos.putzfilmes.com/static/videos/CREDITAS/(Footage)/Insert_Imagens/INSERT_VIAGEM.mp4",
+      "type": "video",
+      "layerName": "VIDEO_MOTIVO"
+    },
+    {
+      "src": "https://sambavideos.putzfilmes.com/static/videos/CREDITAS/(Footage)/Nomes/Henrique.mp3",
+      "type": "audio",
+      "layerName": "AUDIO_NOME"
+    },
+    {
+      "value": "##TEXTO_NOME##",
+      "type": "data",
+      "property": "Source Text",
+      "layerName": "TEXTO_NOME"
+    },
+    {
+      "src": "https://sambavideos.putzfilmes.com/static/videos/CREDITAS/(Footage)/trilha_editada.mp3",
+      "type": "audio",
+      "layerName": "TRILHA"
+    }
+  ],
+  "actions": {
+    "postrender": [
+      {
+        "module": "@nexrender/action-encode",
+        "preset": "mp4",
+        "output": "result.mp4",
+        "params": {
+          "-vcodec": "libx264",
+          "-r": 25,
+          "-vf": "scale=1920:1080"
+        }
+      }
+    ]
+  }
+}

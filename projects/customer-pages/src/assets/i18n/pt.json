@@ -1,0 +1,24 @@
+{
+  "project-render": {
+    "status": {
+      "QUEUED": "Na fila",
+      "CREATED": "Criado",
+      "PICKED": "Separado",
+      "STARTED": "Iniciado",
+      "RENDER_SETUP": "Em renderização",
+      "RENDER_PREDOWNLOAD": "Em renderização",
+      "RENDER_DOWNLOAD": "Em renderização",
+      "RENDER_POSTDOWNLOAD": "Em renderização",
+      "RENDER_PRERENDER": "Em renderização",
+      "RENDER_SCRIPT": "Em renderização",
+      "RENDER_DORENDER": "Em renderização",
+      "RENDER_POSTRENDER": "Em renderização",
+      "RENDER_POSRENDER": "Em renderização",
+      "PRECREATED": "Aguardando confirmação",
+      "RENDER_CLEANUP": "Finalizando",
+      "FINISHED": "Finalizado",
+      "ERROR": "Erro",
+      "SAMBA_PROCESSING": "Em precesso na SambaTech"
+    }
+  }
+}

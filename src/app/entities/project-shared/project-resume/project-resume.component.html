@@ -1,0 +1,77 @@
+<div *ngIf="!project?.isProject">
+  <div class="row text-center">
+    <div class="mb-3 col-md-12">
+      <p class="mb-0">{{project?.description}}</p>
+      <p *ngIf="project?.approvedByClient" class="text-success fw-bold poppins m-0">Aprovado</p>
+    </div>
+  </div>
+  <div class="row justify-content-center align-items-center text-center">
+    <div class="mb-3 col-12 col-sm-6 col-md-2">
+      <h6 class="fw-bold header-title">Previsão de Dias</h6>
+      <nb-tag size="small" status="primary" appearance="filled" [text]="project?.days | empty"></nb-tag>
+    </div>
+    <div class="mb-3 col-12 col-sm-6 col-md-2">
+      <h6 class="fw-bold header-title">Data Início</h6>
+      <nb-tag size="small" status="primary" appearance="filled"
+              [text]="project?.startDate | convert | date:'dd/MM/yyyy' | empty"></nb-tag>
+    </div>
+    <div class="mb-3 col-12 col-sm-6 col-md-2">
+      <h6 class="fw-bold header-title">Previsão de Término</h6>
+      <nb-tag size="small" status="primary" appearance="filled"
+              [text]="project?.endDate | convert | date:'dd/MM/yyyy' | empty"></nb-tag>
+    </div>
+    <div class="mb-3 col-12 col-sm-6 col-md-3">
+      <h6 class="fw-bold header-title">Responsável</h6>
+      <nb-tag size="small" status="primary" appearance="filled" [text]="project?.vendor?.name | empty"></nb-tag>
+    </div>
+    <div class="mb-3 col-12 col-sm-6 col-md-3">
+      <h6 class="fw-bold header-title">Valor</h6>
+      <nb-tag size="small" status="primary" appearance="filled"
+              [text]="(project?.negotiationCalc?.finalPrice | currency) | empty"></nb-tag>
+    </div>
+
+    <!--    <div *ngIf="project?.approvedByClient" class="mb-3 col-md-2">-->
+    <!--      <nb-alert status="success">Aprovado</nb-alert>-->
+    <!--    </div>-->
+
+  </div>
+  <div class="row justify-content-center align-items-center text-center">
+    <div class="col-12 mb-3">
+<!--      <hr>-->
+    </div>
+    <ng-container *ngIf="project?.isConception && !project?.approvedByClient">
+      <div class="mb-3 col-md-12">
+        <button nbButton status="info" size="small" appearance="filled" class="m-1" *nbIsGranted="['approve','conception']"
+                (click)="approveConception(project)">
+          Aprovar Orçamento
+          <nb-icon icon="checkmark-outline"></nb-icon>
+        </button>
+        <button nbButton status="danger" size="small" appearance="filled" class="m-1" *nbIsGranted="['approve','conception']"
+                (click)="cancelConception(project)">
+          Cancelar Orçamento
+          <nb-icon icon="close-outline"></nb-icon>
+        </button>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="project?.isPlanning">
+      <div class="col-12">
+        <a nbButton href="https://forms.gle/mapkqa1zo5skDfqu7" size="small" appearance="filled" target="_blank" class="m-1">
+          Link Briefing
+        </a>
+        <a nbButton href="https://calendly.com/producao-2" size="small" appearance="filled" target="_blank" class="m-1">
+          Agendar Reunião
+        </a>
+        <button nbButton status="success" appearance="filled" size="small" class="m-1" *nbIsGranted="['approve','briefing']"
+                (click)="approveBriefing(project)">
+          <nb-icon icon="checkmark-outline"></nb-icon>
+          Aprovar Briefing
+        </button>
+        <button nbButton status="danger" appearance="filled" size="small" class="m-1" *nbIsGranted="['approve','briefing']"
+                (click)="cancelConception(project)">
+          Cancelar Briefing
+          <nb-icon icon="close-outline"></nb-icon>
+        </button>
+      </div>
+    </ng-container>
+  </div>
+</div>

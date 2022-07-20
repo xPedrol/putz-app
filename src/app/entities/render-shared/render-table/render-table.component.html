@@ -1,0 +1,141 @@
+<div class="wrap-table100">
+  <div class="scroll">
+    <div class="table">
+      <div class="row header custom-sticky-header z-index-1">
+        <div class="cell" [sortable]="column.name" [ngClass]="column.class"
+             *ngFor="let column of rankColumns;trackBy:identify"
+             (sort)="onSort($event)">
+          <nb-icon
+            *ngIf="column.title && column.name === sort?.column && sort?.icon"
+            [icon]="sort?.icon??''" class="table-header-icon mx-2"
+            status="basic"></nb-icon>
+          <span class="label">{{column?.title}}</span>
+        </div>
+      </div>
+
+      <div class="row" *ngFor="let item of renderItems;trackBy:trackProjectRenderItemsByFn">
+        <div class="cell text-start no-wrap max-width-300px" data-title="Nome" *libTableCell="'name'">
+          <span [nbTooltip]="item?.name??'Sem nome'">{{item?.name|empty}}</span>
+        </div>
+        <div *libTableCell="'startRenderDate'"
+             class="cell text-start max-width-100px"
+             data-title="Início da renderização"
+        >
+          {{item?.createdDate | convert | date:'dd/MM/yyyy HH:mm' | empty}}
+        </div>
+        <div *libTableCell="'renderStatus'"
+             class="cell text-start max-width-100px"
+             data-title="Status"
+        >
+          <nb-tag
+            status="primary"
+            appearance="outline"
+            size="small"
+            class="no-wrap"
+            [nbTooltip]="'project-render.status.'+item.renderStatus | translate"
+            [text]="'project-render.status.'+item.renderStatus | translate"
+          ></nb-tag>
+        </div>
+
+        <div *libTableCell="'endRenderDate'"
+             class="cell text-start max-width-100px"
+             data-title="Término da renderização"
+        >
+          <nb-progress-bar *ngIf="item?.job?.renderProgress > 0 && !item?.videoUrl"
+                           [value]="item?.job?.renderProgress"
+                           status="primary"
+                           [displayValue]="true"
+                           size="small"
+          ></nb-progress-bar>
+          <ng-container
+            *ngIf="item?.renderStatus === renderItemStatus.FINISHED || item?.renderStatus === renderItemStatus.SAMBA_PROCESSING || item?.renderStatus === renderItemStatus.SAMBA_HOST">{{item?.endRenderDate | convert | date:'dd/MM/yyyy HH:mm'}}</ng-container>
+          <!--          <ng-container-->
+          <!--            *ngIf="item?.job?.error"><nb-tag status="danger" appearance="outline" text="Erro ao obter progresso"></nb-tag></ng-container>-->
+        </div>
+        <div *libTableCell="'exportedDate'"
+             class="cell text-start max-width-100px"
+             data-title="Início da renderização"
+        >
+          <nb-tag
+            status="success"
+            appearance="outline"
+            size="small"
+            class="no-wrap"
+            [text]="item?.exportedDate | convert | date:'dd/MM/yyyy' | empty"
+          ></nb-tag>
+        </div>
+
+        <div class="cell text-start" data-title="Link do video" *libTableCell="'videoUrl'">
+          <!--          <button nbButton status="primary" ghost size="small" *ngIf="item?.videoUrl" (click)="createUrl(item)">Download-->
+          <!--            <nb-icon icon="download-outline"></nb-icon>-->
+          <!--          </button>-->
+          <a nbButton status="primary" ghost size="small" *ngIf="item?.videoUrl" target="_blank"
+             [href]="item.videoUrl">Link
+            <nb-icon icon="external-link-outline"></nb-icon>
+          </a>
+          <a nbButton status="primary" ghost size="small" *ngIf="item?.sambaUrl" target="_blank"
+             [href]="item.sambaUrl">Link (Samba)
+            <nb-icon icon="external-link-outline"></nb-icon>
+          </a>
+          <nb-tag
+            *ngIf="!item?.videoUrl"
+            status="danger"
+            appearance="outline"
+            size="small"
+            text="Sem video"
+            class="no-wrap"
+          ></nb-tag>
+        </div>
+        <div class="cell text-end pr-3" data-title="">
+          <a class="m-1" size="small" nbButton outline status="primary" target="_blank"
+             *ngIf="item?.renderStatus === renderItemStatus.PRECREATED && item?.renderProject?.whatsappBot"
+             href='https://api.whatsapp.com/send/?phone={{item?.renderProject?.whatsappBot}}&text={{item?.renderUid | empty}}'>
+            <nb-icon icon="phone-call-outline" class="mx-1" status="success"></nb-icon>
+            Enviar Código</a>
+          <a *ngIf="item?.sambaUrl" [href]="item.sambaUrl" target="_blank"
+             nbButton
+             appearance="outline"
+             class="m-1"
+             status="primary"
+             size="small"
+          >
+            Samba Video
+          </a>
+          <button
+            nbButton
+            appearance="outline"
+            (click)="sendToRender(item)"
+            class="m-1"
+            status="primary"
+            size="small"
+          >
+            Reenviar
+          </button>
+          <ng-container *ngIf="projectRender?.hasSambaId">
+            <button
+              nbButton
+              appearance="outline"
+              (click)="sendToSamba(item)"
+              class="m-1"
+              status="primary"
+              size="small"
+            >
+              Reenviar (Samba)
+            </button>
+          </ng-container>
+          <button
+            nbButton
+            appearance="outline"
+            class="m-1"
+            status="danger"
+            size="small"
+            (click)="delete(item)"
+          >
+            Deletar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

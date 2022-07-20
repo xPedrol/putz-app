@@ -1,0 +1,5 @@
+<app-render-items-by-hour-line-chart [projectRenderItemByHourGraph]="projectRenderItemByHourGraph"
+                                     *ngIf="projectRenderItemByHourGraph && projectRenderItemByHourGraph.length > 0">
+</app-render-items-by-hour-line-chart>
+<app-detailed-not-found [hasCallback]="false" message="Sem registros para desenhar o gráfico"
+                        *ngIf="!projectRenderItemByHourGraph ||projectRenderItemByHourGraph.length === 0"></app-detailed-not-found>

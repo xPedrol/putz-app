@@ -1,0 +1,94 @@
+<div class="wrap-table100">
+  <div class="scroll">
+    <div class="table">
+      <div class="row header custom-sticky-header">
+        <div class="cell" [sortable]="column.name" [ngClass]="column.class" *ngFor="let column of columns"
+             (sort)="onSort($event)">
+          <nb-icon
+            *ngIf="column.title && column.name === sort?.column && sort?.icon"
+            [icon]="sort?.icon??''" class="table-header-icon mx-2"
+            status="basic"></nb-icon>
+          <span class="label">{{column?.title}}</span>
+        </div>
+      </div>
+      <ng-container *ngIf="projects && projects.length > 0">
+        <div class="row" *ngFor="let project of projects;trackBy:trackById" [libTableRow]="columns">
+          <div class="cell text-start" data-title="ID" *libTableCell="'id'">
+            <nb-tag status="basic" appearance="outline" size="small"
+                    [text]="project?.id | empty"></nb-tag>
+          </div>
+          <div class="cell text-start" data-title="Nome" *libTableCell="'name'">
+            {{project?.name | empty}}
+          </div>
+          <div class="cell text-start" data-title="Cliente" *libTableCell="'client'">
+            {{project?.client?.name | empty}}
+          </div>
+          <div class="cell text-start" data-title="Status" *libTableCell="'projectStatus'">
+            <nb-tag status="info" appearance="outline" size="small"
+                    [text]="('project.status.'+project?.projectStatus | translate) | empty"></nb-tag>
+          </div>
+          <div class="cell text-start" data-title="Data de início" *libTableCell="'startDate'">
+            {{project?.startDate | convert | date:'dd/MM/yyyy' | empty}}
+          </div>
+          <div class="cell text-start" data-title="Valor" *libTableCell="'valueCalc'">
+            <!--            <nb-tag status="basic" appearance="outline" size="small"-->
+            <!--                    [text]="(project?.valueCalc?.toFixed(2) | empty)"></nb-tag>-->
+          </div>
+          <div class="cell text-start text-md-end max-width-200px" data-title="" *libTableCell="'actions'">
+            <ng-container *ngIf="project?.agreementPdfLink">
+              <a *nbIsGranted="['view','project-contract']" nbButton ghost status="info" type="button" target="_blank"
+                 nbTooltip="Contrato do projeto"
+                 [href]="project.agreementPdfLink">
+                <nb-icon icon="file-text-outline"></nb-icon>
+              </a>
+            </ng-container>
+            <button nbButton status="info" appearance="outline" ghost *nbIsGranted="['edit','project']"
+                    nbTooltip="Fechar projeto"
+                    (click)="closeProject(project)">
+              <nb-icon icon="folder-outline"></nb-icon>
+            </button>
+            <ng-container *ngIf="project?.isConception && !project?.approvedByClient">
+              <button nbButton status="success" ghost *nbIsGranted="['approve','conception']"
+                      nbTooltip="Aprovar Orçamento" (click)="approveConception(project)">
+                <nb-icon icon="checkmark-outline"></nb-icon>
+              </button>
+              <button nbButton status="danger" ghost *nbIsGranted="['approve','conception']"
+                      nbTooltip="Cancelar Orçamento" (click)="cancelConception(project)">
+                <nb-icon icon="close-outline"></nb-icon>
+              </button>
+            </ng-container>
+            <ng-container *ngIf="project?.isPlanning">
+              <button nbButton status="success" appearance="outline" ghost *nbIsGranted="['approve','briefing']"
+                      nbTooltip="Aprovar Briefing"
+                      (click)="approveBriefing(project)">
+                <nb-icon icon="checkmark-outline"></nb-icon>
+              </button>
+              <button nbButton status="danger" ghost *nbIsGranted="['approve','briefing']" nbTooltip="Cancelar Briefing"
+                      (click)="cancelConception(project)">
+                <nb-icon icon="close-outline"></nb-icon>
+              </button>
+            </ng-container>
+            <ng-container *nbIsGranted="['view','render']">
+              <a *ngIf="project?.projectRenderId" nbButton ghost status="info" type="button" nbTooltip="Renderização"
+                 [routerLink]="['','projects',project.id,'render',project?.projectRenderSlug]">
+                <nb-icon icon="film-outline"></nb-icon>
+              </a>
+            </ng-container>
+            <a nbButton ghost status="info" type="button" nbTooltip="Timeline" *ngIf="project.isProject"
+               [routerLink]="['','projects',project?.id,'timeline']">
+              <nb-icon icon="trending-up-outline"></nb-icon>
+            </a>
+            <a nbButton ghost status="info" type="button" *nbIsGranted="['view','project-basic']" nbTooltip="Detalhes"
+               [routerLink]="['','projects',project.id,'general']">
+              <nb-icon icon="edit-2-outline"></nb-icon>
+            </a>
+            <button nbButton ghost status="danger" type="button" (click)="deleteProject(project)"
+                    *nbIsGranted="['edit','project']" nbTooltip="Excluir">
+              <nb-icon icon="trash-outline"></nb-icon>
+            </button>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>

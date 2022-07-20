@@ -1,0 +1,103 @@
+@use '../../../../../../../src/app/shared/themes/themes' as *;
+@use '@nebular/theme/styles/globals' as *;
+
+@include nb-install-component() {
+
+  $max-width: 960px;
+  $convex-bg: linear-gradient(to bottom, #f1f3f6 0, transparent 18%);
+  $content-width: nb-theme(content-width);
+  //$max-width: 1000px;
+  .features {
+
+    .content-center {
+      //max-width: $max-width;
+      justify-content: center;
+    }
+  }
+  ::ng-deep nb-layout-column {
+    overflow-x: hidden;
+  }
+
+  .content-center {
+    max-width: $content-width;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .concave {
+    margin-bottom: -10px;
+    margin-top: -5rem;
+    margin-left: -20%;
+    margin-right: -20%;
+    fill: nb-theme(background-basic-color-2);
+
+    @include media-breakpoint-up(md) {
+      margin-top: -7rem;
+    }
+
+    @include media-breakpoint-up(lg) {
+      margin-top: -8.5rem;
+    }
+
+    @include media-breakpoint-up(xl) {
+      margin-top: -15rem;
+    }
+  }
+
+  .for-business-section {
+    background: nb-theme(background-basic-color-2);
+    padding: 0 1rem;
+
+    & + .features {
+      padding-top: 3rem;
+    }
+  }
+
+  app-for-business {
+    margin: 0 auto;
+  }
+
+  app-hero-footer {
+    max-width: $max-width;
+    margin: 0 auto;
+  }
+
+  .components-promo {
+    margin-bottom: 3rem;
+
+    app-components-promo {
+      margin: auto;
+    }
+  }
+
+  @include media-breakpoint-up(is) {
+    app-hero {
+      margin-top: 4rem;
+    }
+  }
+
+  @include media-breakpoint-up(md) {
+    app-hero {
+      margin-top: 2rem;
+    }
+
+    .advantages {
+      padding-bottom: 5.5rem;
+    }
+
+    .for-business-section {
+      padding: 2rem 2rem 0;
+    }
+  }
+
+  @include media-breakpoint-up(xl) {
+    .eva {
+      padding-top: 15rem;
+    }
+  }
+}

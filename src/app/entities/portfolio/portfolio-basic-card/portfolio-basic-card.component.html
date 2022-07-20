@@ -1,0 +1,32 @@
+<nb-card status="basic">
+  <nb-card-header class="p-2 ps-3">
+    <div class="d-flex justify-content-between align-items-center">
+      {{portfolio?.competence?.name | empty}}
+      <nb-tag-list>
+        <nb-tag class="no-wrap" status="primary" appearance="outline" size="tiny" *ngIf="portfolio?.level"
+                [text]="'Level: '+('level.'+portfolio?.level | translate)"></nb-tag>
+      </nb-tag-list>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    {{portfolio?.description | empty}}
+  </nb-card-body>
+  <nb-card-footer class="p-2 ps-3">
+    <div class="d-flex align-items-center justify-content-between">
+      <div class="d-flex justify-content-start align-items-center">
+        <ng-container *ngIf="portfolio?.requestStatus">
+          <nb-icon icon="checkmark-outline" status="success"></nb-icon>
+          <button ghost nbButton status="success" size="tiny" class="m-1">
+            {{('portfolio.requestStatus.'+portfolio.requestStatus) | translate}}
+          </button>
+        </ng-container>
+      </div>
+      <!--          <small *ngIf="true">Verificado</small>-->
+      <div>
+        <a *ngIf="portfolio?.fileLink" nbButton status="primary" size="tiny" class="m-1" target="_blank"
+           [href]="portfolio?.fileLink">Arquivo</a>
+        <a nbButton status="primary" size="tiny" class="m-1" [routerLink]="['','portfolios',portfolio?.id]">Ver</a>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>

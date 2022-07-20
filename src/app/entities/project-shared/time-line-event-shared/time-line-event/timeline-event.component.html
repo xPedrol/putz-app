@@ -1,0 +1,166 @@
+<div class="row justify-content-center mt-2">
+  <div class="col-xl-10 col-12">
+    <div class="text-center my-3" *ngIf="!(timeLineEvents | empty:'boolean')">
+      <app-simple-not-found></app-simple-not-found>
+    </div>
+    <div class="timeline timeline-line-solid" *ngIf="timeLineEvents | empty:'boolean'">
+      <!--                <span class="timeline-label">-->
+      <!--                    <span class="label">{{projectStep?.name}}</span>-->
+      <!--                </span>-->
+      <div class="timeline-item" *ngFor="let event of timeLineEvents;trackBy:trackByFn">
+        <div class="timeline-point timeline-point"></div>
+        <div class="timeline-event">
+          <div class="widget has-shadow">
+            <div class="widget-header d-flex align-items-center">
+              <div class="d-flex flex-column me-auto">
+                <div class="title">
+                  <span class="username">{{event?.title | empty}}</span>
+                </div>
+                <small
+                  class="header-title">{{event?.createdDate | convert | date:'dd/MM/yyyy HH:mm:ss'}}</small>
+              </div>
+              <div class="widget-options">
+
+                <button nbButton ghost status="danger" (click)="deleteEvent(event.id)" *nbIsGranted="['edit','event']">
+                  <nb-icon icon="trash-outline"></nb-icon>
+                </button>
+                <button nbButton ghost status="primary" nbTooltip="Visibilidade" *nbIsGranted="['edit','event']">
+                  <nb-icon icon="eye-outline"></nb-icon>
+                </button>
+                <button nbButton ghost status="primary" (click)="openTimeLineEventDetailDialog(event)"
+                        *nbIsGranted="['edit','event']">
+                  <nb-icon icon="edit-2-outline"></nb-icon>
+                </button>
+              </div>
+            </div>
+            <div class="widget-body">
+              <p>{{event?.description}}</p>
+            </div>
+            <div class="timeline-content-info d-flex justify-content-between mt-2">
+          <span class="timeline-content-info-title">
+            <i class="fa fa-certificate" aria-hidden="true"></i>
+            Anexos
+          </span>
+              <span class="timeline-content-info-date">
+            <i class="fa fa-calendar-o" aria-hidden="true"></i>
+            Total:  {{event?.attachments ? event.attachments!.length : 0}}
+          </span>
+
+            </div>
+            <div class="row mt-2" *ngIf="(event?.attachments | empty:'boolean')">
+              <div class="col-12"
+                   *ngFor="let attachment of event.attachments; let i = index;trackBy:trackAttachmentsByFn">
+                <hr *ngIf="i > 1">
+                <a [href]="attachment.link" target="_blank">{{attachment.name}}
+                  - {{attachment.createdDate | convert | date:'dd/MM/yyyy HH:mm:ss'}}</a><br>
+                <iframe *ngIf="attachment?.link && attachment?.extension !== 'linkurl' "
+                        [src]="(attachment!.link?'https://'+attachment.link+'&output=embed':'') | safe" width="100%"
+                        height="350" class="border-0" allowfullscreen></iframe>
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-12 text-center" *ngIf="!(event?.attachments | empty:'boolean')">
+                <app-simple-not-found size="small" appearance="outline"></app-simple-not-found>
+              </div>
+            </div>
+            <div class="timeline-content-info d-flex justify-content-between mt-2">
+          <span class="timeline-content-info-title">
+            <i class="fa fa-certificate" aria-hidden="true"></i>
+            Comentários
+          </span>
+              <div>
+              <span class="timeline-content-info-date">
+            <i class="fa fa-calendar-o" aria-hidden="true"></i>
+            Total: {{event?.comments ? event.comments!.length : 0}}
+          </span>
+                <button class="ms-2" nbButton status="primary" size="tiny"
+                        nbTooltip="Atualizar comentários" (click)="updateCommentsByEvent(event.id)">
+                  <nb-icon icon="refresh-outline"></nb-icon>
+                </button>
+              </div>
+            </div>
+            <div class="widget-footer">
+              <div class="row comment-scope" *ngIf="event?.comments && event.comments!.length > 0">
+                <div class="col-12" *ngFor="let comment of event.comments; let i = index;trackBy:trackCommentsByFn">
+                  <hr *ngIf="i > 0">
+                  <div class="d-flex align-items-start">
+                    <img width="45" height="45" class="rounded-circle bg-light" alt="comment_profile"
+                         src="{{comment?.user?.imageUrl}}">
+                    <div class="d-flex flex-column ms-1 flex-grow-1">
+                      <div class="d-flex justify-content-between">
+                        <p class="m-0 header-title">{{comment?.user?.login}}</p>
+                        <div>
+                          <button nbButton ghost status="danger" size="small" *nbIsGranted="['edit','comment']"
+                                  (click)="deleteComment(event.id,comment.id)">
+                            <nb-icon icon="trash-outline"></nb-icon>
+                          </button>
+                          <button nbButton ghost status="primary" size="small" *nbIsGranted="['edit','comment']">
+                            <nb-icon icon="eye-outline"></nb-icon>
+                          </button>
+                        </div>
+                        <!--                <nb-tag size="tiny" status="basic" appearance="outline" text="Publicação: 22/22/2222"></nb-tag>-->
+                      </div>
+                      <small
+                        class="header-title margin-top--10px">{{comment?.createdDate | convert | date:'dd/MM/yyyy HH:mm:ss' | empty}}</small>
+                      <small class="m-0">{{comment?.description | empty}}</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row comment-scope">
+                <div class="col-12 text-center" *ngIf="!event?.comments || event?.comments?.length === 0">
+                  <app-simple-not-found size="small" appearance="outline"></app-simple-not-found>
+                </div>
+              </div>
+              <div class="row mt-2">
+                <div class="col-12">
+                  <nb-form-field>
+                    <input [required]="true" #commentInput nbInput placeholder="Comentar..."
+                           fieldSize="medium" fullWidth/>
+                    <button nbSuffix nbButton ghost type="button"
+                            (click)="createComment(commentInput,event.id)">
+                      <nb-icon icon="paper-plane-outline">
+                      </nb-icon>
+                    </button>
+
+                  </nb-form-field>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--          <div class="time-right">25 min ago</div>-->
+        </div>
+      </div>
+    </div>
+    <nb-card class="me-5 ms-5" accent="info">
+      <nb-card-header class="border-0">
+        <div class="d-flex justify-content-between align-items-center">
+          <h6 class="poppins header-title">{{projectStep?.name}}</h6>
+          <div class="text-end">
+            <button nbButton status="primary" size="small" appearance="outline" class="m-1"
+                    *nbIsGranted="['edit','event']"
+                    [disabled]="!!projectStep?.isCurrent"
+                    (click)="openTimeLineEventDetailDialog()">
+              <nb-icon icon="plus-outline"></nb-icon>
+              <span class="d-none d-md-block">Novo Evento</span>
+            </button>
+            <button nbButton status="success" size="small" appearance="outline" class="m-1"
+                    [disabled]="!projectStep?.isCurrent">
+              <nb-icon icon="checkmark-outline"></nb-icon>
+              <span class="d-none d-md-block">Aprovar Etapa</span>
+            </button>
+            <button nbButton status="danger" size="small" appearance="outline" class="m-1"
+                    [disabled]="!projectStep?.isCurrent">
+              <nb-icon icon="close-outline"></nb-icon>
+              <span class="d-none d-md-block">Cancelar</span>
+            </button>
+          </div>
+        </div>
+
+      </nb-card-header>
+      <nb-card-body>
+        <p>{{projectStep?.description}}</p>
+      </nb-card-body>
+    </nb-card>
+  </div>
+</div>

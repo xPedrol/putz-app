@@ -1,0 +1,43 @@
+<nb-card class="dialog-content">
+  <nb-card-header class="border-0">
+    <div class="row align-items-center">
+      <div class="col-10 text-start">
+        <h6 class="poppins header-title">Solicitar serviço - {{projectItem?.name}}</h6>
+      </div>
+      <div class="col-2 text-end">
+        <button nbButton ghost status="basic" (click)="close()">
+          <nb-icon icon="close-outline"></nb-icon>
+        </button>
+      </div>
+    </div>
+
+  </nb-card-header>
+  <nb-card-body>
+    <nb-tag-list>
+      <nb-tag appearance="outline" status="primary" size="tiny"
+              [text]="'Etapa: '+(projectItem?.projectStep?.name | empty)"></nb-tag>
+      <nb-tag appearance="outline" status="primary" size="tiny"
+              [text]="'Valor: '+(projectItem?.value | currency)"></nb-tag>
+    </nb-tag-list>
+
+    <div class="row">
+      <div class="mb-3 col-12">
+        <label class="label">Descrição</label>
+        <nb-form-field>
+          <textarea nbInput rows="5" fullWidth [formControl]="descriptionFormControl" [status]="(descriptionFormControl.dirty || descriptionFormControl.touched) ? (descriptionFormControl.invalid  ? 'danger' : 'success') : 'basic'"></textarea>
+        </nb-form-field>
+        <ng-container *ngIf="descriptionFormControl.invalid && (descriptionFormControl.dirty || descriptionFormControl.touched)">
+          <p class="text-danger" *ngIf="descriptionFormControl.errors?.maxlength">
+            Máximo de caracteres atingido (512)
+          </p>
+        </ng-container>
+      </div>
+    </div>
+    <div class="row">
+      <div class="mb-3 col-12 text-end">
+        <button nbButton size="medium" status="primary" (click)="requestOpportunity()">Enviar</button>
+      </div>
+    </div>
+
+  </nb-card-body>
+</nb-card>

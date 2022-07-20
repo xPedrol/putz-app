@@ -1,0 +1,85 @@
+<nb-card status="basic" class="dialog-content width-800px z-index-999">
+  <nb-card-header class="py-2">
+    <div class="row align-items-center justify-content-end">
+      <div class="col-8">
+        <h6 class="fw-bold poppins">Nomes aprovados</h6>
+      </div>
+      <div class="col-4 text-end">
+        <button nbButton status="basic" appearance="ghost" size="medium" (click)="close()" class="m-1">
+          <nb-icon icon="close-outline"></nb-icon>
+        </button>
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body class="">
+    <ng-container *ngIf="projectRenderSyncNames && projectRenderSyncNames.length > 0">
+      <div class="col-12">
+        <nb-list>
+          <nb-list-item *ngFor="let syncName of projectRenderSyncNames" class="d-block">
+            <div class="d-flex justify-content-between align-items-center">
+              <p>{{syncName.id.nameGroup}}</p>
+              <nb-tag-list>
+                <nb-tag size="tiny" appearance="outline" [text]="('project-render.groupName.recordStatus.'+syncName.recordStatus) | translate"
+                        [status]="syncName.recordStatus === nameStatusEnum.APPROVED?'success':syncName.recordStatus === nameStatusEnum.DECLINED?'danger':'basic'"></nb-tag>
+                <nb-tag size="tiny" appearance="outline" *ngIf="syncName.render?.sambaPid"
+                        [text]="'Samba: '+syncName.render.sambaPid" status="basic"></nb-tag>
+              </nb-tag-list>
+            </div>
+          </nb-list-item>
+        </nb-list>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="approvedNames && approvedNames.length > 0">
+      <div class="row">
+        <div class="col-12 mb-2">
+          <nb-form-field>
+            <input [formControl]="peopleSearch" fullWidth type="text" nbInput placeholder="Pesquisar..."
+                   fieldSize="large"
+                   value="">
+            <button nbSuffix nbButton ghost status="control" type="button"
+                    *ngIf="!peopleSearch.value">
+              <nb-icon icon="search-outline">
+              </nb-icon>
+            </button>
+            <button nbSuffix nbButton ghost status="control" type="button" *ngIf="peopleSearch.value"
+                    (click)="peopleSearch.reset()">
+              <nb-icon icon="backspace-outline">
+              </nb-icon>
+            </button>
+          </nb-form-field>
+        </div>
+        <div class="col-12">
+          <nb-list>
+            <nb-list-item *ngFor="let name of approvedNames;trackBy:trackApprovedNamesByFn">{{name}}</nb-list-item>
+          </nb-list>
+        </div>
+      </div>
+      <app-pagination-wrapper>
+        <ngb-pagination
+          [collectionSize]="listTotalSize" [(page)]="state!.page"
+          [pageSize]="state!.size"
+          (pageChange)="pageChange($event)"
+          [maxSize]="5">
+        </ngb-pagination>
+        <nb-form-field>
+          <nb-select [selected]="state!.size" #selectComponent
+                     (selectedChange)="sizeChange(selectComponent.selected)">
+            <nb-option [value]="5">5</nb-option>
+            <nb-option [value]="10">10</nb-option>
+            <nb-option [value]="15">15</nb-option>
+            <nb-option [value]="20">20</nb-option>
+          </nb-select>
+        </nb-form-field>
+      </app-pagination-wrapper>
+    </ng-container>
+    <div class="my-3"
+         *ngIf="(!approvedNames || approvedNames.length === 0) && (!projectRenderSyncNames || projectRenderSyncNames.length === 0)">
+      <app-simple-not-found message="Nenhum registro foi encontrado"></app-simple-not-found>
+    </div>
+  </nb-card-body>
+  <nb-card-footer class="py-2">
+    <div class="d-flex align-items-center justify-content-end">
+      <button nbButton status="basic" size="medium" (click)="close()" class="m-1">Fechar</button>
+    </div>
+  </nb-card-footer>
+</nb-card>

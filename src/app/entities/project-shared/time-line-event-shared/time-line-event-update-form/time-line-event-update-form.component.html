@@ -1,0 +1,120 @@
+<form [formGroup]="editForm" (ngSubmit)="validateAndGetRaw()">
+  <div class="row">
+    <ng-container *ngIf="!justAttachments">
+      <div class="mb-3 col-md-6">
+        <label class="label">Tipo</label>
+        <nb-form-field>
+          <nb-select formControlName="eventType" fullWidth placeholder="Tipo do evento..."
+                     [status]="(editForm.get('eventType')!.dirty || editForm.get('eventType')!.touched) ? (editForm.get('eventType')!.invalid  ? 'danger' : 'success') : 'basic'">
+            <nb-option *ngFor="let type of eventTypes"
+                       [value]="type">{{ 'timeline.event.status.' + type | translate }}</nb-option>
+          </nb-select>
+        </nb-form-field>
+        <ng-container *ngIf="editForm.get('eventType')!.invalid && editForm.get('eventType')!.touched">
+          <p class="text-danger" *ngIf="editForm.get('eventType')!.errors?.required">
+            Campo obrigatório
+          </p>
+        </ng-container>
+      </div>
+      <div class="mb-3 col-md-6">
+        <label class="label">Item</label>
+        <nb-form-field>
+          <nb-select formControlName="projectItemId" fullWidth placeholder="Vincular a um item..."
+                     [status]="(editForm.get('projectItemId')!.dirty || editForm.get('projectItemId')!.touched) ? (editForm.get('projectItemId')!.invalid  ? 'danger' : 'success') : 'basic'">
+            <nb-option *ngFor="let projectItem of projectItems"
+                       [value]="projectItem?.id">{{projectItem?.name}}</nb-option>
+          </nb-select>
+        </nb-form-field>
+        <ng-container *ngIf="editForm.get('projectItemId')!.invalid && editForm.get('projectItemId')!.touched">
+          <p class="text-danger" *ngIf="editForm.get('projectItemId')!.errors?.required">
+            Campo obrigatório
+          </p>
+        </ng-container>
+      </div>
+      <div class="mb-3 col-12">
+        <label class="label">Título</label>
+        <nb-form-field>
+          <input type="text" nbInput fullWidth placeholder="Título..." formControlName="title" fieldSize="large"
+                 [status]="(editForm.get('title')!.dirty || editForm.get('title')!.touched) ? (editForm.get('title')!.invalid  ? 'danger' : 'success') : 'basic'">
+        </nb-form-field>
+        <ng-container *ngIf="editForm.get('title')!.invalid && editForm.get('title')!.touched">
+          <p class="text-danger" *ngIf="editForm.get('title')!.errors?.required">
+            Campo obrigatório
+          </p>
+        </ng-container>
+      </div>
+      <div class="mb-3 col-12">
+        <label class="label">Descrição</label>
+        <nb-form-field>
+      <textarea rows="5" nbInput fullWidth placeholder="Descrição..." formControlName="description" fieldSize="large"
+                [status]="(editForm.get('description')!.dirty || editForm.get('description')!.touched) ? (editForm.get('description')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </textarea>
+        </nb-form-field>
+        <ng-container *ngIf="editForm.get('description')!.invalid && editForm.get('description')!.touched">
+          <p class="text-danger" *ngIf="editForm.get('description')!.errors?.required">
+            Campo obrigatório
+          </p>
+        </ng-container>
+      </div>
+    </ng-container>
+      <div class="d-flex justify-content-between align-items-center w-100 h-100">
+        <label class="label">Arquivos</label>
+        <div class="d-flex align-items-center h-100">
+          <nb-toggle labelPosition="end" (checkedChange)="fileViewTable = !fileViewTable" class="m-1"
+                     nbTooltip="Trocar visualização de arquivos"></nb-toggle>
+        </div>
+      </div>
+      <div class="mb-3 col-12" *ngIf="!fileViewTable">
+        <div class="d-flex justify-content-between align-items-center">
+        </div>
+        <ngx-dropzone (change)="onFileSelect($event)" class="dropzone-background" [multiple]="true"
+                      (keyup)="editForm.get('files')!.markAsTouched()"
+                      (blur)="editForm.get('files')!.markAsTouched()">
+          <ngx-dropzone-label>Coloque seus arquivos aqui</ngx-dropzone-label>
+          <ngx-dropzone-preview *ngFor="let f of editForm.get('files')!.value"
+                                [removable]="true" (removed)="onFileRemove(f)">
+            <ngx-dropzone-label>{{ f.name }}
+            </ngx-dropzone-label>
+          </ngx-dropzone-preview>
+        </ngx-dropzone>
+        <ng-container
+          *ngIf="editForm.get('files')!.invalid && editForm.get('files')!.touched">
+          <p class="text-danger" *ngIf="editForm.get('files')!.errors?.required">
+            Campo obrigatório
+          </p>
+        </ng-container>
+      </div>
+      <ng-container *ngIf="fileViewTable">
+        <div class="col-10">
+          <nb-form-field>
+            <input [formControl]="linkInput" fieldSize="large" type="text" nbInput fullWidth
+                   placeholder="Digite o link do arquivo..."
+                   [status]="(linkInput.dirty || linkInput.touched) ? (linkInput.invalid  ? 'danger' : 'success') : 'basic'">
+          </nb-form-field>
+          <ng-container
+            *ngIf="linkInput.invalid && linkInput.touched">
+            <p class="text-danger" *ngIf="linkInput.errors?.required">
+              Campo obrigatório
+            </p>
+          </ng-container>
+        </div>
+        <div class="col-2 text-end">
+          <button *ngIf="fileViewTable" nbButton ghost status="info" size="large"  type="button"
+                  class="m-1"
+                  (click)="onLinkSelect()"
+                  nbTooltip="Adicionar novo link">
+            <nb-icon icon="plus-outline"></nb-icon>
+          </button>
+        </div>
+      </ng-container>
+      <div class="mb-3 col-12"
+           *ngIf="fileViewTable && (attachments && attachments!.length > 0)">
+        <app-time-line-attachment-table (linkRemoved)="onLinkRemove($event)"></app-time-line-attachment-table>
+      </div>
+
+      <div class="mb-3 col-12 text-center"
+           *ngIf="fileViewTable && (!attachments || attachments!.length === 0)">
+        <app-simple-not-found size="small" appearance="outline"></app-simple-not-found>
+      </div>
+  </div>
+</form>

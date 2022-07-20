@@ -1,0 +1,66 @@
+<div class="row mt-2">
+  <div class="col-12">
+    <nb-card status="primary">
+      <nb-card-header class="border-0">
+        <div class="row align-items-center text-light">
+          <div class="col-6 col-md-5 text-start order-0">
+            <h5 class="text-light poppins fw-bold">Itens do projeto</h5>
+            <nb-tag-list>
+              <nb-tag size="tiny" appearance="outline" status="control"
+                      [text]="'Total de itens: '+ (listTotalSize | empty)"></nb-tag>
+              <nb-tag size="tiny" appearance="outline" status="warning"
+                      [text]="'Valor total: '+ (project?.negotiationCalc?.finalPrice | currency)"></nb-tag>
+              <nb-tag size="tiny" appearance="outline" status="warning"
+                      [text]="'Orçamento de Segurança: '+ (project?.negotiationCalc?.finalExtraBudget??0 | currency)"></nb-tag>
+            </nb-tag-list>
+          </div>
+          <div class="col-12 col-md-5 order-2 order-md-0 mt-4 mt-md-0 text-end">
+            <nb-form-field>
+              <nb-select [formControl]="scheduleSearch" size="large"
+                         status="control"
+              >
+                <nb-option *ngFor="let scheduleName of scheduleNames"
+                           [value]="scheduleName">{{scheduleName}}</nb-option>
+              </nb-select>
+            </nb-form-field>
+          </div>
+          <div class="col-6 col-md-2 order-1 order-md-0 text-end">
+            <button nbButton outline status="control" size="large" class="m-1" nbTooltip="Criar" [disabled]="!canEdit"
+                    *nbIsGranted="['edit','project-item']"
+                    (click)="openProjectItemDialog()">
+              <nb-icon icon="plus-outline"></nb-icon>
+            </button>
+          </div>
+        </div>
+      </nb-card-header>
+    </nb-card>
+  </div>
+  <div class="col-12 spinner-content spinner-no-bg" [nbSpinner]="isLoading" nbSpinnerStatus="primary"
+       nbSpinnerMessage="Carregando...">
+    <ng-container *ngIf="projectItems && projectItems.length > 0">
+      <app-project-item-table [isOpportunity]="false" [canEdit]="canEdit"
+                              (stateChange)="onSort($event)"></app-project-item-table>
+      <app-pagination-wrapper *ngIf="listTotalSize">
+        <ngb-pagination
+          [collectionSize]="listTotalSize"
+          [(page)]="state!.page"
+          [pageSize]="state!.size"
+          (pageChange)="pageChange($event)"
+          [maxSize]="5">
+       </ngb-pagination>
+        <nb-form-field>
+          <nb-select [selected]="state!.size"
+                     (selectedChange)="sizeChange($event)">
+            <nb-option [value]="5">5</nb-option>
+            <nb-option [value]="10">10</nb-option>
+            <nb-option [value]="15">15</nb-option>
+            <nb-option [value]="20">20</nb-option>
+          </nb-select>
+        </nb-form-field>
+      </app-pagination-wrapper>
+    </ng-container>
+    <ng-container *ngIf="(!projectItems || projectItems?.length === 0) && !isLoading">
+      <app-simple-not-found class="text-center"></app-simple-not-found>
+    </ng-container>
+  </div>
+</div>

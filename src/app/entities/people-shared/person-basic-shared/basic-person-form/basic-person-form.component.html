@@ -1,0 +1,70 @@
+<form [formGroup]="editForm">
+  <div class="row mt-3">
+    <div class="mb-3 col-md-6">
+      <label class="label">Nome</label>
+      <nb-form-field>
+        <input fieldSize="large" type="text" nbInput fullWidth placeholder="Nome do usuário..."
+               formControlName="name"
+               [status]="(editForm.get('name')!.dirty || editForm.get('name')!.touched) ? (editForm.get('name')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container
+        *ngIf="editForm.get('name')!.invalid && editForm.get('name')!.touched">
+        <p class="text-danger" *ngIf="editForm.get('name')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class="mb-3 col-md-6">
+      <label class="label">Apelido</label>
+      <nb-form-field>
+        <input fieldSize="large" type="text" nbInput fullWidth placeholder="Apelido..."
+               formControlName="slug"
+               [status]="(editForm.get('slug')!.dirty || editForm.get('slug')!.touched) ? (editForm.get('slug')!.invalid || !loginIsAvailable  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <small class="text-danger" *ngIf="!loginIsAvailable">
+        Esse apelido já está em uso
+      </small>
+      <ng-container
+        *ngIf="editForm.get('slug')!.invalid && editForm.get('slug')!.touched">
+        <p class="text-danger" *ngIf="editForm.get('slug')!.errors?.required">
+          Campo obrigatório
+        </p>
+        <p class="text-danger" *ngIf="editForm.get('slug')!.errors?.cannotContainSpace">
+          Não é permitido espaços
+        </p>
+      </ng-container>
+    </div>
+    <div class="mb-3 col-md-8">
+      <label class="label">E-mail</label>
+      <nb-form-field>
+        <input fieldSize="large" type="text" nbInput fullWidth placeholder="E-mail..."
+               formControlName="email"
+               [status]="(editForm.get('email')!.dirty || editForm.get('email')!.touched) ? (editForm.get('email')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container
+        *ngIf="editForm.get('email')!.invalid && editForm.get('email')!.touched">
+        <p class="text-danger" *ngIf="editForm.get('email')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class="mb-3 col-md-4">
+      <label class="label">Tipo de usuário</label>
+      <nb-form-field>
+        <nb-select size="large" fullWidth placeholder="Tipo de usuário..."
+                   formControlName="personType"
+                   [status]="(editForm.get('personType')!.dirty || editForm.get('personType')!.touched) ? (editForm.get('personType')!.invalid  ? 'danger' : 'success') : 'basic'">
+          <nb-option *ngFor="let personType of personTypes"
+                     [value]="personType.value">{{personType.displayName}}</nb-option>
+        </nb-select>
+
+      </nb-form-field>
+      <ng-container
+        *ngIf="editForm.get('personType')!.invalid && editForm.get('personType')!.touched">
+        <p class="text-danger" *ngIf="editForm.get('personType')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+  </div>
+</form>

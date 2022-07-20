@@ -1,0 +1,15 @@
+@use "../../../shared/themes/bootstrap-table"as *;
+table{
+  overflow-x: auto;
+  width: 100% !important;
+}
+.w-60{
+  width: 60%;
+}
+.w-40{
+  width: 40%;
+}
+.break {
+  white-space: normal;
+  word-break: break-all;
+}

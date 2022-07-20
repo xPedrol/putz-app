@@ -1,0 +1,55 @@
+<div class="layout-content">
+  <div class="row">
+    <div class="col-12 col-md-6">
+      <nb-card>
+        <nb-card-header class="border-0 mb-2">
+          <div class="row align-items-center">
+            <div class="col-md-8 text-start">
+              <h6 class="poppins header-title">Início</h6>
+            </div>
+          </div>
+        </nb-card-header>
+        <nb-card-body>
+          <div class="row m-0">
+            <div class="col-12">
+              <nb-tag status="primary" size="small" appearance="outline" class="m-1"
+                      [text]="'Nome: '+(competenceGuide?.name | empty)"></nb-tag>
+              <nb-tag status="primary" size="small" appearance="outline" class="m-1"
+                      [text]="'Level: '+(competenceGuide?.level?('level.'+competenceGuide?.level | translate):'---')"></nb-tag>
+              <hr>
+              <p *ngIf="competenceGuide?.description | empty:'boolean'">{{competenceGuide?.description}}</p>
+              <p *ngIf="!(competenceGuide?.description)" class="text-center">
+                <nb-tag status="danger" size="small" appearance="outline" class="m-1"
+                        text="Sem descrição"></nb-tag>
+              </p>
+            </div>
+          </div>
+        </nb-card-body>
+      </nb-card>
+    </div>
+    <div class="col-12 col-md-6">
+      <nb-card>
+        <nb-card-header class="border-0 mb-2">
+          <div class="row align-items-center">
+            <div class="col-md-8 text-start">
+              <h6 class="poppins header-title">Arquivo</h6>
+            </div>
+          </div>
+        </nb-card-header>
+        <nb-card-body>
+          <app-simple-not-found class="text-center"></app-simple-not-found>
+        </nb-card-body>
+      </nb-card>
+    </div>
+    <div class="col-12">
+      <nb-card>
+        <nb-card-header class="border-0">
+          <h6 class="poppins header-title">Instruções</h6>
+        </nb-card-header>
+        <nb-card-body [innerHTML]="competenceGuide?.htmlPage?competenceGuide?.htmlPage:''">
+
+        </nb-card-body>
+      </nb-card>
+    </div>
+  </div>
+</div>

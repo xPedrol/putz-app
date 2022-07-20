@@ -1,0 +1,35 @@
+@use '../../../../shared/themes/common' as *;
+
+.flex {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.col-span-6 {
+  column-span: 6 !important;
+}
+
+.layout-content {
+  width: 100% !important;
+  height: 100% !important;
+  box-sizing: border-box;
+}
+
+.project_budget_header, .project_deliver_deadline_header {
+  background-color: #3366ff;
+}
+
+.project_budget_item {
+  border: 0.0625rem solid #e4e9f2;
+  border-radius: 0.25rem;
+  padding: 1rem 1.5rem;
+  background-color: #ffffff;
+}
+
+.not-found {
+  //font-weight: bold;
+  margin: 0;
+}

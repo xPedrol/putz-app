@@ -1,0 +1,37 @@
+<nb-card class="dialog-content" accent="primary">
+  <nb-card-header>
+    <div class="row align-items-center">
+      <div class="col-8 text-start">
+        <h5 class="poppins header-title">Items da etapa {{projectStep.name | empty}}</h5>
+      </div>
+      <div class="col-4 text-end">
+        <button nbButton ghost status="basic" (click)="close()">
+          <nb-icon icon="close-outline"></nb-icon>
+        </button>
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body [nbSpinner]="loadingProjectItems" class="spinner-no-bg" [class.spinner-content]="loadingProjectItems" nbSpinnerStatus="primary" nbSpinnerMessage="Carregando...">
+    <div class="row align-items-stretch g-2">
+      <div class="col-12 col-md-6" *ngFor="let item of projectItems">
+        <nb-card class="project_budget_item" status="basic">
+          <nb-card-header class="py-2">
+            <h6 class="poppins fw-bold m-0">{{item.name}}</h6>
+          </nb-card-header>
+          <nb-card-body>
+            <p class="mb-1"><span class="fw-bold">Nível:</span> {{('product-admin.level.'+item.product.level) | translate}}</p>
+            <p class="mb-1"><span class="fw-bold">Nome do projeto:</span> {{item.projectName}}</p>
+            <p class="mb-1"><span class="fw-bold">Oportunidade:</span> {{item.isOpportunity ? 'Sim' : 'Não'}}</p>
+          </nb-card-body>
+        </nb-card>
+      </div>
+    </div>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="row">
+      <div class="col-12 text-end">
+        <button nbButton status="primary" size="medium" (click)="close()">Fechar</button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>

@@ -1,0 +1,47 @@
+<nb-card class="dialog-content" status="basic">
+  <nb-card-body>
+    <div class="row mt-3">
+
+      <ng-container [ngSwitch]="action">
+        <div class="col-12 text-center mb-3">
+          <ng-container *ngSwitchCase="actions.POST">
+            <nb-icon icon="checkmark-outline" status="success" class="font-size-50px"></nb-icon>
+            <h5 class="poppins header-title">
+              Confirmar adição
+            </h5>
+          </ng-container>
+          <ng-container *ngSwitchCase="actions.DELETE">
+            <nb-icon icon="trash-2-outline" status="danger" class="font-size-50px"></nb-icon>
+            <h5 class="poppins header-title m-1">
+              Confirmar exclusão
+            </h5>
+          </ng-container>
+          <ng-container *ngSwitchCase="actions.UPDATE">
+            <nb-icon icon="edit-2-outline" status="success" class="font-size-50px"></nb-icon>
+            <h5 class="poppins header-title">
+              Confirmar atualização
+            </h5>
+          </ng-container>
+          <h6 class="header-title m-0 font-size-14px">{{msg}}</h6>
+        </div>
+        <div class="col-12 text-center">
+          <h6 class="header-title">
+            <ng-container *ngSwitchCase="actions.DELETE">Tem certeza que deseja excluir esse registro?</ng-container>
+            <ng-container *ngSwitchCase="actions.UPDATE">Tem certeza que deseja atualizar esse registro?</ng-container>
+            <ng-container *ngSwitchCase="actions.POST">Tem certeza que deseja adicionar esse registro?</ng-container>
+          </h6>
+        </div>
+      </ng-container>
+    </div>
+  </nb-card-body>
+  <nb-card-footer>
+    <div class="row align-items-center text-center">
+      <div class="col-12">
+        <button nbButton status="danger" size="small" class="m-1" (click)="close()" [autofocus]="false">Cancelar
+        </button>
+        <button nbButton status="success" size="small" class="m-1" (click)="close(true)" [autofocus]="true">Confirmar
+        </button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>

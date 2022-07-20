@@ -1,0 +1,70 @@
+<div class="layout-content">
+  <div class="row">
+    <div class="col-12">
+      <nb-card status="primary" class="mb-4">
+        <nb-card-header class="border-0">
+          <div class="row align-items-center text-light">
+            <div class="col-12 col-md-8 text-start order-0">
+              <h5 class="text-light poppins fw-bold">
+                Filmes Produzidos
+              </h5>
+              <nb-tag-list>
+                <nb-tag size="tiny" appearance="outline" status="control" *ngIf="projectRenderItemService.totalCount$"
+                        [text]="'Total: '+(projectRenderItemService.totalCount$ | async)"></nb-tag>
+                <nb-tag size="tiny" appearance="outline" status="control" *ngIf="renderAverageTime" class="text-nowrap"
+                        [text]="'Tempo gasto desde o primeiro vídeo: '+renderAverageTime.total+' min(s)'"></nb-tag>
+                <nb-tag size="tiny" appearance="outline" status="control" *ngIf="renderAverageTime?.average"
+                        class="text-nowrap"
+                        [text]="'Média de tempo gasto por vídeo: '+renderAverageTime.average.toFixed(2) +' min(s)'"></nb-tag>
+                <nb-tag size="tiny" appearance="outline" status="control" *ngIf="renderAverageTime?.quantity"
+                        class="text-nowrap"
+                        [text]="'Vídeos finalizados: '+renderAverageTime.quantity+' video(s)'"></nb-tag>
+                <nb-tag size="tiny" appearance="outline" status="control" *ngIf="renderEndPrevision" class="text-nowrap"
+                        [text]="'Previsão de término: '+renderEndPrevision.toFixed(2)+' min(s)'"></nb-tag>
+              </nb-tag-list>
+            </div>
+            <div class="col-12 col-md-4 order-1 order-md-0 text-center text-md-end">
+              <a nbButton outline status="control" size="large" class="m-1" target="_blank" *ngIf="project?.id"
+                 nbTooltip="Upload de CSV / Formulário"
+                 [href]="pagesApp+'/'+project?.projectRenderSlug+'/form?projectRenderId='+project?.projectRenderId">
+                <nb-icon icon="cloud-upload-outline"></nb-icon>
+              </a>
+              <a nbButton outline status="control" size="large" class="m-1" target="_blank" (click)="openApprovedNamesDialog()"
+                 nbTooltip="Nomes aprovados">
+                <nb-icon icon="person-done-outline"></nb-icon>
+              </a>
+              <ng-container *ngIf="isTableRoute">
+                <a nbButton outline status="control" size="large" class="m-1" target="_blank" (click)="synchronizeAudioNames()"
+                   nbTooltip="Sincronizar áudios">
+                  <nb-icon icon="sync-outline"></nb-icon>
+                </a>
+                <button nbButton outline status="control" size="large" class="m-1"
+                        nbTooltip="Filtros" (click)="openTableFunction('openFilterDialog')">
+                  <nb-icon icon="funnel-outline"></nb-icon>
+                </button>
+                <button nbButton outline status="control" size="large" class="m-1"
+                        nbTooltip="Baixar arquivo CSV"
+                        (click)="openTableFunction('openConfirmExportSize')">
+                  <nb-icon icon="cloud-download-outline"></nb-icon>
+                </button>
+                <button nbButton outline status="control" size="large" class="m-1"
+                        nbTooltip="Atualizar listagem"
+                        (click)="openTableFunction('getRenderItems')">
+                  <nb-icon icon="refresh-outline"></nb-icon>
+                </button>
+              </ng-container>
+            </div>
+          </div>
+        </nb-card-header>
+      </nb-card>
+    </div>
+    <div class="col-12 mb-3 h-25">
+      <nb-route-tabset #routeTabsetComponent [tabs]="tabs"></nb-route-tabset>
+    </div>
+
+  </div>
+
+  <!--  <nb-route-tabset [tabs]="tabs" class="overflow-auto w-100">-->
+  <!--  </nb-route-tabset>-->
+</div>
+

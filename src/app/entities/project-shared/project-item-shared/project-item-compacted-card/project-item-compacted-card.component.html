@@ -1,0 +1,40 @@
+<nb-card class="mb-1" status="basic">
+  <nb-card-header class="border-0 card-header-margin">
+    <div class="row align-items-center">
+      <div class="col-9">
+        <div class="row align-items-center justify-content-between">
+          <div class="col-6">
+            <h6 class="poppins header-title">{{projectItem?.name | empty}}</h6>
+          </div>
+          <div class="col-6">
+            <nb-tag-list>
+              <nb-tag appearance="outline" status="info" size="tiny" *ngIf="projectItem?.quantity && projectItem?.isExtraItem" class="no-wrap"
+                      [text]="'Quant: '+projectItem.quantity"></nb-tag>
+              <nb-tag appearance="outline" status="warning" size="tiny" class="no-wrap"
+                      *ngIf="projectItem?.projectStep?.name"
+                      [text]="projectItem.projectStep.name"></nb-tag>
+              <nb-tag appearance="outline" status="danger" size="tiny" *ngIf="!projectItem?.isActive" class="no-wrap"
+                      [text]="'Item não salvo'"></nb-tag>
+            </nb-tag-list>
+          </div>
+        </div>
+      </div>
+      <div class="col-3 text-end">
+        <ng-container *ngIf="!project?.modelForConception">
+          <button nbButton ghost status="danger" type="button" (click)="deleteProject()" size="small" [disabled]="!canEdit"
+                  nbTooltip="Excluir" class="mx-1" [class.mx-1]="!canEdit"
+                  *nbIsGranted="['edit','project-item']">
+            <nb-icon icon="trash-outline"></nb-icon>
+          </button>
+        </ng-container>
+        <ng-container *ngIf="projectItem?.id">
+          <button ghost nbButton status="primary" size="small" [disabled]="!canEdit"
+             (click)="openEditProjectItemDialog()" [class.mx-1]="!canEdit"
+             nbTooltip="Detalhes">
+            <nb-icon icon="edit-2-outline"></nb-icon>
+          </button>
+        </ng-container>
+      </div>
+    </div>
+  </nb-card-header>
+</nb-card>

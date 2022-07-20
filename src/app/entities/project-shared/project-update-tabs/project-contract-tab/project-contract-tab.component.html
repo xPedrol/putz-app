@@ -1,0 +1,46 @@
+<div class="row mt-2">
+  <ng-container *ngIf="project && project.projectStatus !== projectStatus.MODEL">
+    <div class="col-12" [class.col-lg-12]="!canEdit" [class.col-lg-6]="canEdit">
+      <nb-card status="basic">
+        <nb-card-header class="">
+          <div class="row align-items-center">
+            <div class="col-md-8 text-start">
+              <h5 class="poppins header-title">Contrato</h5>
+            </div>
+          </div>
+        </nb-card-header>
+        <nb-card-body>
+          <iframe *ngIf="project?.agreementPdfLink"
+                  [src]="(project.agreementPdfLink +'&output=embed') | safe" width="100%"
+                  height="450" class="border-0" [allowFullscreen]="true"></iframe>
+          <app-detailed-not-found *ngIf="!project.agreementPdfLink" [hasCallback]="false"
+                                  message="Nenhum contrato foi encontrado para este projeto"></app-detailed-not-found>
+        </nb-card-body>
+      </nb-card>
+    </div>
+    <div class="col-12 col-lg-6" *ngIf="canEdit">
+      <nb-card status="basic">
+        <nb-card-header class="">
+          <div class="row align-items-center">
+            <div class="col-md-8 text-start">
+              <h5 class="poppins header-title">Submissão de contrato</h5>
+            </div>
+          </div>
+        </nb-card-header>
+        <nb-card-body>
+          <app-project-contract-upload-form [canEdit]="project?.canEdit"
+                                            #projectContractUploadForm></app-project-contract-upload-form>
+        </nb-card-body>
+        <nb-card-footer class="py-2">
+          <div class="row">
+            <div class="col-md-12 text-end">
+              <button nbButton status="info" type="submit" size="small" [disabled]="project.canEdit"
+                      (click)="handleContractUploadForm()" class="">Salvar
+              </button>
+            </div>
+          </div>
+        </nb-card-footer>
+      </nb-card>
+    </div>
+  </ng-container>
+</div>

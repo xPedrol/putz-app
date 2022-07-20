@@ -1,0 +1,36 @@
+<nb-layout>
+  <nb-layout-header class="main-header" [fixed]="true" [hidden]="layoutService.hideHeader">
+    <!--    *nbIsGranted="['view','main-header']"-->
+    <div class="container">
+      <app-header></app-header>
+    </div>
+  </nb-layout-header>
+  <nb-layout-header subheader class="subheader d-none d-lg-block" *ngIf="subheader">
+    <div class="container">
+      <app-sub-header></app-sub-header>
+    </div>
+  </nb-layout-header>
+  <nb-sidebar fixed responsive (stateChange)="sidebarService.changed($event)" tag="menu-sidebar" state="collapsed"
+              [collapsedBreakpoints]="['xs', 'is', 'sm','md','lg','xl','xxl','xxxl']" [compactedBreakpoints]="[]">
+    <app-sidebar></app-sidebar>
+  </nb-sidebar>
+  <nb-layout-column class="layout-column" [ngClass]="(!layoutService.hideSubheader)?'mt-lg-5':''">
+    <router-outlet></router-outlet>
+  </nb-layout-column>
+  <nb-layout-footer>
+    <div class="d-flex flex-column align-items-center justify-content-between">
+      <ng-container *ngIf="!isProd">
+        <h6 class="fw-bold poppins text m-1">Versão de desenvolvimento</h6>
+      </ng-container>
+      <ng-container *ngIf="isProd &&  managementInfo">
+        <h6 class="fw-bold poppins text m-1"
+            *ngIf="managementInfo?.activeProfiles[0]">{{managementInfo.activeProfiles[0]}}</h6>
+        <h6 class="fw-bold poppins text m-1" *ngIf="managementInfo?.build?.version">
+          Versão: {{managementInfo.build.version}}</h6>
+        <p class="m-0" *ngIf="managementInfo?.build?.time">{{managementInfo.build.time | date:'dd/MM/yyyy'}}</p>
+      </ng-container>
+    </div>
+  </nb-layout-footer>
+</nb-layout>
+<ngx-guided-tour [doneText]="'Fechar'" [nextText]="'Prox.'" [closeText]="'Fechar'"
+                 [backText]="'Voltar'"></ngx-guided-tour>

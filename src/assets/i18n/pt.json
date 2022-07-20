@@ -1,0 +1,238 @@
+{
+  "portfolio": {
+    "requestStatus": {
+      "APPROVED": "Aprovado",
+      "AVALIABLE": "Disponível",
+      "BACKUP": "Salvo",
+      "DECLINED": "Reprovado",
+      "REPLACED": "Trocado",
+      "SUBSCRIBED": "Inscrito"
+    }
+  },
+  "project-render": {
+    "groupName": {
+      "recordStatus": {
+        "APPROVED": "Aprovado",
+        "AVALIABLE": "Disponível",
+        "BACKUP": "Sem Áudio",
+        "DECLINED": "Não aprovado",
+        "REPLACED": "Alterado",
+        "SUBSCRIBED": "Inscrito"
+      }
+    },
+    "status": {
+      "QUEUED": "Na fila",
+      "CREATED": "Criado",
+      "PICKED": "Separado",
+      "STARTED": "Iniciado",
+      "RENDER_SETUP": "Em renderização",
+      "RENDER_PREDOWNLOAD": "Em renderização",
+      "RENDER_DOWNLOAD": "Em renderização",
+      "RENDER_POSTDOWNLOAD": "Em renderização",
+      "RENDER_PRERENDER": "Em renderização",
+      "RENDER_SCRIPT": "Em renderização",
+      "RENDER_DORENDER": "Em renderização",
+      "RENDER_POSTRENDER": "Em renderização",
+      "RENDER_POSRENDER": "Em renderização",
+      "PRECREATED": "Aguardando confirmação",
+      "RENDER_CLEANUP": "Finalizando",
+      "FINISHED": "Finalizado",
+      "ERROR": "Erro",
+      "SAMBA_PROCESSING": "Em precesso na SambaTech",
+      "CANCELED": "Cancelado"
+    }
+  },
+  "product": {
+    "level": {
+      "ADVANCED": "Avançado",
+      "BANK": "Banco",
+      "JUNIOR": "Junior",
+      "PROFISSIONAL": "Profissional",
+      "COPYRIGHT": "Copyright"
+    }
+  },
+  "project": {
+    "status": {
+      "conceptions": "Orçamentos",
+      "models": "Modelos",
+      "actives": "Ativos",
+      "MODEL": "Modelo",
+      "CONCEPTION": "Orçamento",
+      "BRIEFING": "Planejamento",
+      "EXECUTION": "Execução  ",
+      "CANCELED": "Cancelado",
+      "CLOSE": "Fechado"
+    }
+  },
+  "level": {
+    "ADVANCED": "Avançado",
+    "BASIC": "Básico",
+    "JUNIOR": "Júnior",
+    "PROFISSIONAL": "Sênior",
+    "CONTROL": "Control",
+    "COPYRIGHT": "Copyright",
+    "BANK": "Bank"
+  },
+  "requestStatus": {
+    "APPROVED": "Aprovado",
+    "BACKUP": "Salvo",
+    "DECLINED": "Rejeitado",
+    "REPLACED": "Realocado",
+    "SUBSCRIBED": "Inscrito"
+  },
+  "configParam": {
+    "slug": {
+      "INSURANCE_LEVEL_1": "Seguro nivel 1",
+      "INSURANCE_LEVEL_2": "Seguro nivel 2",
+      "NO_INSURANCE": "Sem seguro"
+    }
+  },
+  "timeline": {
+    "event": {
+      "status": {
+        "COMMIT": "Entrega",
+        "TOPIC": "Tópico",
+        "APPROVED": "Aprovado",
+        "SOLVED": "Resolvido",
+        "REQUEST": "Alteração",
+        "PARTIAL": "Parcial"
+      }
+    }
+  },
+  "error": {
+    "openItems": {
+      "title": "Etapa possui itens abertos",
+      "message": "Para prosseguir, é necessário que todos os itens sejam fechados."
+    },
+    "withoutContract": {
+      "title": "Sem contrato",
+      "message": "Não foi possível encontrar o contrato."
+    },
+    "concurrencyFailure": {
+      "title": "Falha de Simultaneidade",
+      "description": "Ocorreu uma falha de simultaneidade. Por favor, tente novamente."
+    },
+    "csvError": {
+      "title": "Csv inválido",
+      "description": "Um erro foi encontrado em uma das linhas do csv",
+      "title-message": "Erro na linha {}"
+    },
+    "badProject": {
+      "title": "Vendedor e/ou manager inválidos",
+      "description": "Não é possível prosseguir sem as entidades acima"
+    },
+    "idinvalid": {
+      "title": "ID inválido",
+      "description": ""
+    },
+    "idexists": {
+      "title": "Entidade ja registrada",
+      "description": "Você está tentando realizar um cadastro já existente"
+    },
+    "idnotfound": {
+      "title": "Entidade inexistente",
+      "description": "Você está tentando realizar uma operação com entidade inexistente"
+    },
+    "notexists": {
+      "title": "Entidade inexistente",
+      "description": "Você está tentando realizar uma operação com entidade inexistente"
+    },
+    "emailexists": {
+      "title": "Email já está em uso",
+      "description": "O email adicionado já foi registrado"
+    },
+    "notActivated": {
+      "title": "Esse registro não está ativo",
+      "description": ""
+    },
+    "AuthoritiesConstantsInvalid": {
+      "title": "Autoridade(s) invalida(s)",
+      "description": ""
+    },
+    "http": {
+      "noRenderedVideo": {
+        "title": "Nenhum vídeo renderizado",
+        "description": "Não foi encontrado nenhum vídeo renderizado"
+      },
+      "emptyQueue": {
+        "title": "Fila vazia",
+        "description": "Não há nenhum vídeo na fila de renderização"
+      },
+      "noActiveRender": {
+        "title": "Nenhum renderizador ativo",
+        "description": "Não há nenhum renderizador ativo no momento"
+      },
+      "isNotConception": {
+        "title": "Não é possível alterar um orçamento",
+        "description": "Os cálculos não podem ser alterados após o orçamento ser aprovado"
+      },
+      "incompleteProject": {
+        "title": "Projeto incompleto",
+        "description": "O projeto não possui todos os dados necessários para ser finalizado"
+      },
+      "401": {
+        "title": "Registro inválido",
+        "description": "Verifique suas credenciais"
+      },
+      "400": {
+        "title": "Erro de soliçitação",
+        "description": "Uma requisição inválida foi enviada"
+      },
+      "403": {
+        "title": "Acesso negado",
+        "description": "Você não possui permissão para completar a requisição"
+      },
+      "404": {
+        "title": "Recurso não encontrado",
+        "description": "O endereço da requisição que você está procurando não foi encontrado"
+      },
+      "500": {
+        "title": "Erro interno do servidor",
+        "description": "O servidor encontrou um erro e não foi possível completar a requisição"
+      },
+      "505": {
+        "title": "Erro interno do servidor",
+        "description": "O servidor encontrou um erro e não foi possível completar a requisição"
+      },
+      "invalidDate": {
+        "title": "Data inválida",
+        "description": "Data não informada ou inválida"
+      },
+      "alreadyRegistered": {
+        "title": "Já cadastrado",
+        "description": "Sua conta ja está cadastrada nesse curso"
+      },
+      "cannotDelete": {
+        "title": "Não foi possivel deletar",
+        "description": "Vinculado(a) a outra entidade"
+      },
+      "maxNumber": {
+        "title": "Número máxima de mudanças atingido",
+        "description": "Este item atingiu o numéro máximo de alterações"
+      }
+    },
+    "404": {
+      "title": "Não encontrado",
+      "description": "O que você está procurando não foi encontrado"
+    },
+    "validation": {
+      "title": "Campo(s) inválido(s)",
+      "description": "Verifique os dados inseridos"
+    },
+    "incorrecttype": {
+      "title": "Tipo inválido",
+      "description": "Verifique o tipo do arquivo e tente novamente"
+    }
+  },
+  "dashboard": "Painel de controle",
+  "languages": [
+    {
+      "name": "Português",
+      "initials": "pt"
+    },
+    {
+      "name": "Inglês",
+      "initials": "en"
+    }
+  ]
+}

@@ -1,0 +1,100 @@
+<div class="row opportunity-list">
+  <div class="col-12 col-md-6 col-xl-4" *ngFor="let opportunity of opportunities;trackBy:trackOpportunitiesByFn">
+    <nb-card status="basic">
+      <nb-card-header class="border-0">
+        <div class="d-flex align-items-center justify-content-between">
+          <h5 class="poppins header-title">{{opportunity?.projectItem?.name}}</h5>
+          <nb-tag appearance="outline" status="success" size="tiny" text="Aprovado"
+                  *ngIf="opportunity.isApproved"></nb-tag>
+          <nb-tag appearance="outline" status="danger" size="tiny" text="Recusado"
+                  *ngIf="opportunity.isDeclined"></nb-tag>
+          <nb-tag appearance="outline" status="warning" size="tiny" text="Aguardando"
+                  *ngIf="opportunity.isSubscribed"></nb-tag>
+        </div>
+
+      </nb-card-header>
+      <nb-card-body class="max-height-45vh">
+        <div class="row">
+          <div class="col-12">
+            <dl class="row-md jh-entity-details">
+              <dt><span>Projeto</span></dt>
+              <dd>
+                  <span class="header-title">{{ opportunity?.projectItem?.project?.name | empty}}
+                  </span>
+              </dd>
+              <dt><span>Item</span></dt>
+              <dd>
+                <span class="header-title">{{ opportunity?.projectItem?.product?.name | empty}}</span>
+              </dd>
+              <dt><span>Etapa</span></dt>
+              <dd>
+                <span class="header-title">{{ opportunity?.projectItem?.projectStep?.name | empty}}</span>
+              </dd>
+              <dt><span>Freelancer</span></dt>
+              <dd>
+                <span class="header-title">{{ opportunity?.freelancer?.name | empty}}</span>
+              </dd>
+              <dt><span>Valor</span></dt>
+              <dd>
+                <span class="header-title">{{ opportunity?.projectItem?.value | currency}}</span>
+              </dd>
+            </dl>
+          </div>
+        </div>
+        <div class="row align-items-center">
+          <div class="col-lg-12 text-justify mt-3">
+            <nb-card>
+              <nb-card-header class="border-0 py-1"><h6 class="poppins header-title">Descrição</h6></nb-card-header>
+              <nb-card-body>
+                <p class="mb-0">{{opportunity?.description | empty}}</p>
+              </nb-card-body>
+            </nb-card>
+          </div>
+          <a class="col-lg-12 text-justify text-decoration-none" target="_blank" *ngIf="advancedView"
+             [routerLink]="['','portfolios',opportunity?.freelancer?.user?.login,'dashboard']">
+            <nb-card nbTooltip="Clique para abrir portfolio">
+              <nb-card-header class="border-0"><h6 class="poppins header-title">Freelancer</h6></nb-card-header>
+              <nb-card-body>
+                <nb-user size="giant" class="m-auto"
+                         [picture]="opportunity?.freelancer?.user?.imageUrl | empty"
+                         [name]="opportunity?.freelancer?.name | empty"
+                ></nb-user>
+              </nb-card-body>
+            </nb-card>
+          </a>
+        </div>
+      </nb-card-body>
+      <nb-card-footer class="border-0">
+        <div class="row">
+          <div class="col-12 text-end">
+            <a class="m-1" nbButton status="primary" appearance="outline" size="small"
+               [routerLink]="['','opportunities',opportunity?.id]">Detalhes</a>
+            <ng-container *ngIf="opportunity.isSubscribed">
+              <button class="m-1" nbButton status="success" appearance="outline" size="small"
+                      *nbIsGranted="['approve','opportunity']"
+                      (click)="changeOpportunityStatus(opportunity,projectItemRequestStatus.APPROVED)"
+                      [nbTooltip]="'Aprovar solicitacao do freelancer para o item ' + opportunity?.projectItem?.name+' do projeto ' + opportunity?.projectItem?.project?.name">
+                Aprovar
+              </button>
+              <button class="m-1" nbButton status="danger" appearance="outline" size="small"
+                      *nbIsGranted="['approve','opportunity']"
+                      (click)="changeOpportunityStatus(opportunity,projectItemRequestStatus.DECLINED)"
+                      [nbTooltip]="'Reprovar solicitacao do freelancer para o item ' + opportunity?.projectItem?.name+' do projeto ' + opportunity?.projectItem?.project?.name">
+                Reprovar
+              </button>
+              <button class="m-1" nbButton status="warning" appearance="outline" size="small"
+                      *ngIf="opportunity?.freelancer?.id === account?.id"
+                      (click)="delete(opportunity)"
+                      nbTooltip="Só é possível cancelar inscrições pendentes de respota">Cancelar
+              </button>
+            </ng-container>
+            <ng-container *ngIf="opportunity.isApproved">
+              <a class="m-1" nbButton status="primary" appearance="outline" size="small"
+                 [routerLink]="['','projects',opportunity?.projectItem?.project?.id,'timeline']">Ver projeto</a>
+            </ng-container>
+          </div>
+        </div>
+      </nb-card-footer>
+    </nb-card>
+  </div>
+</div>

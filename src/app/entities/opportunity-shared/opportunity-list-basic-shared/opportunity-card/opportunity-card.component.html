@@ -1,0 +1,67 @@
+<nb-card status="basic">
+  <nb-card-header class="p-2 ps-3">
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="d-flex flex-column flex-grow-1 no-wrap">
+        <span [nbTooltip]="opportunity?.projectItem?.name | empty">{{opportunity?.projectItem?.name | empty}}</span>
+        <div class="d-flex justify-content-start align-items-center">
+          <small class="header-title-color"
+                 [nbTooltip]="'Projeto: '+ (opportunity?.projectItem?.project?.name | empty)">Projeto: {{opportunity?.projectItem?.project?.name | empty}}</small>
+          <small class="header-title-color ms-4" [nbTooltip]="'Etapa: '+ (opportunity?.projectStep?.name | empty)">Etapa: {{opportunity?.projectStep?.name | empty}}</small>
+        </div>
+      </div>
+      <nb-tag-list>
+        <nb-tag class="no-wrap" status="primary" appearance="outline" size="tiny"
+                *ngIf="opportunity?.projectItem?.value"
+                [text]="'Valor: '+(opportunity?.projectItem?.value | currency)"></nb-tag>
+      </nb-tag-list>
+    </div>
+  </nb-card-header>
+  <nb-card-body>
+    {{opportunity?.description | empty}}
+  </nb-card-body>
+  <nb-card-footer class="p-2 ps-3">
+    <div class="d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center">
+        <ng-container [ngSwitch]="opportunity?.requestStatus">
+          <ng-container *ngSwitchCase="projectItemRequestStatus.APPROVED">
+            <nb-icon icon="checkmark-outline" status="success"></nb-icon>
+            <button ghost nbButton status="success" size="small" class="m-1"
+                    nbTooltip="Parabéns! Sua solicitação foi aprovada.">
+              <ng-container [ngTemplateOutlet]="translatedStatus"></ng-container>
+            </button>
+          </ng-container>
+          <ng-container *ngSwitchCase="projectItemRequestStatus.SUBSCRIBED">
+            <nb-icon icon="clock-outline" status="primary"></nb-icon>
+            <button ghost nbButton status="primary" size="small" class="m-1" nbTooltip="Aguardando resposta">
+              <ng-container [ngTemplateOutlet]="translatedStatus"></ng-container>
+            </button>
+          </ng-container>
+          <ng-container *ngSwitchCase="projectItemRequestStatus.DECLINED">
+            <nb-icon icon="close-outline" status="danger"></nb-icon>
+            <button ghost nbButton status="danger" size="small" class="m-1"
+                    nbTooltip="Infelizmente sua solicitação não foi aceita. Mas não se desanime, você pode melhorar seu portfólio e tentar denovo">
+              <ng-container [ngTemplateOutlet]="translatedStatus"></ng-container>
+            </button>
+          </ng-container>
+          <ng-container *ngSwitchDefault>
+            <nb-icon icon="alert-triangle-outline" status="warning"></nb-icon>
+            <button ghost nbButton status="warning" size="small" class="m-1">
+              <ng-container [ngTemplateOutlet]="translatedStatus"></ng-container>
+            </button>
+          </ng-container>
+        </ng-container>
+      </div>
+      <div>
+        <a *ngIf="opportunity?.project && opportunity?.freelaApproved" nbButton status="primary" size="tiny"
+           class="m-1"
+           target="_blank"
+           [routerLink]="['','projects',opportunity?.project?.id]">Projeto</a>
+        <a nbButton status="primary" size="tiny" class="m-1"
+           [routerLink]="['','opportunities',opportunity?.id]">Ver</a>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>
+<ng-template #translatedStatus>
+  {{'requestStatus.' + opportunity?.requestStatus | translate}}
+</ng-template>

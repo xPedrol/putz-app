@@ -1,0 +1,252 @@
+<div class="timeline-point timeline-point"></div>
+<nb-card class="timeline-event" status="basic" [ngClass]="event?.isVisible ? '' : 'not-visible'" disabled="true"
+         [accent]="event?.isVisible?'basic':'warning'">
+  <nb-card-header class="py-2">
+    <div class="widget-header d-flex align-items-center justify-content-between">
+      <div class="d-inline-flex flex-shrink-1 flex-column no-wrap" [nbTooltip]="event?.title | empty">
+        <div>
+          <h5 class="poppins header-title fw-bolder no-wrap">{{event?.title | empty}}</h5>
+        </div>
+        <div>
+          <small class="header-title">
+            <span *ngIf="event?.eventType" translate="">{{'timeline.event.status.' + event?.eventType}}</span>
+            -  {{event?.createdDate | convert | date:'dd/MM/yyyy hh:mm' | empty}}</small>
+        </div>
+      </div>
+      <div class="flex-grow-1 text-end">
+        <button nbButton ghost status="primary"
+                [nbTooltip]="'Visibilidade (Atual: '+(event?.isVisible?'visível':'omitido')+')'"
+                *nbIsGranted="['edit','event-visibility']" (click)="changeEventVisibility()">
+          <nb-icon [icon]="event?.isVisible?'eye-outline':'eye-off-outline'"></nb-icon>
+        </button>
+        <ng-container *nbIsGranted="['edit','event']">
+          <button #editEventButton nbButton ghost status="primary" (click)="openTimeLineEventDetailDialog()" nbTooltip="Editar" [class.m-1]="editEventButton.disabled"
+                  [disabled]="(event?.conclusionDate || !event?.isVisible || !projectStep?.isCurrent) && ([]|hasAccess:[authority.ADMIN,authority.MANAGER])">
+            <nb-icon icon="edit-2-outline"></nb-icon>
+          </button>
+          <button #deleteEventButton nbButton ghost status="danger" (click)="deleteEvent()" [class.m-1]="deleteEventButton.disabled"
+                  [disabled]="(event?.conclusionDate || !event?.isVisible || !projectStep?.isCurrent) && ([]|hasAccess:[authority.ADMIN,authority.MANAGER])"
+                  nbTooltip="Deletar">
+            <nb-icon icon="trash-outline"></nb-icon>
+          </button>
+        </ng-container>
+      </div>
+    </div>
+  </nb-card-header>
+  <nb-card-body class="px-0 overflow-hidden">
+    <div class="row px-3">
+      <div class="col-12">
+        <p>{{event?.description}}</p>
+      </div>
+      <div class="col-12">
+        <hr *ngIf="event?.eventType !== 'TOPIC'">
+        <nb-tag-list class="mb-2">
+          <nb-tag size="tiny" appearance="outline" [status]="event?.projectItem?.name?'success':'warning'"
+                  [text]="'Item: '+(event?.projectItem?.name ?? 'Não Definido')"></nb-tag>
+          <ng-container *ngIf="event?.eventType !== 'TOPIC' && event?.eventType !== 'COMMIT'">
+            <nb-tag size="tiny" appearance="outline" status="success"
+                    *ngIf="event?.conclusionDate && event?.eventType === 'APPROVED'"
+                    [text]="'Aprovado em '+(event?.conclusionDate  | convert | date:'dd/MM/yyyy HH:mm:ss' | empty)"></nb-tag>
+            <nb-tag *ngIf="event?.eventType === 'APPROVED' && event?.rootEventId"
+                    status="warning" size="tiny" appearance="outline"
+                    [text]="'Resposta ao evento '+event?.rootEventId"></nb-tag>
+            <nb-tag size="tiny" appearance="outline" status="danger"
+                    *ngIf="event?.eventType === 'REQUEST' || event?.eventType === 'SOLVED'"
+                    [text]="'Rejeitado em '+(event?.conclusionDate  | convert | date:'dd/MM/yyyy HH:mm:ss' | empty)"></nb-tag>
+          </ng-container>
+        </nb-tag-list>
+      </div>
+    </div>
+    <div class="row px-3 mt-2">
+      <div class="col-12" *ngIf="event?.conclusionDate">
+        <nb-alert [accent]="event?.eventType === 'APPROVED'?'success':'danger'">
+          <div class="d-flex justify-content-between align-items-center w-100">
+            <h6 class="header-title m-0 p-0">{{event?.conclusionTitle | empty}}</h6>
+            <ng-container *ngIf="event?.customerRate">
+              <ngb-rating [rate]="event?.customerRate??0" [max]="5" [readonly]="true">
+                <ng-template let-fill="fill" let-index="index">
+                  <span class="star" [class.filled]="fill === 100">&#9733;</span>
+                </ng-template>
+              </ngb-rating>
+            </ng-container>
+          </div>
+          <div class="event-conclusion-description mt-2" *ngIf="event?.conclusionDescription" [innerHTML]="event?.conclusionDescription"></div>
+        </nb-alert>
+      </div>
+      <div class="col-12" *ngIf="event?.eventType === 'COMMIT' && !event?.conclusionDate">
+        <ng-container
+          *ngIf="(!event?.conclusionDate && projectStep?.isCurrent) || ([authority.ADMIN,authority.MANAGER]|hasAccess)">
+          <div class="button-margin" *nbIsGranted="['valuate','event']">
+            <button nbButton size="small" outline status="success" (click)="approveEvent()"
+                    nbTooltip="Aprovar">
+              <nb-icon icon="checkmark-outline"></nb-icon>
+              Aprovar a Entrega
+            </button>
+            <!--  ficava no botao de mundaca          [disabled]="cannotMakeChanges && !([authority.ADMIN,authority.MANAGER]|hasAccess)"-->
+            <button nbButton size="small" outline status="warning" (click)="requestChange()"
+                    [nbTooltip]="!cannotMakeChanges || ([authority.ADMIN,authority.MANAGER]|hasAccess)?'Solicitar Mudança':'Não é possível solicitar novas mundanças pois o limite foi atingido'">
+              <nb-icon icon="alert-triangle-outline"></nb-icon>
+              Solicitar Mudança
+            </button>
+            <button nbButton size="small" outline status="primary" (click)="openTimeLineEventDetailDialog(false,true)"
+                    nbTooltip="Novo arquivo">
+              <nb-icon icon="attach-outline"></nb-icon>
+              Adicionar anexo
+            </button>
+          </div>
+        </ng-container>
+      </div>
+      <div class="col-12" *ngIf="event?.eventType === 'REQUEST'">
+        <ng-container *nbIsGranted="['answer','event']">
+          <button nbButton size="small" outline status="primary" (click)="openTimeLineEventDetailDialog(true)"
+                  nbTooltip="Algumas mudanças foram solicitadas, clique no botao abaixo para criar um novo evento como resposta a este">
+            <nb-icon icon="edit-2-outline"></nb-icon>
+            Submeter Nova Entrega
+          </button>
+        </ng-container>
+      </div>
+    </div>
+    <div class="timeline-content-info d-flex justify-content-between mt-2 mx-2">
+          <span class="timeline-content-info-title header-title">
+            <i class="fa fa-certificate" aria-hidden="true"></i>
+            Anexos
+          </span>
+      <span class="timeline-content-info-date header-title">
+            <i class="fa fa-calendar-o" aria-hidden="true"></i>
+            Total:  {{attachments ? attachments!.length : 0}}
+          </span>
+
+    </div>
+    <div class="row mt-2 spinner-no-bg" [class.spinner-content]="loadingAttachments" [nbSpinner]="loadingAttachments"
+         nbSpinnerStatus="primary" nbSpinnerMessage="Carregando...">
+      <ng-container *ngIf="!gotAttachments">
+        <div class="col-12 text-center">
+          <button nbButton size="small" appearance="outline" status="primary" (click)="getAttachments()">
+            Ver anexos...
+            <nb-icon icon="search-outline"></nb-icon>
+          </button>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="attachments && attachments!.length > 0 && gotAttachments">
+        <div class="col-12 mx-0">
+          <nb-list class="mx-0">
+            <nb-list-item class="d-block px-0" *ngFor="let attachment of attachments;trackBy:trackAttachmentsByFn">
+              <app-time-line-event-card-attachment class="mx-0"
+                                                   [attachment]="attachment"></app-time-line-event-card-attachment>
+            </nb-list-item>
+          </nb-list>
+        </div>
+      </ng-container>
+    </div>
+    <app-simple-not-found size="small" appearance="outline"
+                   *ngIf="gotAttachments && !loadingAttachments && (!attachments || attachments.length === 0)"></app-simple-not-found>
+
+
+    <div class="timeline-content-info d-flex justify-content-between mt-2 mx-2">
+          <span class="timeline-content-info-title header-title">
+            <i class="fa fa-certificate" aria-hidden="true"></i>
+            Comentários
+          </span>
+      <div>
+              <span class="timeline-content-info-date header-title">
+            <i class="fa fa-calendar-o" aria-hidden="true"></i>
+            Total: {{comments ? comments!.length : 0}}
+          </span>
+        <!--          <button class="ml-2" nbButton status="primary"  size="tiny"-->
+        <!--                  nbTooltip="Atualizar comentários" (click)="updateCommentsByEvent(event?.id)">-->
+        <!--            <nb-icon icon="refresh-outline"></nb-icon>-->
+        <!--          </button>-->
+      </div>
+    </div>
+    <div class="widget-footer">
+      <div class="row spinner-no-bg" [class.spinner-content]="loadingComments" [nbSpinner]="loadingComments"
+           nbSpinnerStatus="primary" nbSpinnerMessage="Carregando...">
+        <div class="col-12 overflow-auto max-width-53vh">
+          <ng-container *ngIf="!gotComments">
+            <div class="text-center">
+              <button nbButton size="small" appearance="outline" status="primary" (click)="getComments()">
+                Ver cometários...
+                <nb-icon icon="search-outline"></nb-icon>
+              </button>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="gotComments">
+            <nb-chat class="border-0" noMessagesPlaceholder="Sem mensagens " *ngIf="comments && comments.length > 0">
+              <div *nbCustomMessage="'putzChat'; let message" class="comment-buttons">
+                <p class="quote header-title" *ngIf="message?.rootComment"> {{message?.rootComment?.description}} </p>
+                <ng-container *nbIsGranted="['edit','comment']">
+                  <button nbButton ghost status="danger" size="small"
+                          [disabled]="(!event?.isVisible || !projectStep?.isCurrent) && ([]|hasAccess:[authority.ADMIN,authority.MANAGER])"
+                          (click)="deleteComment(message)">
+                    <nb-icon icon="trash-outline"></nb-icon>
+                  </button>
+                  <button nbButton ghost status="warning" size="small"
+                          [disabled]="(!event?.isVisible || !projectStep?.isCurrent) && ([]|hasAccess:[authority.ADMIN,authority.MANAGER])"
+                          (click)="changeCommentVisibility(message)">
+                    <nb-icon [icon]="message?.isVisible?'eye-outline':'eye-off-2-outline'"></nb-icon>
+                  </button>
+                </ng-container>
+                <button nbButton ghost status="info" size="small"
+                        (click)="choseReplyMsg(message)"
+                        [disabled]="(!event?.isVisible || !projectStep?.isCurrent) && ([]|hasAccess:[authority.ADMIN,authority.MANAGER])">
+                  <nb-icon icon="repeat-outline"></nb-icon>
+                </button>
+              </div>
+
+              <nb-chat-message *ngFor="let msg of comments;trackBy:trackCommentsByFn"
+                               [type]="'putzChat'"
+                               [message]="msg?.description ?? '' "
+                               [date]="msg?.createdDate | momentToDate"
+                               dateFormat="dd/MM/yyyy h:mm"
+                               [sender]="(accountService?.account?.login === msg?.user?.login)?'Você':msg?.user?.login??'---'"
+                               [reply]="accountService?.account?.login === msg?.user?.login"
+                               [quote]="msg.rootComment?.description ?? ''"
+                               [avatar]="msg.user?.imageUrl ?? '' "
+                               [customMessageData]="msg">
+
+              </nb-chat-message>
+            </nb-chat>
+
+            <!--      <div class="comment-scope" *ngIf="comments && comments!.length > 0">-->
+            <!--        <ng-container *ngFor="let comment of comments; let i = index">-->
+            <!--          <lib-time-line-event-card-comment [event]="event" class="col-12" [comment]="comment"-->
+            <!--                                            (commentChanged)="onCommentsChange()"></lib-time-line-event-card-comment>-->
+            <!--          <hr class="m-0 p-0" *ngIf="i !== comments.length-1">-->
+            <!--        </ng-container>-->
+            <!--      </div>-->
+
+            <app-simple-not-found size="small" appearance="outline"
+                           *ngIf="!loadingComments && (!comments || comments?.length === 0)"></app-simple-not-found>
+          </ng-container>
+        </div>
+      </div>
+
+      <div class="row mt-2">
+        <div class="col-12">
+          <p class="quote color-unset" *ngIf="replyMsg">{{replyMsg.description}}
+            <button nbSuffix nbButton ghost type="button" (click)="clearReply()">
+              <nb-icon icon="trash">
+              </nb-icon>
+            </button>
+          </p>
+          <ng-container
+            *ngIf="(!projectStep?.isCurrent)&& ([]|hasAccess:[authority.ADMIN,authority.MANAGER])">
+            <nb-alert outline="danger" class="mt-1">Fazer comentarios só é possível se o evento não estiver concluido.
+            </nb-alert>
+          </ng-container>
+          <nb-form-field
+            *ngIf="(projectStep?.isCurrent) || ([authority.ADMIN,authority.MANAGER]|hasAccess)">
+            <input [required]="true" #commentInput nbInput placeholder="Comentar..."
+                   (keyup.enter)="createComment(commentInput)"
+                   fieldSize="medium" fullWidth/>
+            <button nbSuffix nbButton ghost type="button" [disabled]="makingComment"
+                    (click)="createComment(commentInput)">
+              <nb-icon icon="paper-plane-outline">
+              </nb-icon>
+            </button>
+          </nb-form-field>
+        </div>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>

@@ -1,0 +1,32 @@
+<nb-card class="dialog-content" status="basic">
+  <nb-card-header class="py-2 border-0">
+    <div class="d-flex align-items-center  justify-content-between">
+      <h6 class="fw-bold poppins">Erros de renderização</h6>
+      <button nbButton ghost (click)="close()">
+        <nb-icon icon="close-outline"></nb-icon>
+      </button>
+    </div>
+  </nb-card-header>
+  <nb-card-body [class.spinner-content]="loadingProjectRenderErrors" [class.spinner-no-bg]="loadingProjectRenderErrors"
+                [nbSpinner]="loadingProjectRenderErrors" nbSpinnerStatus="primary" nbSpinnerMessage="Carregando...">
+    <nb-card *ngFor="let renderError of projectRenderErrors">
+      <nb-card-body>
+        <p class="mb-1" *ngIf="renderError.daysAfterStart">Dia depois do início: {{renderError.daysAfterStart}}
+        <p class="mb-1" *ngIf="renderError.slugRender">Slug do render: {{renderError.slugRender}}</p>
+        <p class="mb-1" *ngIf="renderError.idProjectRenderError">Id do item do
+          projeto: {{renderError.idProjectRenderError}}</p>
+      </nb-card-body>
+    </nb-card>
+    <app-detailed-not-found
+      *ngIf="(!projectRenderErrors || projectRenderErrors.length === 0) && !loadingProjectRenderErrors"
+      [hasCallback]="false"></app-detailed-not-found>
+
+  </nb-card-body>
+  <nb-card-footer class="py-2">
+    <div class="d-flex align-items-center  justify-content-end">
+      <button nbButton size="medium" (click)="close()" class="m-1">
+        Fechar
+      </button>
+    </div>
+  </nb-card-footer>
+</nb-card>

@@ -1,0 +1,55 @@
+<nb-card accent="primary">
+  <nb-card-header *ngIf="isDetailed">
+    <h6 class="poppins header-title text-center">Resumo Projeto</h6>
+  </nb-card-header>
+  <nb-card-body>
+    <ng-container *ngIf="!isDetailed">
+      <div class="row align-items-center">
+        <div class="col text-center">
+          <h6 class="m-0 header-title poppins">Total</h6> <h5 class="m-0 header-title poppins color-unset">{{ negotiation?.finalPrice | currency | empty}}</h5>
+        </div>
+        <div class="col text-center">
+          <h6 class="m-0 header-title poppins">Agência</h6>  <h5 class="m-0 header-title poppins color-unset">{{ negotiation?.agencyCommissionFinalValue | currency | empty}}</h5>
+        </div>
+        <div class="col text-center">
+          <h6 class="m-0 header-title poppins">Comissão</h6>  <h5 class="m-0 header-title poppins color-unset">{{ negotiation?.commissionValue | currency | empty}}</h5>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="isDetailed">
+      <h5 class="text-center fw-bold">
+        Valor:{{ negotiation?.finalPrice | currency}}
+      </h5>
+      <dl class="row-md jh-entity-details">
+        <dt *ngIf="isDetailed"><span>Imposto</span></dt>
+        <dd *ngIf="isDetailed">
+          <span>{{ negotiation?.tributeValue | currency}}</span>
+        </dd>
+        <dt><span>Agencia</span></dt>
+        <dd>
+          <span>{{ negotiation?.agencyCommissionFinalValue | currency }}</span>
+        </dd>
+        <dt><span>Comissão</span></dt>
+        <dd>
+          <span>{{ negotiation?.commissionValue | currency}}</span>
+        </dd>
+        <dt *ngIf="isDetailed"><span>Freelancer</span></dt>
+        <dd *ngIf="isDetailed">
+          <span>{{ negotiation?.itemsSum | currency}}</span>
+        </dd>
+        <dt *ngIf="isDetailed"><span>Custo Total</span></dt>
+        <dd *ngIf="isDetailed">
+          <span>{{ negotiation?.finalCosts | currency }}</span>
+        </dd>
+        <dt *ngIf="isDetailed"><span>Orçamento Extra</span></dt>
+        <dd *ngIf="isDetailed">
+          <span>{{ negotiation?.finalExtraBudget | currency}}</span>
+        </dd>
+        <dt *ngIf="isDetailed"><span>Imposto Ancine</span></dt>
+        <dd *ngIf="isDetailed">
+          <span>{{ project?.tributeAncine | currency | empty}}</span>
+        </dd>
+      </dl>
+    </ng-container>
+  </nb-card-body>
+</nb-card>

@@ -1,0 +1,72 @@
+<div class="layout-content">
+  <div class="row spinner-content spinner-no-bg" [nbSpinner]="isLoading" nbSpinnerStatus="primary"
+       nbSpinnerMessage="Carregando...">
+    <ng-container *ngIf="!isLoading">
+      <div class="col-12 col-md-12">
+        <nb-card status="primary" [class.m-0]="project?.anyApproved">
+          <nb-card-header class="border-0">
+            <div class="row align-items-center">
+              <div class="col-md-4 text-start">
+                <h5 class="poppins fw-bold text-light">Projeto {{project?.name | empty}}</h5>
+                <nb-tag-list>
+                  <nb-tag status="control" appearance="outline" size="tiny"
+                          [text]="'Início: '+(project?.startDate | convert | date:'dd/MM/yyyy' | empty)"></nb-tag>
+                  <nb-tag status="control" appearance="outline" size="tiny"
+                          [text]="'Fim: '+(project?.endDate | convert | date:'dd/MM/yyyy' | empty)"></nb-tag>
+                  <nb-tag *ngIf="project?.approvedByClient" text="Aprovado pelo cliente" status="control" appearance="outline" size="tiny" nbTooltip="Aprovado
+                    em {{project?.approvedDateByClient | convert | date:'dd/MM/yyyy HH:mm:ss' | empty}} pelo cliente"></nb-tag>
+                  <nb-tag *ngIf="project?.approvedByClient" text="Aprovado pela Putz" status="control" appearance="outline" size="tiny" nbTooltip="Aprovado
+                    em {{project?.approvedDateByPutz | convert | date:'dd/MM/yyyy HH:mm:ss' | empty}} pela Putz"></nb-tag>
+                  <nb-tag status="warning" appearance="outline" size="tiny" *ngIf="project?.projectRenderId"
+                          text="Automação"></nb-tag>
+                </nb-tag-list>
+                <hr class="d-block d-md-none">
+              </div>
+              <div class="col text-center">
+                <h6 class="poppins fw-bold text-dark">Cliente</h6> <h6
+                class="poppins fw-bold text-light">{{project?.client?.name | empty}}</h6>
+              </div>
+              <div class="col text-center">
+                <h6 class="poppins fw-bold text-dark">Etapa</h6> <h6
+                class="poppins fw-bold text-light">{{project?.projectStatus ? (('project.status.' + project?.projectStatus) | translate) : '---'}}</h6>
+              </div>
+              <div class="col text-center">
+                <h6 class="poppins fw-bold text-dark">Valor</h6> <h6
+                class="poppins fw-bold text-light">{{(project?.negotiationCalc?.finalPrice| currency) | empty}}</h6>
+              </div>
+              <div class="col text-end">
+                <a nbButton outline size="large" class="m-1" nbTooltip="Lista de projetos" status="control"
+                   [routerLink]="['','projects']">
+                  <nb-icon icon="home-outline"></nb-icon>
+                </a>
+                <a nbButton outline size="large" class="m-1" nbTooltip="Timeline" status="control"
+                   [routerLink]="['','projects',project?.id,'timeline']">
+                  <nb-icon icon="trending-up-outline"></nb-icon>
+                </a>
+                <button nbButton outline size="large" class="m-1 ms-2 d-none d-lg-inline" nbTooltip="Guia de pagina"
+                        status="control"
+                        (click)="buildTour()">
+                  <nb-icon icon="question-mark-circle-outline"></nb-icon>
+                </button>
+                <!--                <button nbButton outline size="large" class="m-1" nbTooltip="Mais opções" status="control" *ngIf="!project?.approvedByPutz" title="Mais opções"-->
+                <!--                        [nbPopover]="moreOptions">-->
+                <!--                  <nb-icon icon="more-vertical-outline"></nb-icon>-->
+                <!--                </button>-->
+              </div>
+            </div>
+          </nb-card-header>
+        </nb-card>
+      </div>
+    </ng-container>
+  </div>
+  <app-custom-route-tabset fullWidth>
+    <ng-container *ngFor="let tab of tabs">
+      <ng-container *ngIf="!isModelForConception && project">
+        <app-custom-route-tab [title]="tab.title" [icon]="tab.icon" [route]="tab.route" [disabled]="tab.disabled"
+                              id="tab-{{tab.name}}"
+                              [responsive]="tab.responsive" *nbIsGranted="['view',tab.name]"
+        ></app-custom-route-tab>
+      </ng-container>
+    </ng-container>
+  </app-custom-route-tabset>
+</div>

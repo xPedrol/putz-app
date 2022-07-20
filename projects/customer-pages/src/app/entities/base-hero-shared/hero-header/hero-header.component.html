@@ -1,0 +1,28 @@
+<div class="d-flex w-100 content-center align-items-center">
+  <div class="section left">
+    <button *ngIf="sidebarTag" class="sidebar-toggle" (click)="toggleSidebar()">
+      <nb-icon icon="menu-2"></nb-icon>
+    </button>
+    <div class="logo">
+      <a class="logo poppins text-uppercase" routerLink="/">Putz Filmes</a>
+    </div>
+  </div>
+  <div class="section middle">
+    <nb-menu [items]="mainMenu"></nb-menu>
+
+    <!--  <ngd-search *ngIf="showSearch"></ngd-search>-->
+  </div>
+  <div class="section right">
+    <nb-user [nbContextMenu]="userMenu" *ngIf="account"
+             [onlyPicture]="true"
+             [name]="account.login"
+             [picture]="account.imageUrl"
+             nbContextMenuTag="userMenu">
+    </nb-user>
+    <!--  <iframe class="stars"-->
+    <!--          src="https://ghbtns.com/github-btn.html?user=akveo&repo=nebular&type=star&count=true"-->
+    <!--          frameborder="0"-->
+    <!--          scrolling="0">-->
+    <!--  </iframe>-->
+  </div>
+</div>

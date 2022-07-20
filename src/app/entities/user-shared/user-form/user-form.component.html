@@ -1,0 +1,89 @@
+<form [formGroup]="profileForm" (ngSubmit)="saveUser()">
+  <div class="row">
+    <div class="mb-3 col-md-4">
+      <label class="label">Primeiro Nome</label>
+      <nb-form-field>
+        <input type="text" nbInput fullWidth placeholder="Nome" formControlName="firstName" fieldSize="large"
+               [status]="(profileForm.get('firstName')!.dirty || profileForm.get('firstName')!.touched) ? (profileForm.get('firstName')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container *ngIf="profileForm.get('firstName')!.invalid && profileForm.get('firstName')!.touched">
+        <p class="text-danger" *ngIf="profileForm.get('firstName')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class="mb-3 col-md-4">
+      <label class="label">Sobrenome</label>
+      <nb-form-field>
+        <input type="text" nbInput fullWidth placeholder="Nome" formControlName="lastName" fieldSize="large"
+               [status]="(profileForm.get('lastName')!.dirty || profileForm.get('lastName')!.touched) ? (profileForm.get('lastName')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container *ngIf="profileForm.get('lastName')!.invalid && profileForm.get('lastName')!.touched">
+        <p class="text-danger" *ngIf="profileForm.get('lastName')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class="mb-3 col-12 col-md-4">
+      <label class="label">Email</label>
+      <nb-form-field>
+        <input type="text" nbInput fullWidth placeholder="Email" formControlName="email" fieldSize="large"
+
+               [status]="(profileForm.get('email')!.dirty || profileForm.get('email')!.touched) ? (profileForm.get('email')!.invalid  ? 'danger' : 'success') : 'basic'">
+      </nb-form-field>
+      <ng-container *ngIf="profileForm.get('email')!.invalid && profileForm.get('email')!.touched">
+        <p class="text-danger" *ngIf="profileForm.get('email')!.errors?.required">
+          Campo obrigatório
+        </p>
+        <p class="text-danger" *ngIf="profileForm.get('email')!.errors?.email">
+          Email inválido
+        </p>
+      </ng-container>
+    </div>
+    <div class="mb-3 col-12 col-md-10" *nbIsGranted="['edit','access-permission']">
+      <label class="label">Autoridades</label>
+      <nb-form-field>
+        <nb-tag-list (tagRemove)="onTagRemove($event)">
+          <nb-tag *ngFor="let tag of profileForm.get('authorities')!.value" [text]="tag" size="small"
+                  appearance="outline" status="primary" removable></nb-tag>
+          <input type="text" nbTagInput [nbAutocomplete]="authorityAutocomplete" fullWidth fieldSize="large"
+                 (focus)="profileForm.get('authorities')!.markAsTouched()"
+                 [status]="(profileForm.get('authorities')!.dirty || profileForm.get('authorities')!.touched) ? (profileForm.get('authorities')!.value!.size === 0  ? 'danger' : 'success') : 'basic'">
+        </nb-tag-list>
+        <nb-icon nbSuffix icon="search" pack="eva"></nb-icon>
+      </nb-form-field>
+
+      <nb-autocomplete #authorityAutocomplete (selectedChange)="onTagAdd($event)">
+        <nb-option *ngFor="let authority of authorities" [value]="authority">{{ authority }}</nb-option>
+      </nb-autocomplete>
+      <ng-container *ngIf="profileForm.get('authorities')!.invalid && profileForm.get('authorities')!.touched">
+        <p class="text-danger" *ngIf="profileForm.get('authorities')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class="mb-3 col-12 col-md-2">
+      <label class="label">Idioma</label>
+      <nb-form-field>
+        <nb-select fullWidth placeholder="Selecione um idioma..." formControlName="langKey" size="large"
+                   [status]="(profileForm.get('langKey')!.dirty || profileForm.get('langKey')!.touched) ? (profileForm.get('langKey')!.invalid  ? 'danger' : 'success') : 'basic'">
+          <option>Selecione uma lingua</option>
+          <nb-option [value]="language" *ngFor="let language of languages">{{language}}</nb-option>
+        </nb-select>
+      </nb-form-field>
+      <ng-container *ngIf="profileForm.get('langKey')!.invalid && profileForm.get('langKey')!.touched">
+        <p class="text-danger" *ngIf="profileForm.get('langKey')!.errors?.required">
+          Campo obrigatório
+        </p>
+      </ng-container>
+    </div>
+    <div class="mb-3 col-12">
+      <nb-checkbox formControlName="activated">Ativar usuário</nb-checkbox>
+    </div>
+  </div>
+  <div class="row">
+    <div class=" col-12 col-md-12 text-end">
+      <button nbButton status="primary" type="submit" size="medium">Salvar</button>
+    </div>
+  </div>
+</form>

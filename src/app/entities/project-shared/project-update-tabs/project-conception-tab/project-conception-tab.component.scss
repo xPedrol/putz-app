@@ -1,0 +1,6 @@
+@use "../../../../shared/themes/scrollbar"as *;
+.item-list{
+  overflow: auto;
+  max-height: 65vh;
+  @extend .custom-scrollbar;
+}

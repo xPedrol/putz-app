@@ -1,0 +1,6 @@
+@use "../../../../shared/themes/scrollbar"as *;
+@use "../../../../shared/themes/bpagination"as *;
+.tag-list {
+  overflow: auto;
+  max-height: 65vh;
+}
