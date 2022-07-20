@@ -7,7 +7,7 @@
     "build-dev": "ng build",
     "watch": "ng build --watch --configuration development",
     "putz-app": "ng putz-app",
-    "dev:ssr": "ng run putz-app:serve-ssr",
+    "dev:ssr": "ng run putz-app:serve-ssr", 
     "serve:ssr": "node dist/putz-app/server/main.js",
     "build:ssr": "ng build && ng run putz-app:server",
     "prerender": "ng run putz-app:prerender",
