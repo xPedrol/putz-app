@@ -1,13 +1,13 @@
 export const commonEnvironmentProd = {
-  apiteste_URL: 'https://apiteste.putzfilmes.com/apiteste/',
-  apiteste_URL_CONFIG: 'https://apiteste.putzfilmes.com/',
-  IMAGE_URL: 'https://apiteste.putzfilmes.com/apiteste/storage',
+  API_URL: 'https://apiteste.putzfilmes.com/api/',
+  API_URL_CONFIG: 'https://apiteste.putzfilmes.com/',
+  IMAGE_URL: 'https://apiteste.putzfilmes.com/api/storage',
   RENDER_URL: 'https://render.putzfilmes.com/',
   // RENDER_URL: 'http://localhost:3000',
-  RENDER_KEY: 'myapitestesecret',
+  RENDER_KEY: 'myapisecret',
   APP_PUBLIC_TOKEN: '',
   USER_STANDARD_AVATAR: 'https://apiteste.putzfilmes.com/static/person/member_1_head-256.png',
-  VapitesteD:
+  VAPID:
     {
       publicKey: 'BMkk03ZSizZ6H03gABWEYvtd0b_ZUyp5yFWE2yz33wNVcRnHgOOXoTejdsg4kGuCkpRU7-RM3Dv1JX88VIx-e3w',
       privateKey: 'kfipxhi9KAkzQaTPk7xEtSKZvCRMHR4gWR6VCML6NBU'
