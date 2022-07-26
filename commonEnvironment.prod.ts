@@ -16,7 +16,7 @@ export const commonEnvironmentProd = {
   FONT_SIZE_KEY: 'font-size',
   PAGES_APP_URL: 'https://startup.putzfilmes.com',
   MAIN_APP_URL: 'https://projetos.putzfilmes.com',
-  BASE_DOMAIN: 'https://putz-app.vercel.app',
+  BASE_DOMAIN: 'putz-app.vercel.app',
   // BASE_DOMAIN: 'localhost',
   AUTH_TOKEN: 'putz_auth_token',
   LOCATION_IQ_KEY: 'pk.e8eb8c3c2b716cef4468ee2acd8c2bf0',
