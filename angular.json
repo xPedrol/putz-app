@@ -52,7 +52,7 @@
                 "scripts": true,
                 "styles": {
                   "minify": true,
-                  "inlineCritical": false
+                  "inlineCritical": true
                 },
                 "fonts": true
               },
@@ -151,58 +151,6 @@
               "optimization": false,
               "sourceMap": true,
               "extractLicenses": false
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "serve-ssr": {
-          "builder": "@nguniversal/builders:ssr-dev-server",
-          "configurations": {
-            "development": {
-              "browserTarget": "putz-app:build:development",
-              "serverTarget": "putz-app:server:development"
-            },
-            "production": {
-              "optimization": {
-                "scripts": true,
-                "styles": {
-                  "minify": true,
-                  "inlineCritical": false
-                },
-                "fonts": true
-              },
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "aot": true,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "browserTarget": "putz-app:build:production",
-              "serverTarget": "putz-app:server:production"
-            }
-          },
-          "defaultConfiguration": "development"
-        },
-        "prerender": {
-          "builder": "@nguniversal/builders:prerender",
-          "options": {
-            "routes": [
-              "/auth/login",
-              "/auth/register",
-              "/auth/password/request",
-              "/auth/password/new"
-            ],
-            "guessRoutes": false
-          },
-          "configurations": {
-            "production": {
-              "browserTarget": "putz-app:build:production",
-              "serverTarget": "putz-app:server:production"
-            },
-            "development": {
-              "browserTarget": "putz-app:build:development",
-              "serverTarget": "putz-app:server:development"
             }
           },
           "defaultConfiguration": "production"
