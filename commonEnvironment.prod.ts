@@ -1,7 +1,7 @@
 export const commonEnvironmentProd = {
-  API_URL: 'https://api.putzfilmes.com/api/',
-  API_URL_CONFIG: 'https://api.putzfilmes.com/',
-  IMAGE_URL: 'https://api.putzfilmes.com/api/storage',
+  API_URL: 'https://apiteste.putzfilmes.com/api/',
+  API_URL_CONFIG: 'https://apiteste.putzfilmes.com/',
+  IMAGE_URL: 'https://apiteste.putzfilmes.com/api/storage',
   RENDER_URL: 'https://render.putzfilmes.com/',
   // RENDER_URL: 'http://localhost:3000',
   RENDER_KEY: 'myapisecret',
