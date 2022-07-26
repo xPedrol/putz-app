@@ -6,33 +6,23 @@ import {HTTP_INTERCEPTORS, HttpClient} from '@angular/common/http';
 import {AuthInterceptor} from './interceptor/auth.interceptor';
 import {ErrorHandlerInterceptor} from './interceptor/error-handler.interceptor';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
-import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {NgxMaskModule} from 'ngx-mask';
 import {accessPermissions} from './access-permissions';
-import {translateBrowserLoaderFactory} from './translate/translate-browser.loader';
-import {TransferState} from '@angular/platform-browser';
-import {
-  NbAuthJWTInterceptor,
-  NbAuthModule,
-  // NbOAuth2AuthStrategy,
-  // NbOAuth2ResponseType,
-  NbPasswordAuthStrategy,
-  NbTokenStorage
-} from '@nebular/auth';
+import {NbAuthJWTInterceptor, NbAuthModule, NbPasswordAuthStrategy, NbTokenStorage} from '@nebular/auth';
 import {TokenCookieStorageService} from '../services/token-cookie-storage.service';
 import {MainStrategy} from './strategies/main.strategy';
 import localePt from '@angular/common/locales/pt';
 import {SidebarService} from '../services/sidebar.service';
 import {APP_CONFIG} from './Injection-tokens/app-config.injection-token';
 import {IAppConfig} from '../models/config/app-config.model';
+import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 
 registerLocaleData(localePt, 'pt-BR');
 
-export function createTranslateLoader(http: HttpClient) {
-  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
 }
-
-
 @NgModule({
   imports: [
     CommonModule,
@@ -42,29 +32,6 @@ export function createTranslateLoader(http: HttpClient) {
     NbAuthModule.forRoot({
       strategies: [
         NbPasswordAuthStrategy.setup(MainStrategy),
-        // NbOAuth2AuthStrategy.setup({
-        //   name: 'github',
-        //   clientId: '75c48c266ff2b0b759be',
-        //   clientSecret: '',
-        //   authorize: {
-        //     endpoint: 'https://github.com/login/oauth/authorize',
-        //     responseType: NbOAuth2ResponseType.TOKEN,
-        //     scope: 'user',
-        //     redirectUri: 'http://localhost:4200/auth/oauth2/callback/github'
-        //   }
-        // }),
-        // NbOAuth2AuthStrategy.setup({
-        //   name: 'google',
-        //   clientId: '352935505172-p6ej5tmuvkc6n6jngnha2s27n1d1in8o.apps.googleusercontent.com',
-        //   clientSecret: '',
-        //   authorize: {
-        //     endpoint: 'https://accounts.google.com/o/oauth2/v2/auth',
-        //     responseType: NbOAuth2ResponseType.TOKEN,
-        //     scope: 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile',
-        //     redirectUri: 'http://localhost:4200/auth/oauth2/callback/google'
-        //   }
-        // }),
-        // NbOAuth2AuthStrategy.setup(GoogleStrategy),
       ],
       forms: {
         login: {
@@ -86,10 +53,9 @@ export function createTranslateLoader(http: HttpClient) {
       defaultLanguage: 'pt',
       loader: {
         provide: TranslateLoader,
-        useFactory: translateBrowserLoaderFactory,
-        deps: [HttpClient, TransferState]
-      },
-      extend: true
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
     }),
   ],
   providers: [

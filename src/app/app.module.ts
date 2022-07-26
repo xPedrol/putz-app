@@ -9,7 +9,6 @@ import {NgxWebstorageModule} from 'ngx-webstorage';
 import {NbSecurityModule} from '@nebular/security';
 import {CoreModule} from './core/core.module';
 import {ThemesModule} from './shared/themes/themes.module';
-import {TransferHttpCacheModule} from '@nguniversal/common';
 import {PagesModule} from './pages/pages.module';
 import {CurrencyPipe, PercentPipe} from '@angular/common';
 import {PipeModule} from './core/pipes/pipe.module';
@@ -23,9 +22,8 @@ import {MainAppLayoutPageModule} from './shared/main-app-layout-page/main-app-la
     AppComponent
   ],
   imports: [
-    BrowserModule.withServerTransition({appId: 'serverApp'}),
+    BrowserModule,
     BrowserAnimationsModule,
-    TransferHttpCacheModule,
     HttpClientModule,
     NgxWebstorageModule.forRoot(),
     CookieModule.forRoot(),
