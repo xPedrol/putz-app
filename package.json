@@ -6,7 +6,7 @@
     "start": "ng serve",
     "start-local": "ng serve --host 0.0.0.0 --disable-host-check",
     "build": "ng build --aot && ng run putz-app:server",
-    "build-dev": "ng build --aot --configuration=development",
+    "build-dev": "ng build --aot --configuration=development", 
     "b": "npm run build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
