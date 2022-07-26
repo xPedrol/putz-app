@@ -1,9 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ProjectRenderItemService} from "../../../../../../../../src/app/services/project-render-item.service";
 import {ProjectService} from "../../../../../../../../src/app/services/project.service";
 import {RenderBaseFormComponent} from "../../../render-forms-config/render-base-form/render-base-form.component";
 import {GeoLocationService} from "../../../../services/geo-location.service";
+import {ActivatedRoute, Router} from "@angular/router";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {ToastService} from "../../../../services/toast.service";
 
 @Component({
   selector: 'app-render-form-wine-fields',
@@ -39,9 +42,13 @@ export class RenderFormWineFieldsComponent extends RenderBaseFormComponent imple
   constructor(
     public projectRenderItemService: ProjectRenderItemService,
     public projectService: ProjectService,
-    public geoLocationService: GeoLocationService
+    public geoLocationService: GeoLocationService,
+    public elementRef: ElementRef,
+    public router: Router,
+    public activatedRoute: ActivatedRoute,
+    public toastService: ToastService
   ) {
-    super(projectService, projectRenderItemService, geoLocationService);
+    super(projectService, projectRenderItemService, geoLocationService, elementRef, router, activatedRoute, toastService);
     this.friendInput = new FormControl(null, [Validators.required]);
     this.uploadForm = new FormGroup({
       country: new FormControl(this.defaultCountryDialCode, [Validators.required]),

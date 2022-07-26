@@ -40,7 +40,7 @@ interface IProjectCount {
 @Component({
   selector: 'app-dashboard-general',
   templateUrl: './dashboard-general.component.html',
-  styleUrls: ['./dashboard-general.component.scss']
+  styleUrls: ['./dashboard-general.component.scss','../../../../shared/themes/nebular-overrides.scss']
 })
 export class DashboardGeneralComponent implements OnInit,OnDestroy {
 

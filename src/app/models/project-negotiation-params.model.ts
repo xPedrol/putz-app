@@ -7,6 +7,7 @@ export interface IProjectNegotiationParams {
   agencyCommissionPercent: number | null;
   commissionPercent: number | null;
   itemsBaseSum: number | null;
+  extraItemsBaseSum: number | null;
 
   finalExtraBudget: number | null;
   finalPrice: number | null;
@@ -69,6 +70,7 @@ export class ProjectNegotiationParams implements IProjectNegotiationParams {
   videoTime: number | null;
   items?: IProjectItem[] | null;
   itemsBaseSum: number | null;
+  extraItemsBaseSum: number | null;
 
   constructor(params: any = {}) {
     params = params ?? {};
@@ -95,6 +97,7 @@ export class ProjectNegotiationParams implements IProjectNegotiationParams {
     this.tributePercent = params.tributePercent;
     this.videoTime = params.videoTime;
     this.itemsBaseSum = params.itemsBaseSum;
+    this.extraItemsBaseSum = params.extraItemsBaseSum;
 // }
   }
 

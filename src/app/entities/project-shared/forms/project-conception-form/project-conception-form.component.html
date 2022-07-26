@@ -60,16 +60,16 @@
     <div class="col-12" *ngIf="advancedConception">
       <label class="label">Soma de custo <br> dos itens</label>
       <nb-form-field>
-        <input fieldSize="medium" type="number" nbInput fullWidth placeholder="Soma dos itens..."
-               formControlName="itemsBaseSum"
-               (keyup)="project!.negotiation!.videoTime = editForm.get('itemsBaseSum')!.value"
-               [status]="(editForm.get('itemsBaseSum')!.dirty || editForm.get('itemsBaseSum')!.touched) ? (editForm.get('itemsBaseSum')!.invalid  ? 'danger' : 'success') : 'basic'">
+        <input fieldSize="medium" type="number" nbInput fullWidth placeholder="Soma dos itens..." [readonly]="true"
+               formControlName="itemsSum"
+               (keyup)="project!.negotiation!.videoTime = editForm.get('itemsSum')!.value"
+               [status]="(editForm.get('itemsSum')!.dirty || editForm.get('itemsSum')!.touched) ? (editForm.get('itemsSum')!.invalid  ? 'danger' : 'success') : 'basic'">
       </nb-form-field>
       <ng-container
-        *ngIf="editForm.get('itemsBaseSum')!.invalid && (editForm.get('itemsBaseSum')!.dirty || editForm.get('itemsBaseSum')!.touched)">
+        *ngIf="editForm.get('itemsSum')!.invalid && (editForm.get('itemsSum')!.dirty || editForm.get('itemsSum')!.touched)">
         <small
           class="form-text text-danger"
-          *ngIf="editForm.get('itemsBaseSum')!.errors?.required"
+          *ngIf="editForm.get('itemsSum')!.errors?.required"
         >
           Campo obrigatório
         </small>

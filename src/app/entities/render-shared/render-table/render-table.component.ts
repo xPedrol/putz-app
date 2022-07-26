@@ -16,6 +16,7 @@ import {isPlatformBrowser} from '@angular/common';
 import {SortEvent} from "../../../directives/sortable.directive";
 import {ISort, Sort} from "../../../models/table/sort.model";
 import {IProjectRender} from "../../../models/project-render.model";
+import {DATE_FORMAT} from "../../../config/input.constants";
 
 @Component({
   selector: 'app-render-table',
@@ -180,6 +181,12 @@ export class RenderTableComponent implements OnInit, OnDestroy {
       }
     }
     return false;
+  }
+
+  callWhatsapp(whatsappNumber: string): void {
+    if (this.isBrowser) {
+      window.open(`https://api.whatsapp.com/send?phone=${whatsappNumber}&text=Olá.`, '_blank');
+    }
   }
 
   identify(index: number) {

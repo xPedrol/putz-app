@@ -20,7 +20,6 @@ export class RenderDetailCsvTabComponent implements OnInit {
 
   getParams(): void {
     this.projectRenderService.projectRender$.subscribe(projectRender => {
-      console.warn('projectRender', projectRender);
       if (projectRender?.isCsvRenderProject) {
         this.isCsvRenderProject = true;
       }

@@ -109,7 +109,7 @@ export class MenuItemsService {
         ]
       },
       {
-        title: 'Registros',
+        title: 'Cadastros',
         icon: 'color-palette-outline',
         name: 'competence-crud',
         description: 'CRUDS do sistema (área administrativa)',

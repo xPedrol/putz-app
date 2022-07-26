@@ -21,6 +21,7 @@ import { ProductCrudUpdateComponent } from './product-crud-update/product-crud-u
 import {PipeModule} from "../../../core/pipes/pipe.module";
 import {NgxCurrencyModule} from "ngx-currency";
 import {TranslateModule} from "@ngx-translate/core";
+import {ObjectViewerDialogModule} from "../../../shared/components/object-viewer-dialog/object-viewer-dialog.module";
 
 
 
@@ -52,7 +53,8 @@ import {TranslateModule} from "@ngx-translate/core";
     PipeModule,
     NgxCurrencyModule,
     TranslateModule,
-    NbAutocompleteModule
+    NbAutocompleteModule,
+    ObjectViewerDialogModule
   ]
 })
 export class ProductCrudSharedModule { }

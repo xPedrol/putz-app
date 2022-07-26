@@ -7,7 +7,7 @@ import {distinctUntilChanged, takeUntil} from 'rxjs/operators';
 import {combineLatest, Subject} from 'rxjs';
 import {State} from '../../../../models/table/state.model';
 import {ActivatedRoute, Router} from '@angular/router';
-import {ProjectItemDialogComponent} from '../../project-item-shared/project-item-dialog/project-item-dialog.component';
+import {ProjectItemUpdateDialogComponent} from '../../project-item-shared/project-item-update-dialog/project-item-update-dialog.component';
 import {NbDialogService} from '@nebular/theme';
 import {TableBase} from '../../../../models/table/table-base.model';
 import {Authority} from '../../../../constants/authority.constants';
@@ -125,7 +125,7 @@ export class ProjectItemTabComponent extends TableBase implements OnInit, OnDest
 
 
   openProjectItemDialog(): void {
-    this.dialogService.open(ProjectItemDialogComponent, {context: {saveItemOnBD: true}}).onClose.pipe(takeUntil(this.subject$)).subscribe(projectItem => {
+    this.dialogService.open(ProjectItemUpdateDialogComponent, {context: {saveItemOnBD: true}}).onClose.pipe(takeUntil(this.subject$)).subscribe(projectItem => {
       if (projectItem) {
         const items: IProjectItem[] = this.projectItemService.projectItems$.getValue()?.projectItems ?? [];
         items.push(projectItem);

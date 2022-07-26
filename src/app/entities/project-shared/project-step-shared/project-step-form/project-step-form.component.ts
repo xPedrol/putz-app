@@ -5,7 +5,10 @@ import {IProjectStep} from '../../../../models/project-step.model';
 import {IProduct} from '../../../../models/product.model';
 import * as moment from 'moment';
 import {debounceTime, takeUntil} from 'rxjs/operators';
-import {Subject} from 'rxjs';
+import {Subject, combineLatest} from 'rxjs';
+import {AccountService} from "../../../../services/account.service";
+import {ProjectService} from "../../../../services/project.service";
+import {ProjectStatus} from "../../../../models/enums/project-status.model";
 
 @Component({
   selector: 'app-project-step-form',
@@ -20,17 +23,20 @@ export class ProjectStepFormComponent implements OnInit, OnDestroy {
   project: IProject | undefined;
   products: IProduct[] | undefined;
 
-  constructor() {
+  constructor(
+    private accountService: AccountService,
+    private projectService: ProjectService
+  ) {
     this.formSave = new EventEmitter<IProjectStep>();
     this.editForm = new FormGroup({
       id: new FormControl(null),
       name: new FormControl(null, [Validators.required]),
       startDateExpected: new FormControl(null, [Validators.required]),
-      startDate: new FormControl(null, []),
+      startDate: new FormControl({value: null, disabled: true}, []),
       // @ts-ignore
       endDateExpected: new FormControl(null, [this.dateValidationExpected]),
       // @ts-ignore
-      endDate: new FormControl(null, [this.dateValidation]),
+      endDate: new FormControl({value: null, disabled: true}, [this.dateValidation]),
       days: new FormControl(null, [Validators.required])
     });
   }
@@ -45,7 +51,24 @@ export class ProjectStepFormComponent implements OnInit, OnDestroy {
     this.editForm.get('startDate')?.valueChanges.pipe(debounceTime(600), takeUntil(this.subject$)).subscribe(() => {
       this.editForm.get('endDate')?.updateValueAndValidity();
     });
+    combineLatest([this.accountService.accountSubject, this.projectService.project$]).subscribe(([account, project]) => {
+      this.project = project;
+      if (project && account) {
+        if (!account.hasHighAuthority()) {
+          if (project.projectStatus !== ProjectStatus.CONCEPTION && project.projectStatus !== ProjectStatus.BRIEFING) {
+            this.editForm.disable();
+          } else {
+            this.editForm.enable();
+            this.editForm.get('startDate').disable();
+            this.editForm.get('endDate').disable();
+          }
+        } else {
+          this.editForm.enable();
+        }
+      }
+    });
   }
+
 
   emit(): void {
     if (this.editForm.valid) {

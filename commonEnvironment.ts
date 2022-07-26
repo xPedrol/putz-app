@@ -1,5 +1,5 @@
 export const commonEnvironment = {
-  API_URL: 'https://apiteste.putzfilmes.com/api/',
+  API_URL: 'https://api.putzfilmes.com/api/',
   API_URL_CONFIG: 'https://apiteste.putzfilmes.com/',
   IMAGE_URL: 'https://apiteste.putzfilmes.com/api/storage',
   RENDER_URL: 'https://render.putzfilmes.com/',

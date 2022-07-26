@@ -1,18 +1,12 @@
-<div class="d-flex justify-content-center">
-  <small class="poppins fw-bold overflow-hidden text-overflow text-center">{{renderItem?.name | empty}}</small>
-</div>
-<div class="card">
+
+<div class="card" [class.service-box]="isPreRegistered && renderItem?.renderUid">
   <div class="my-3 mx-3">
   </div>
   <div class="card-body">
     <div class="row justify-content-between align-items-center">
-      <div class="col text-start mb-1">
-<!--        <div class="mb-1" *ngIf="renderItem?.renderStatus">-->
-<!--          Situação atual: <span-->
-<!--          class="poppins fw-bold">{{(('project-render.status.' + renderItem?.renderStatus) | translate)}}</span>-->
+      <div class="col mb-1">
                 <div class="mb-1" *ngIf="renderItem?.renderStatus">
-                  Situação atual: <span
-                  class="poppins fw-bold">{{renderItem?.renderStatus}}</span>
+                  Situação: <span class="poppins fw-bold">{{getStatus(renderItem?.renderStatus)}}</span>
         </div>
       </div>
       <div class="col text-center text-md-end"
@@ -26,29 +20,30 @@
       </div>
     </div>
     <ngb-alert class="mt-3" type="warning" [dismissible]="false"
-               *ngIf="renderItem?.job === null || renderItem?.job?.state === 'error'">
+               *ngIf="!isPreRegistered && (renderItem?.job === null || renderItem?.job?.state === 'error')">
       <strong>Ocorreu um erro ao obter o progresso do vídeo.</strong>
     </ngb-alert>
 
     <ngb-alert class="mt-3" [dismissible]="false" type="info"
                *ngIf="renderItem?.job && renderItem?.job?.state !== 'error' && !renderItem?.videoUrl">
-      <strong> Você receberá o vídeo no seu telefone assim que estiver pronto.</strong>
+      <strong> Em alguns minutos seu vídeo estará disponível.</strong>
     </ngb-alert>
     <ng-container *ngIf="isPreRegistered && renderItem?.renderUid">
-      <ol>
-        <li>Fique calmo o vídeo pode demorar aproximadamente 4 minutos para chegar no seu telefone</li>
-        <li>Agora precisamos confimar seu número de telefone!</li>
-        <li>Nosso número Oficial de Whatsapp é: <strong>"{{renderItem?.renderProject?.whatsappBot}}"</strong>
-        </li>
-        <li>Envie pelo aplicativo whatsapp o código abaixo para confirmar seu pedido.
-      </ol>
-      <h1 class="text-center">{{renderItem?.renderUid | empty}}</h1>
+
+      <h5 class="text-center">Precisamos confimar seu número de telefone!</h5>
+
+      <ul class="features-list">
+        <li><i class="fa-brands fa-whatsapp"></i> Seu Telefone: <strong>{{renderItem?.whatsapp}}</strong></li>
+        <li><i class="fa fa-robot"></i> Nosso Número: <strong>{{renderItem?.renderProject?.whatsappBot}}</strong></li>
+
+        <li><i class="fa-solid fa-clock"></i> Tempo de Esperara: <strong>+-4 minutos</strong></li>
+        <li><i class="fa-solid fa-edit"></i><strong> {{renderItem?.name}}</strong></li>
+      </ul>
       <div class="row">
         <div class="col-12 text-center">
-          <a class="m-3 default-btn" target="_blank"
-             href='https://api.whatsapp.com/send/?phone={{renderItem?.renderProject?.whatsappBot}}&text={{renderItem?.renderUid | empty}}'>
-            <!--            <nb-icon icon="phone-call-outline" class="mx-1" status="success"></nb-icon>-->
-            Enviar Código</a>
+          <a class="btn-blue" target="_blank"
+             href={{this.getWhatsappUrl()}}>
+             Clique para enviar o código {{renderItem?.renderUid | empty}}</a>
         </div>
       </div>
     </ng-container>

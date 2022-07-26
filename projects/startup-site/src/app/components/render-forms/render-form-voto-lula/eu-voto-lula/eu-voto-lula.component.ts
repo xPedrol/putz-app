@@ -13,13 +13,16 @@ import {ViewportScroller} from '@angular/common';
 })
 export class EuVotoLulaComponent implements OnInit {
 
+  isPrecadastro: false;
+  hasWhatsapp:false;
+
   constructor(
     private menuService: MenuSiteService,
     private activatedRoute: ActivatedRoute,
     private viewportScroller: ViewportScroller
   ) {
     menuService.currentMenu = new BehaviorSubject<IMenuSiteItemModel[]>(navigationEuVotoLula);
-    menuService.showLogin = true;
+    menuService.showLogin = false;
     menuService.isCentred = false;
     menuService.isNavBarColorWhite = false;
     menuService.isNavbarDNone = false;
@@ -27,6 +30,11 @@ export class EuVotoLulaComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.activatedRoute.data.subscribe(data => {
+      this.isPrecadastro=data.isPrecadastro;
+      this.hasWhatsapp=data.hasWhatsapp;
+    });
+
     // this.activatedRoute.queryParams.subscribe(params => {
     //     if (params?.renderId) {
     //       this.viewportScroller.scrollToAnchor('how-it-works');
@@ -35,4 +43,7 @@ export class EuVotoLulaComponent implements OnInit {
     // );
   }
 
+  public onClick(elementId: string): void {
+    this.viewportScroller.scrollToAnchor(elementId);
+  }
 }

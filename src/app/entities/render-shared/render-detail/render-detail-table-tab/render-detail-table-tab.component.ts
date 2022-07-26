@@ -27,7 +27,7 @@ import {RenderDetailService} from "../render-detail.service";
   templateUrl: './render-detail-table-tab.component.html',
   styleUrls: ['./render-detail-table-tab.component.scss']
 })
-export class RenderDetailTableTabComponent extends TableBase implements OnInit,OnDestroy {
+export class RenderDetailTableTabComponent extends TableBase implements OnInit, OnDestroy {
   subject$: Subject<any>;
   project: IProject | undefined;
   listSize = 20;
@@ -81,11 +81,11 @@ export class RenderDetailTableTabComponent extends TableBase implements OnInit,O
             this.openConfirmExportSize();
             break;
           case 'openFilterDialog':
-            this.openFilterDialog()
+            this.openFilterDialog();
             break;
         }
       }
-    })
+    });
   }
 
   createState(params: any = null): void {
@@ -240,6 +240,7 @@ export class RenderDetailTableTabComponent extends TableBase implements OnInit,O
 
   ngOnDestroy(): void {
     this.renderDetailService.renderDetailData$.next(null);
+    this.projectRenderItemService.clearProjectRenderItems();
     this.subject$.next(null);
     this.subject$.complete();
   }

@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {DashboardSharedModule} from "../dashboard-shared/dashboard-shared.module";
 import {DashboardGeneralComponent} from './dashboard-general/dashboard-general.component';
-import {NbButtonModule, NbIconModule, NbSpinnerModule, NbTooltipModule} from "@nebular/theme";
+import {NbButtonModule, NbIconModule, NbSpinnerModule, NbTabsetModule, NbTooltipModule} from "@nebular/theme";
 import {RouterModule} from "@angular/router";
 import {ComponentsModule} from "../../../shared/components/components.module";
 import {ProjectBasicSharedModule} from "../../project-shared/project-basic-shared.module";
@@ -13,17 +13,18 @@ import {NbSecurityModule} from "@nebular/security";
   declarations: [
     DashboardGeneralComponent
   ],
-  imports: [
-    CommonModule,
-    DashboardSharedModule,
-    NbSpinnerModule,
-    NbButtonModule,
-    RouterModule,
-    NbIconModule,
-    ComponentsModule,
-    NbTooltipModule,
-    ProjectBasicSharedModule,
-    NbSecurityModule
-  ]
+    imports: [
+        CommonModule,
+        DashboardSharedModule,
+        NbSpinnerModule,
+        NbButtonModule,
+        RouterModule,
+        NbIconModule,
+        ComponentsModule,
+        NbTooltipModule,
+        ProjectBasicSharedModule,
+        NbSecurityModule,
+        NbTabsetModule
+    ]
 })
 export class DashboardGeneralSharedModule { }

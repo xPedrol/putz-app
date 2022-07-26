@@ -6,7 +6,7 @@
 >
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-lg-3 col-sm-6">
+            <div class="col-lg-4 col-sm-6">
                 <div class="single-footer-widget">
                     <div
                         class="logo"
@@ -55,69 +55,49 @@
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-3 col-sm-6 col-6">
+            <div class="col-lg-4 col-sm-6 col-6">
                 <div class="single-footer-widget pl-4">
                     <h3>Explore</h3>
                     <ul class="list">
-                        <li>
-                            <span (click)="onClick('home')">Home</span>
-                        </li>
-                        <li>
-                            <span (click)="onClick('about')">About Us</span>
-                        </li>
-                        <li>
-                            <span (click)="onClick('services')">Services</span>
-                        </li>
-                        <li>
-                            <span (click)="onClick('portfolio')">Portfolio</span>
-                        </li>
-                        <li>
-                            <span (click)="onClick('team')">Team</span>
-                        </li>
+                        <ng-template ngFor let-item [ngForOf]="this.menuService.currentMenu | async">
+                          <li *ngIf="item.type === 'anchor'">
+                            <span (click)="onClick(item.link)">{{item.name}}</span>
+                          </li>
+                        </ng-template>
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-3 col-sm-6 col-6">
+            <div class="col-lg-4 col-sm-6 col-6">
                 <div class="single-footer-widget">
                     <h3>Links Rápidos</h3>
                     <ul class="list">
-                        <li>
-                            <span class="nav-link" (click)="onClick('contact')">Nossos contatos</span>
-                        </li>
-                        <li>
-                            <span class="nav-link" (click)="onClick('pricing')">Preços</span>
-                        </li>
-                        <li>
-                            <span class="nav-link" (click)="onClick('faq')">FAQ</span>
-                        </li>
-                        <li>
-                            <a routerLink="/privacy-policy">Política de Privaciade</a>
-                        </li>
-                        <li>
-                            <a routerLink="/terms-conditions">Termos e Condições</a>
-                        </li>
+                        <li><a routerLink="/">Smart Videos</a></li>
+<!--                        <li><a routerLink="/servicos/produtora">Produtora</a></li>-->
+<!--                        <li><a routerLink="/servicos/epa">Plataforma Putz</a></li>-->
+                        <li><a routerLink="/servicos/privacy-policy">Política de Privaciade</a></li>
+                        <li><a routerLink="/servicos/terms-conditions">Termos e Condições</a></li>
                     </ul>
                 </div>
             </div>
-            <div class="col-lg-3 col-sm-6">
-                <div class="single-footer-widget">
-                    <h3>De Minas para o Mundo</h3>
-                    <ul class="get-in-touch">
-                        <li>
-                            <span>Endereço:</span>
-                            Rua Jade, 60, Ipatinga-MG
-                        </li>
-                        <li>
-                            <span>WhatsApp/Telefone:</span>
-                            <a href="https://wa.me/553131810704">+55-31-3181-0704</a>
-                        </li>
-                        <li>
-                            <span>Email:</span>
-                            <a href="mailto:contato@putzfilmes.com">mailto:contato@putzfilmes.com</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+<!--            <div class="col-lg-3 col-sm-6">-->
+<!--                <div class="single-footer-widget">-->
+<!--                    <h3>De Minas para o Mundo</h3>-->
+<!--                    <ul class="get-in-touch">-->
+<!--                        <li>-->
+<!--                            <span>Endereço:</span>-->
+<!--                            Rua Jade, 60, Ipatinga-MG-->
+<!--                        </li>-->
+<!--                        <li>-->
+<!--                            <span>WhatsApp/Telefone:</span>-->
+<!--                            <a href="https://wa.me/553131810704">+55-31-3181-0704</a>-->
+<!--                        </li>-->
+<!--                        <li>-->
+<!--                            <span>Email:</span>-->
+<!--                            <a href="mailto:contato@putzfilmes.com">mailto:contato@putzfilmes.com</a>-->
+<!--                        </li>-->
+<!--                    </ul>-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
     </div>
     <div class="copyright-area">

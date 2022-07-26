@@ -32,11 +32,6 @@ export class ProjectConceptionFormComponent implements OnInit, OnDestroy, OnChan
     private configService: ConfigParamsService,
   ) {
     this.subject$ = new Subject<any>();
-    // this.accessChecker.isGranted('edit', 'advanced-conception').subscribe((hasAccess) => {
-    //   if (hasAccess) {
-    //     this.advancedConception = hasAccess;
-    //   }
-    // });
     this.editForm = new FormGroup({
       profitTargetPercent: new FormControl(null),
       tributePercent: new FormControl(null),
@@ -44,7 +39,7 @@ export class ProjectConceptionFormComponent implements OnInit, OnDestroy, OnChan
       commissionPercent: new FormControl(null, [Validators.required, Validators.max(5)]),
       insuranceType: new FormControl(null),
       insurancePercent: new FormControl(null),
-      itemsBaseSum: new FormControl(null, []),
+      itemsSum: new FormControl(null, []),
       quantity: new FormControl(null, [Validators.required]),
       videoTime: new FormControl(null, [Validators.required]),
       priorityType: new FormControl(null, [Validators.required]),
@@ -77,6 +72,7 @@ export class ProjectConceptionFormComponent implements OnInit, OnDestroy, OnChan
     this.projectService.negotiationCalc$.pipe(takeUntil(this.subject$)).subscribe(negotiation => {
       if (negotiation) {
         this.negotiationCalc = negotiation;
+        this.editForm.get('itemsSum')?.setValue(negotiation?.itemsSum);
       }
     });
   }
@@ -95,7 +91,7 @@ export class ProjectConceptionFormComponent implements OnInit, OnDestroy, OnChan
     if (negotiation) {
       this.editForm.patchValue({
         agencyCommissionPercent: negotiation?.agencyCommissionPercent,
-        itemsBaseSum: this.project?.negotiationCalc?.itemsBaseSum,
+        itemsSum: negotiation?.itemsSum ?? this.project?.negotiationCalc?.itemsSum,
         commissionPercent: negotiation?.commissionPercent,
         insurancePercent: negotiation?.insurancePercent,
         negotiationRebatePercent: negotiation?.negotiationRebatePercent,
@@ -119,7 +115,7 @@ export class ProjectConceptionFormComponent implements OnInit, OnDestroy, OnChan
   }
 
 
-  getNegotiation(): any {
+  validateAndGetNegotiationRaw(): any {
     const negotiationForCalc = this.advancedConception ? this.getNegotiationAdvancedForm(this.editForm.getRawValue()) : this.getNegotiationBasicForm(this.editForm.getRawValue());
     if (this.editForm.invalid) {
       this.editForm.markAllAsTouched();

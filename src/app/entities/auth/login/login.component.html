@@ -15,6 +15,12 @@
             </div>
           </nb-alert>
           <h1 id="title" class="title fw-bold poppins">Login</h1>
+          <div class="text-center" *ngIf="isDevelopMode">
+            <a target="_blank"
+               href="https://docs.google.com/spreadsheets/d/19PGT0gU5y2vm2BUqBwswW33HAWoT4lJXZQTEnQoSi5k/edit#gid=0">
+              <nb-tag text="Link para logins" size="tiny" class="cursor-pointer"></nb-tag>
+            </a>
+          </div>
           <p class="sub-title">Olá! Logue com seu nome de usuário ou e-mail</p>
           <form (ngSubmit)="login()" [formGroup]="loginForm" aria-labelledby="title">
             <div class="row">

@@ -20,5 +20,16 @@ export class RenderFormFeedbackCardComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  getStatus(rstatus: IProjectRenderItemStatus): string{
+    return IProjectRenderItemStatus[rstatus];
+  }
 
+  getWhatsappUrl():string{
+    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+      return "https://api.whatsapp.com/send/?phone="+this.renderItem?.renderProject?.whatsappBot+"&text=*Quero receber meu vídeo aqui!* Código: c-"+this.renderItem?.renderUid;
+    }else{
+      // false for not mobile device
+      return "https://web.whatsapp.com/send?phone="+this.renderItem?.renderProject?.whatsappBot+"&text=*Quero receber meu vídeo aqui!* Código: c-"+this.renderItem?.renderUid;
+    }
+  }
 }

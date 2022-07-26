@@ -18,6 +18,9 @@ import {TranslateModule} from "@ngx-translate/core";
 import { ProjectItemFreelancerCardComponent } from './project-item-freelancer-card/project-item-freelancer-card.component';
 import {ComponentsModule} from "../../../shared/components/components.module";
 import {NgbRatingModule} from "@ng-bootstrap/ng-bootstrap";
+import {ProjectItemCompactedCardComponent} from "./project-item-compacted-card/project-item-compacted-card.component";
+import {ProjectItemTableComponent} from "./project-item-table/project-item-table.component";
+import {DirectivesModule} from "../../../directives/directives.module";
 
 
 
@@ -25,11 +28,16 @@ import {NgbRatingModule} from "@ng-bootstrap/ng-bootstrap";
   declarations: [
     ProjectItemDetailDialogComponent,
     ProjectItemCardComponent,
-    ProjectItemFreelancerCardComponent
+    ProjectItemFreelancerCardComponent,
+    ProjectItemCompactedCardComponent,
+    ProjectItemTableComponent
   ],
   exports: [
+    ProjectItemDetailDialogComponent,
     ProjectItemCardComponent,
-    ProjectItemFreelancerCardComponent
+    ProjectItemFreelancerCardComponent,
+    ProjectItemCompactedCardComponent,
+    ProjectItemTableComponent
   ],
   imports: [
     CommonModule,
@@ -46,7 +54,8 @@ import {NgbRatingModule} from "@ng-bootstrap/ng-bootstrap";
     NbBadgeModule,
     ComponentsModule,
     NbListModule,
-    NgbRatingModule
+    NgbRatingModule,
+    DirectivesModule
   ]
 })
 export class ProjectItemBasicSharedModule { }

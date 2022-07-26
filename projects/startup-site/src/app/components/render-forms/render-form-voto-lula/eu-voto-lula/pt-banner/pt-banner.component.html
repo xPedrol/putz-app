@@ -1,18 +1,17 @@
 <div class="home-slides bg-f9f9f9">
-<!--    <owl-carousel-o [options]="homeSlides">-->
-<!--        <ng-template carouselSlide>-->
-            <div class="main-banner-area">
+            <div class="main-banner-area" *ngIf="router.url.lastIndexOf('renderItemId') == -1">
                 <div class="container">
                     <div class="row align-items-center">
                         <div class="col-lg-6 col-md-12">
                             <div class="main-banner-content">
                                 <span class="sub-title">_Campanha 2022</span>
-                                <h1>Vamos Juntos com Lula!</h1>
-                                <p>A campanha já está nas ruas junto com vocês, Lula está junto com você.
-                                  Em cada estado brasileiro, em cada um dos cantos deste brasil!!.</p>
+                                <h1 class="">Vamos Juntos <br>com o Lula!</h1>
+                                <p>Crie seu vídeo exclusivo de apoio e faça parte do projeto para transformar o Brasil!
+                                  <br>Veja abaixo como é fácil, você recebe direto no seu whatsapp.
+                                  <br>Depois, é só compartilhar com sua família e amigos.!!.</p>
                                 <div class="btn-box">
-                                    <button (click)="onClick('contact')" class="default-btn">
-                                        Eu já tenho meu Voto! :)
+                                    <button (click)="onClick('render-video')" class="default-btn">
+                                      Faça o seu vídeo e <br>vamos juntos com o Lula! :)
                                     </button>
                                 </div>
                             </div>
@@ -25,33 +24,5 @@
                     </div>
                 </div>
             </div>
-<!--        </ng-template>-->
-<!--        <ng-template carouselSlide>-->
-<!--            <div class="main-banner-area">-->
-<!--                <div class="container">-->
-<!--                    <div class="row align-items-center">-->
-<!--                        <div class="col-lg-6 col-md-12">-->
-<!--                            <div class="main-banner-content">-->
-<!--                                <span class="sub-title">Lula junto com você.</span>-->
-<!--                                <h1>Mostre a sua escolha!</h1>-->
-<!--                                <p>Mostre como você quer um país melhor! Coloque sue rosto nas redes sociais apoiando-->
-<!--                                  Lula para presidente.</p>-->
-<!--                                <div class="btn-box">-->
-<!--                                    <button (click)="onClick('contact')" class="default-btn">-->
-<!--                                        Eu já Tenho meu Voto!-->
-<!--                                    </button>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                        <div class="col-lg-6 col-md-12">-->
-<!--                            <div class="main-banner-image">-->
-<!--                                <img src="../../../../../assets/images/banner/banner3.png" alt="banner-image">-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </ng-template>-->
-<!--    </owl-carousel-o>-->
 </div>
 

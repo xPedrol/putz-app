@@ -5,6 +5,7 @@ export interface IProjectNegotiationCalcs {
 
 
   itemsBaseSum?: number | null;
+  extraItemsBaseSum?: number | null;
   /* Valor da Commissão */
   commissionPercent?: number;
   commissionValue?: number;
@@ -99,6 +100,7 @@ export class ProjectNegotiationCalcs implements IProjectNegotiationCalcs {
     /* Total dos Custos do Freela */
     public itemsSum?: number,
     public itemsBaseSum?: number,
+    public extraItemsBaseSum?: number,
     public itemsBasedSumWithPriority?: number,
     public itemsBasedSumWithPriorityPlusInsurance?: number,
     public itemsCostPercentage?: number,

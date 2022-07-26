@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {RenderFormWrapperComponent} from './render-form-wrapper/render-form-wrapper.component';
 import {RenderFormDetailFooterComponent} from './render-form-detail-footer/render-form-detail-footer.component';
 import {RenderFormDetailHeaderComponent} from './render-form-detail-header/render-form-detail-header.component';
 import {RenderFormDetailWrapperComponent} from './render-form-detail-wrapper/render-form-detail-wrapper.component';
@@ -16,30 +15,30 @@ import {NoProjectIdDialogComponent} from "./no-project-id-dialog/no-project-id-d
 import {
   RenderFormFeedbackCardComponent
 } from './render-form-feedback-card/render-form-feedback-card/render-form-feedback-card.component';
-import {TranslateModule} from '@ngx-translate/core';
 import {PipeModule} from '../../../../../../src/app/core/pipes/pipe.module';
 import {NgbAlertModule, NgbProgressbarModule} from "@ng-bootstrap/ng-bootstrap";
+import { RenderFormButtonsComponent } from './render-form-buttons/render-form-buttons.component';
 
 
 @NgModule({
   declarations: [
-    RenderFormWrapperComponent,
     RenderFormDetailFooterComponent,
     RenderFormDetailHeaderComponent,
     RenderFormDetailWrapperComponent,
     DetailHeaderTitleComponent,
     DetailHeaderSubtitleComponent,
     NoProjectIdDialogComponent,
-    RenderFormFeedbackCardComponent
+    RenderFormFeedbackCardComponent,
+    RenderFormButtonsComponent
   ],
   exports: [
     RenderFormDetailHeaderComponent,
     RenderFormDetailWrapperComponent,
-    RenderFormWrapperComponent,
     DetailHeaderTitleComponent,
     DetailHeaderSubtitleComponent,
     NoProjectIdDialogComponent,
-    RenderFormFeedbackCardComponent
+    RenderFormFeedbackCardComponent,
+    RenderFormButtonsComponent
   ],
   imports: [
     CommonModule,

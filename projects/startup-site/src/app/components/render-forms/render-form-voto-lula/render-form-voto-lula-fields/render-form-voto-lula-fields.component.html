@@ -1,124 +1,250 @@
-<form [formGroup]="uploadForm">
-  <div class="mt-3">
-
-    <div class="row">
-      <div class="mb-3 col-9 col-sm-6 col-lg-4 form-group">
-        <label class="label">Nome <span class="text-danger">*</span></label>
-        <input
-          id="typeahead-focus"
-          type="text"
-          class="form-control"
-          formControlName="name"
-          placeholder="Nome..."
-          [ngbTypeahead]="search"
-          (focus)="focus$.next($any($event).target.value)"
-          (click)="click$.next($any($event).target.value)"
-          #instance="ngbTypeahead"
-        />
-        <ng-container *ngIf="uploadForm.get('name')!.invalid && uploadForm.get('name')!.touched">
-          <small class="text-danger d-block" *ngIf="uploadForm.get('name')!.errors?.required">
-            Campo obrigatório
-          </small>
-          <small class="text-danger d-block" *ngIf="uploadForm.get('name')!.errors?.apiValidation">
-            {{ uploadForm.get('name')!.errors?.apiValidation}}
-          </small>
-        </ng-container>
-      </div>
-      <div class="mb-3 col-3 col-sm-6 col-lg-2 form-group">
-        <label class="label">UF <span class="text-danger">*</span></label>
-        <select placeholder="Estado" formControlName="uf" size="large" (change)="uFChange()" class="form-control">
-          <option [value]="uf" *ngFor="let uf of ufs">{{uf}}</option>
-        </select>
-        <ng-container *ngIf="uploadForm.get('uf')!.invalid && uploadForm.get('uf')!.touched">
-          <small class="text-danger d-block" *ngIf="uploadForm.get('uf')!.errors?.required">
-            Campo obrigatório
-          </small>
-          <small class="text-danger d-block" *ngIf="uploadForm.get('uf')!.errors?.apiValidation">
-            {{ uploadForm.get('uf')!.errors?.apiValidation}}
-          </small>
-        </ng-container>
-      </div>
-      <div class="mb-3 col-4 col-sm-6 col-lg-2 form-group">
-        <label class="label">País <span class="text-danger">*</span></label>
-        <select formControlName="country" class="form-control">
-          <option *ngFor="let countryCode of countryCodes"
-                  [value]="countryCode.dial_code">{{countryCode.name}}</option>
-        </select>
-        <ng-container *ngIf="uploadForm.get('country')!.invalid && uploadForm.get('country')!.touched">
-          <small class="text-danger d-block" *ngIf="uploadForm.get('country')!.errors?.required">
-            Campo obrigatório
-          </small>
-          <small class="text-danger d-block" *ngIf="uploadForm.get('country')!.errors?.apiValidation">
-            {{ uploadForm.get('country')!.errors?.apiValidation}}
-          </small>
-        </ng-container>
-      </div>
-      <div class="mb-3 col-8 col-sm-6 col-lg-4 form-group">
-        <label class="label">Whatsapp <span class="text-danger">*</span></label>
-        <input type="tel" placeholder="(XX)9XXXX-XXXX" formControlName="whatsapp" class="form-control"
-               [mask]="countryMasks[selectedCountry.code]" *ngIf="countryMasks[selectedCountry.code]">
-        <input type="tel" placeholder="(XX)9XXXX-XXXX" formControlName="whatsapp" class="form-control"
-               *ngIf="!countryMasks[selectedCountry.code]">
-        <ng-container *ngIf="uploadForm.get('whatsapp')!.invalid && uploadForm.get('whatsapp')!.touched">
-          <small class="text-danger d-block" *ngIf="uploadForm.get('whatsapp')!.errors?.required">
-            Campo obrigatório
-          </small>
-          <small class="text-danger d-block" *ngIf="uploadForm.get('whatsapp')!.errors?.apiValidation">
-            {{ uploadForm.get('whatsapp')!.errors?.apiValidation}}
-          </small>
-        </ng-container>
-      </div>
-      <div class="mb-3 col-12 col-md-8">
-        <label class="label p-1"><strong>Meu Motivo!!!</strong> <span class="text-danger">*</span></label>
-        <ng-container *ngIf="uploadForm.get('reason')!.invalid && uploadForm.get('reason')!.touched">
-          <small class="text-danger d-block" *ngIf="uploadForm.get('reason')!.errors?.required">
-            Campo obrigatório
-          </small>
-          <small class="text-danger d-block" *ngIf="uploadForm.get('reason')!.errors?.apiValidation">
-            {{ uploadForm.get('reason')!.errors?.apiValidation}}
-          </small>
-        </ng-container>
-        <div class="row align-items-center justify-content-around">
-          <div class="col-12 my-2 mx-1 m-xl-0 col-md-6 col-xl" *ngFor="let reason of reasons"
-               (click)="selectReason(reason.key)">
-            <div class="d-flex flex-column align-items-center reason-card">
-              <h6 class="poppins text-uppercase fw-bold">{{reason.title}}</h6>
-              <img class="reason-image" [class.reason-card-selected]="uploadForm.get('reason')?.value === reason.key"
-                   [src]="reason.image" alt="{{reason.title}}">
+<div id="portfolio" class="works-area pt-100 pb-70">
+  <div class="container">
+    <div class="section-title">
+      <span class="sub-title">É simples, olha só:</span>
+      <h2>Vamos fazer um vídeo incrível e personalizado para você!</h2>
+      <h3>Whats: {{this.hasWhatsapp}} - Pre: {{this.isPrecadastro}}</h3>
+    </div>
+    <div class="works-tabs" id="form-tabs">
+      <ngx-tabset #tabsetComponent (onSelect)="onTabChange($event)">
+        <ngx-tab tabTitle="1 - Dados Pessoais" #tab1 customPaneClass="tab1">
+          <form [formGroup]="tab1FormGroup">
+            <div class="row justify-content-center">
+              <div class="col-12 text-center my-3">
+                <p class="" style="color:unset">Para começar, vamos precisar do <strong>seu nome</strong> <br>e o
+                  <strong>estado</strong> brasileiro que você se identifica.</p>
+                <hr>
+              </div>
+              <div class="mb-3 col-12 col-md-8 col-lg-7 form-group">
+                <label class="label">Qual seu nome? <span class="text-danger">*</span></label>
+                <input
+                  id="typeahead-focus"
+                  type="text"
+                  class="form-control"
+                  [class.border-danger]="(tab1FormGroup.get('name')!.invalid && tab1FormGroup.get('name')!.touched)"
+                  [class.border-2]="(tab1FormGroup.get('name')!.invalid && tab1FormGroup.get('name')!.touched)"
+                  formControlName="name"
+                  placeholder="Nome..."
+                  maxlength="21"
+                  [ngbTypeahead]="search"
+                  (focus)="focus$.next($any($event).target.value)"
+                  (click)="click$.next($any($event).target.value)"
+                  #instance="ngbTypeahead"
+                />
+                <ng-container *ngIf="tab1FormGroup.get('name')!.invalid && tab1FormGroup.get('name')!.touched">
+                  <app-field-error-message
+                    *ngIf="tab1FormGroup.get('name')!.errors?.required"></app-field-error-message>
+                  <app-field-error-message *ngIf="tab1FormGroup.get('name')!.errors?.apiValidation"
+                                           [customMessage]="tab1FormGroup.get('name')!.errors?.apiValidation"></app-field-error-message>
+                </ng-container>
+              </div>
+              <div class="mb-3 col-12 col-md-4 col-lg-5 form-group">
+                <label class="label">Estado - UF<span class="text-danger">*</span></label>
+                <select formControlName="uf" size="large" (change)="uFChange()"
+                        class="form-control"
+                        [class.border-danger]="(tab1FormGroup.get('uf')!.invalid && tab1FormGroup.get('uf')!.touched)"
+                        [class.border-2]="(tab1FormGroup.get('uf')!.invalid && tab1FormGroup.get('uf')!.touched)"
+                >
+                  <option [disabled]="true" [selected]="true">Selecione um estado...</option>
+                  <option [value]="uf.value" *ngFor="let uf of ufs">{{uf.title}} - {{uf.value}}</option>
+                </select>
+                <ng-container *ngIf="tab1FormGroup.get('uf')!.invalid && tab1FormGroup.get('uf')!.touched">
+                  <app-field-error-message *ngIf="tab1FormGroup.get('uf')!.errors?.required"></app-field-error-message>
+                  <app-field-error-message *ngIf="tab1FormGroup.get('uf')!.errors?.apiValidation"
+                                           [customMessage]="tab1FormGroup.get('uf')!.errors?.apiValidation"></app-field-error-message>
+                </ng-container>
+              </div>
+              <div class="col-12 text-end">
+                <button class="btn-blue" (click)="selectTab(tab1FormGroup,1)">Próximo</button>
+              </div>
+            </div>
+          </form>
+        </ngx-tab>
+        <ngx-tab tabTitle="2 - Sua Foto" #tab2 customPaneClass="tab2" [disabled]="!tab1FormGroup.valid">
+          <form [formGroup]="tab2FormGroup">
+            <div class="row justify-content-center">
+              <div class="col-12 text-center my-3">
+                <p class="" style="color:unset" *ngIf="!tab2FormGroup.get('urlPhoto').value">
+                  Agora <strong>sua foto</strong>, arquivo ou Selfe em formato 3x4<br>
+                  Você pode arrastá-la até o espaço pontilhado
+                  ou clicar no centro dele</p>
+                <hr>
+              </div>
+              <div class="col-12 mb-3"
+                   *ngIf="tab2FormGroup.get('urlPhoto')!.invalid && tab2FormGroup.get('urlPhoto')!.touched">
+                <ngb-alert *ngIf="tab2FormGroup.get('urlPhoto')!.errors?.required"
+                           (closed)="tab2FormGroup.markAsUntouched()">
+                  É preciso escolher uma foto para continuar.
+                </ngb-alert>
+              </div>
+              <div class="col-12 col-md-12 mb-3 form-group">
+                <ngx-dropzone *ngIf="!tab2FormGroup.get('urlPhoto')?.value" (change)="onSelect($event)"
+                              class="dropzone-background mb-2" [multiple]="false">
+                  <ngx-dropzone-label>Coloque aqui sua foto</ngx-dropzone-label>
+                </ngx-dropzone>
+                <div class="text-center">
+                  <ng-container *ngIf="tab2FormGroup.get('urlPhoto').value">
+                    <div class="row">
+                      <div class="col-12 col-lg-7 mx-auto">
+                        <div class="d-flex justify-content-center flex-column flex-md-row align-items-center">
+                          <img class="uploaded-image me-md-5"
+                               [src]="tab2FormGroup.get('urlPhoto').value" alt="">
+                          <div class="mt-2 mt-md-0">
+                            <p class="fw-bold text-black">
+                              Essa é a sua foto já recortada.<br>
+                              Se gostou é hora de dar o próximo passo</p>
+                            <button type="submit" class="btn btn-sm btn-outline-danger"
+                                    *ngIf="tab2FormGroup.get('urlPhoto')?.value"
+                                    (click)="tab2FormGroup.get('urlPhoto')?.reset()">Remover Imagem
+                            </button>
+                            <ng-container
+                              *ngIf="tab2FormGroup.get('urlPhoto')!.invalid && tab2FormGroup.get('urlPhoto')!.touched">
+                              <app-field-error-message
+                                *ngIf="tab2FormGroup.get('urlPhoto')!.errors?.required"></app-field-error-message>
+                              <app-field-error-message *ngIf="tab2FormGroup.get('urlPhoto')!.errors?.apiValidation"
+                                                       [customMessage]="tab2FormGroup.get('urlPhoto')!.errors?.apiValidation"></app-field-error-message>
+                            </ng-container>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="col-12 text-end">
+                <button class="btn btn-outline-blue" (click)="tabsetComponent.selectTab(tab1)">Anterior</button>
+                <button class="btn btn-blue" (click)="selectTab(tab2FormGroup,2)">Próximo</button>
+              </div>
+            </div>
+          </form>
+        </ngx-tab>
+        <ngx-tab tabTitle="3 - Apoio" #tab3 customPaneClass="tab3" [disabled]="!tab2FormGroup.valid">
+          <form [formGroup]="tab3FormGroup">
+            <div class="row justify-content-center">
+              <div class="col-12 text-center my-3">
+                <p class="" style="color:unset">Estamos juntos pelo Brasil, escolha o <strong>motivo do seu
+                  apoio</strong></p>
+                <hr>
+              </div>
+              <div class="col-12 mb-3"
+                   *ngIf="tab3FormGroup.get('reason')!.invalid && tab3FormGroup.get('reason')!.touched">
+                <ngb-alert *ngIf="tab3FormGroup.get('reason')!.errors?.required"
+                           (closed)="tab3FormGroup.markAsUntouched()">
+                  É preciso escolher um motivo para continuar.
+                </ngb-alert>
+              </div>
+              <div class="col-6 col-lg-4 col-sm-6 col-md-6" style="cursor: pointer" *ngFor="let reason of reasons"
+                   (click)="selectReason(reason.key)">
+                <div class="single-works-box bg2"
+                     [class.selected-single-works-box]="tab3FormGroup.get('reason')?.value === reason.key"
+                     [style.background-image]="'url('+reason.image+')'">
+                  <div class="content">
+                    <span>{{reason.title}}</span>
+                    <h2>{{reason.description}}</h2>
+                  </div>
+                  <div>
+                    <button class="btn btn-primary btn-reason">
+                      <ng-container *ngIf="tab3FormGroup.get('reason')?.value === reason.key">
+                        Selecionado
+                      </ng-container>
+                      <ng-container *ngIf="tab3FormGroup.get('reason')?.value !== reason.key">
+                        Selecionar
+                      </ng-container>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 text-end">
+                <button class="btn-outline-blue" (click)="tabsetComponent.selectTab(tab2)">Anterior</button>
+                <button class="btn-blue" (click)="selectTab(tab3FormGroup,3)">Próximo</button>
+              </div>
+            </div>
+          </form>
+        </ngx-tab>
+        <ngx-tab *ngIf="hasWhatsapp" tabTitle="4 - Seu Whatsapp" #tab4 customPaneClass="tab4" [disabled]="!tab3FormGroup.valid">
+          <form [formGroup]="tab4FormGroup">
+            <div class="row justify-content-center">
+              <div class="col-12 text-center my-3">
+                <p class="" style="color:unset">Precisamos do seu <strong>número de whatsapp</strong><br> para
+                  que você receba o vídeo em seu celular.</p>
+                <hr>
+              </div>
+              <div class="mb-3 col-12 col-md-5 col-lg-4 form-group">
+                <label class="label">País <span class="text-danger">*</span></label>
+                <select formControlName="country" class="form-control"
+                        [class.border-danger]="(tab4FormGroup.get('country')!.invalid && tab4FormGroup.get('country')!.touched)"
+                        [class.border-2]="(tab4FormGroup.get('country')!.invalid && tab4FormGroup.get('country')!.touched)">
+                  <option *ngFor="let countryCode of countryCodes"
+                          [value]="countryCode.dial_code">{{countryCode.name}} ({{countryCode.dial_code}})
+                  </option>
+                </select>
+                <ng-container *ngIf="tab4FormGroup.get('country')!.invalid && tab4FormGroup.get('country')!.touched">
+                  <app-field-error-message
+                    *ngIf="tab4FormGroup.get('country')!.errors?.required"></app-field-error-message>
+                  <app-field-error-message *ngIf="tab4FormGroup.get('country')!.errors?.apiValidation"
+                                           [customMessage]="tab4FormGroup.get('country')!.errors?.apiValidation"></app-field-error-message>
+                </ng-container>
+              </div>
+              <div class="mb-3 col-12 col-md-7 col-lg-8 form-group">
+                <label class="label">Whatsapp <span class="text-danger">*</span></label>
+                <input type="tel" [showMaskTyped]="true" formControlName="whatsapp" class="form-control"
+                       [mask]="countryMasks[selectedCountry.code]" *ngIf="countryMasks[selectedCountry.code]"
+                       [class.border-danger]="(tab4FormGroup.get('whatsapp')!.invalid && tab4FormGroup.get('whatsapp')!.touched)"
+                       [class.border-2]="(tab4FormGroup.get('whatsapp')!.invalid && tab4FormGroup.get('whatsapp')!.touched)"
+                >
+                <input type="tel" placeholder="Whatsapp..." formControlName="whatsapp" class="form-control"
+                       *ngIf="!countryMasks[selectedCountry.code]">
+                <ng-container *ngIf="tab4FormGroup.get('whatsapp')!.invalid && tab4FormGroup.get('whatsapp')!.touched">
+                  <app-field-error-message
+                    *ngIf="tab4FormGroup.get('whatsapp')!.errors?.required"></app-field-error-message>
+                  <app-field-error-message *ngIf="tab4FormGroup.get('whatsapp')!.errors?.apiValidation"
+                                           [customMessage]="tab4FormGroup.get('whatsapp')!.errors?.apiValidation"></app-field-error-message>
+                </ng-container>
+              </div>
+              <div class="col-12 text-end">
+                <button class="btn-outline-blue" (click)="tabsetComponent.selectTab(tab3)">Anterior</button>
+                <button class="btn-blue" (click)="selectTab(tab4FormGroup,4)">Próximo</button>
+              </div>
+            </div>
+          </form>
+        </ngx-tab>
+        <ngx-tab tabTitle="Confirmar" #tab5 customPaneClass="tab5"
+                 [disabled]="!(tab1FormGroup.valid && tab2FormGroup.valid && tab3FormGroup.valid && tab4FormGroup.valid)">
+          <div class="row">
+            <div class="col-12 text-center my-3">
+              <h3>Vamos junto com Lula e pelo Brasil!!</h3>
+              <p>Verifque abaixo se seus dados estão corretos. Se estiver tudo ok, basta clicar em enviar.</p>
+              <hr>
+            </div>
+            <div class="col-12 col-lg-12 col-xl-10 mx-auto">
+              <div class="d-flex justify-content-center flex-column flex-lg-row align-items-start">
+                <div class="d-flex justify-content-center align-items-center w-100">
+                  <img class="uploaded-image me-md-2" width="225" *ngIf="tab2FormGroup.get('urlPhoto').value"
+                       [src]="tab2FormGroup.get('urlPhoto').value" alt="">
+                  <img class="uploaded-image me-md-2" width="225" *ngIf="!tab2FormGroup.get('urlPhoto').value"
+                       src="assets/images/forms/pt-lula/semfoto.png" alt="">
+                </div>
+                <div class="row mt-2 mt-lg-0">
+                  <p class="text-black">Meu Nome: <strong>{{tab1FormGroup.get('name')?.value}}</strong></p>
+                  <p class="text-black">Meu Estado: <strong>{{tab1FormGroup.get('uf')?.value}}</strong></p>
+                  <p class="text-black">Motivo: <strong>{{tab3FormGroup.get('reason')?.value}}</strong></p>
+                  <p *ngIf="hasWhatsapp" class="text-black">Telefone: <strong>{{tab4FormGroup.get('country')?.value}} {{tab4FormGroup.get('whatsapp')?.value}}</strong></p>
+                  <div class="col-12 text-end">
+                    <button class="btn-outline-blue" (click)="tabsetComponent.selectTab(tab1)">Voltar ao início
+                    </button>
+                    <button class="btn-green" (click)="onTabsSubmit()" *ngIf="!isLoadingForm">Solicitar Meu vídeo</button>
+                    <button class="btn-green" type="button" disabled *ngIf="isLoadingForm">
+                      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                      Carregando...
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div class="col-12 col-md-4 mb-3">
-        <label class="label "><strong>Adicione sua foto de eleitor</strong></label>
-        <div class="text-center">
-        <div class="d-flex align-items-center justify-content-center">
-          <button type="submit" class="btn btn-sm btn-outline-danger mx-1" *ngIf="uploadForm.get('urlPhoto')?.value"
-                  (click)="uploadForm.get('urlPhoto')?.reset()">Remover Imagem
-          </button>
-          <button class="btn btn-sm btn-outline-primary mx-1" (click)="openImageCropperDialog()">
-            <ng-container *ngIf="uploadForm.get('urlPhoto')?.value">
-              Trocar imagem
-            </ng-container>
-            <ng-container *ngIf="!uploadForm.get('urlPhoto')?.value">
-              Adicionar imagem
-            </ng-container>
-          </button>
-          <ng-container *ngIf="uploadForm.get('urlPhoto')!.invalid && uploadForm.get('urlPhoto')!.touched">
-            <small class="text-danger d-block" *ngIf="uploadForm.get('urlPhoto')!.errors?.required">
-              Campo obrigatório
-            </small>
-            <small class="text-danger d-block" *ngIf="uploadForm.get('urlPhoto')!.errors?.apiValidation">
-              {{ uploadForm.get('urlPhoto')!.errors?.apiValidation}}
-            </small>
-          </ng-container>
-        </div>
-        <img *ngIf="uploadForm.get('urlPhoto').value != ''" class="mt-2" width="200"
-             [src]="uploadForm.get('urlPhoto').value" alt="">
-        <img *ngIf="uploadForm.get('urlPhoto').value == ''" class="semfoto-image"
-             src='/assets/images/forms/pt-lula/semfoto.png' alt="" (click)="openImageCropperDialog()">
-        </div>
-      </div>
+
+        </ngx-tab>
+      </ngx-tabset>
     </div>
   </div>
-</form>
+</div>

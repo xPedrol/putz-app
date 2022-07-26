@@ -6,14 +6,18 @@
   </div>
   <div class="col-lg-7">
     <nb-card status="basic">
-      <nb-card-header class="">
+      <nb-card-header class="py-2">
         <div class="row align-items-center justify-content-between">
           <div class="col text-start">
             <h5 class="poppins header-title">Parametros de Negociação</h5>
           </div>
           <div class="col text-end d-flex align-items-center justify-content-end">
-            <nb-toggle status="basic" *nbIsGranted="['view','advanced-conception']"
-                       (checkedChange)="advancedConception = !advancedConception">{{!advancedConception ? 'Modo Simples' : 'Modo Avançado'}}</nb-toggle>
+            <button nbButton size="tiny" (click)="openObjectViewerDialog()" status="primary" class="m-1">
+              Exibir todos os campos
+            </button>
+            <button nbButton size="tiny" (click)="advancedConception = !advancedConception" status="primary" class="m-1">
+              {{advancedConception ? 'Modo Simples' : 'Modo Avançado'}}
+            </button>
           </div>
         </div>
       </nb-card-header>
@@ -25,7 +29,7 @@
         <div class="col-md-12 text-end">
           <button [disabled]="!canEdit" nbButton status="primary" type="button" size="small"
                   (click)="getNegotiation()" class="m-1">Calcular
-            campos
+            Orçamento
           </button>
           <ng-container *ngIf="!project?.isModel">
             <button [disabled]="!canEdit" nbButton status="primary" type="button" size="small" class="m-1"

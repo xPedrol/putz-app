@@ -1,9 +1,7 @@
 <app-render-form-detail-wrapper>
   <app-render-form-detail-header>
-    <app-detail-header-title>Peça o seu vídeo!!!</app-detail-header-title>
-    <app-detail-header-subtitle>É Simples, vamos explicar como funciona.</app-detail-header-subtitle>
   </app-render-form-detail-header>
-  <app-render-form-wrapper [showExampleButton]="false">
-    <app-render-form-voto-lula-fields #form></app-render-form-voto-lula-fields>
-  </app-render-form-wrapper>
+    <app-render-form-voto-lula-fields #form
+            [hasWhatsapp]="this.hasWhatsapp" [isPrecadastro]="this.isPrecadastro">
+    </app-render-form-voto-lula-fields>
 </app-render-form-detail-wrapper>

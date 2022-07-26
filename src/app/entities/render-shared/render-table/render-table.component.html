@@ -15,7 +15,10 @@
 
       <div class="row" *ngFor="let item of renderItems;trackBy:trackProjectRenderItemsByFn">
         <div class="cell text-start no-wrap max-width-300px" data-title="Nome" *libTableCell="'name'">
-          <span [nbTooltip]="item?.name??'Sem nome'">{{item?.name|empty}}</span>
+          <p class="d-inline" [nbTooltip]="item?.name??'Sem nome'">{{item?.name|empty}}</p>
+          <br>
+          <small *ngIf="item?.whatsapp" nbTooltip="Clique no número para enviar mensagem pelo Whatsapp"
+                 (click)="callWhatsapp(item.whatsapp)">{{item.whatsapp}}</small>
         </div>
         <div *libTableCell="'startRenderDate'"
              class="cell text-start max-width-100px"

@@ -93,7 +93,6 @@ export class RenderDetailComponent implements OnInit, OnDestroy {
       }
     });
     this.routeTabsetComponent.changeTab.subscribe(tab => {
-      console.warn(tab);
       this.isTableRoute = tab.route.includes('table');
     });
 

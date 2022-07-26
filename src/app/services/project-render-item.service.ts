@@ -45,15 +45,6 @@ export class ProjectRenderItemService {
       .pipe(map((res: EntityResponseType) => this.convertEntityResponseType(res)));
   }
 
-  createFormItems(form: any, formSlug: string, projectRenderId: number): Observable<IProjectRenderItem> {
-    return this.http
-      .post<IProjectRenderItem>(`${environment.API_URL}render/${formSlug}/items`, form, {
-        observe: 'response',
-        params: {password: projectRenderId}
-      })
-      .pipe(map((res: EntityResponseType) => this.convertEntityResponseType(res)));
-  }
-
   reRenderItem(projectRenderId: number, projectRenderItemId: number, projectRenderItem: IProjectRenderItem): Observable<IProjectRenderItem> {
     return this.http
       .put<IProjectRenderItem>(`${environment.API_URL}renders/${projectRenderId}/items/${projectRenderItemId}/rerender`, projectRenderItem, {
@@ -67,7 +58,16 @@ export class ProjectRenderItemService {
       .post<any>(`${environment.API_URL}projects/renders/itens/${projectRenderItemId}/samba/send-video`, {});
   }
 
-  createFormPreCadastro(form: any, formSlug: string): Observable<IProjectRenderItem> {
+  createWithForm(form: any, formSlug: string, renderpass: string): Observable<IProjectRenderItem> {
+    return this.http
+      .post<IProjectRenderItem>(`${environment.API_URL}render/${formSlug}/items`, form, {
+        observe: 'response',
+        params: {password: renderpass}
+      })
+      .pipe(map((res: EntityResponseType) => this.convertEntityResponseType(res)));
+  }
+
+  createWithFormAndConfirmation(form: any, formSlug: string): Observable<IProjectRenderItem> {
     return this.http
       .post<IProjectRenderItem>(`${environment.API_URL}render/${formSlug}/items/precadastro`, form, {
         observe: 'response',

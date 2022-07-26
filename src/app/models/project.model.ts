@@ -56,8 +56,6 @@ export interface IProject extends IProjectBasic {
 
   get totalPriceString(): string;
 
-  calcItemSum(items?: IProjectItem[] | null): number;
-
   clearFields(): void;
 
   verifyCanEdit(): void;
@@ -133,18 +131,6 @@ export class Project extends ProjectBasic implements IProject {
     return price;
   }
 
-  calcItemSum(items?: IProjectItem[] | null): number {
-    items = items ?? this.items;
-    let sum = 0;
-    if (items && items.length > 0) {
-      items.forEach(item => {
-        if (item && item.value) {
-          sum += item.value;
-        }
-      });
-    }
-    return sum;
-  }
 
   verifyCanEdit(): void {
     this.canEdit = ((this.projectStatus === ProjectStatus.CONCEPTION || this.projectStatus === ProjectStatus.BRIEFING) &&

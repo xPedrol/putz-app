@@ -3,7 +3,7 @@
     <div class="row col-12 col-sm-6 col-lg-9">
       <div class="mb-3 col-12 col-sm-6 col-lg-4 form-group">
         <label class="label">Nome Consultor<span class="text-danger">*</span></label>
-        <input type="text" placeholder="Digite um nome..." formControlName="name" class="form-control">
+        <input type="text" placeholder="Digite um nome..." maxlength="21" formControlName="name" class="form-control">
         <ng-container *ngIf="uploadForm.get('name')!.invalid && uploadForm.get('name')!.touched">
           <small class="text-danger d-block" *ngIf="uploadForm.get('name')!.errors?.required">
             Campo obrigatório

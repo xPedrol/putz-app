@@ -9,10 +9,13 @@ import {ProjectStepService} from '../../../../services/project-step.service';
 import {State} from '../../../../models/table/state.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {IProjectStep} from '../../../../models/project-step.model';
-import {NbToastrService} from '@nebular/theme';
+import {NbDialogService, NbToastrService} from '@nebular/theme';
 import {TableBase} from '../../../../models/table/table-base.model';
 import {Authority} from '../../../../constants/authority.constants';
 import {AccountService} from '../../../../services/account.service';
+import {
+  ProjectScheduleDateSyncDialogComponent
+} from "../../project-schedule-date-sync-dialog/project-schedule-date-sync-dialog.component";
 
 @Component({
   selector: 'app-project-schedule-tab',
@@ -36,7 +39,8 @@ export class ProjectScheduleTabComponent extends TableBase implements OnInit, On
     public router: Router,
     public activatedRoute: ActivatedRoute,
     private toastService: NbToastrService,
-    private accountService: AccountService
+    private accountService: AccountService,
+    private dialogService: NbDialogService
   ) {
     super(router, activatedRoute);
     this.scheduleSearch = new FormControl();
@@ -49,7 +53,7 @@ export class ProjectScheduleTabComponent extends TableBase implements OnInit, On
 
   getParams(): void {
     this.activatedRoute.queryParams.subscribe(queryParams => {
-        this.createState(queryParams);
+      this.createState(queryParams);
     });
     this.projectStepService.projectSteps$.pipe(takeUntil(this.subject$)).subscribe(req => {
       this.listTotalSize = this.projectStepService.totalCount$.getValue() ?? 0;
@@ -80,7 +84,7 @@ export class ProjectScheduleTabComponent extends TableBase implements OnInit, On
       }
     });
     this.scheduleSearch.valueChanges.pipe(distinctUntilChanged(), takeUntil(this.subject$)).subscribe(value => {
-        this.getProjectStepsBySchedule(null);
+      this.getProjectStepsBySchedule(null);
     });
   }
 
@@ -128,11 +132,17 @@ export class ProjectScheduleTabComponent extends TableBase implements OnInit, On
     this.handleNavigation(this.state?.getQuery);
   }
 
-  synchronizeSchedule(): void {
+  openSynchronizeScheduleDialog(): void {
     if (this.project?.id) {
-      this.projectService.synchronizeSchedule(this.project.id).pipe(takeUntil(this.subject$)).subscribe(() => {
-        this.toastService.show('', 'Sincronizado com sucesso', {status: 'success'});
-        this.getProjectStepsBySchedule(null, true);
+      this.dialogService.open(ProjectScheduleDateSyncDialogComponent, {
+        context: {
+          project: this.project,
+          selectedSchedule: this.scheduleSearch.value
+        }
+      }).onClose.subscribe((recall) => {
+        if (recall) {
+          this.getProjectStepsBySchedule();
+        }
       });
     }
   }

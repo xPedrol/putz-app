@@ -1,0 +1,38 @@
+<nb-card class="dialog-content" status="basic">
+  <nb-card-header class="py-2">
+    <div class="row align-items-center">
+      <div class="col-6 text-start">
+        <h6 class="header-title fw-bold">
+          <span>Sincronizar datas do cronograma</span>
+        </h6>
+        <small>{{selectedSchedule}}</small>
+      </div>
+      <div class="col-6 text-end">
+        <button nbButton ghost status="basic" (click)="close()">
+          <nb-icon icon="close-outline"></nb-icon>
+        </button>
+      </div>
+    </div>
+
+  </nb-card-header>
+  <nb-card-body>
+    <div class="row">
+      <div class="col-12">
+        <label class="label">Data de início</label>
+        <nb-form-field>
+          <input type="text" nbInput fullWidth placeholder="Data de início..." [formControl]="dateFormControl"
+                 fieldSize="large" [nbDatepicker]="datepicker">
+          <nb-datepicker #datepicker format="DD/MM/yyyy"></nb-datepicker>
+          <nb-icon nbSuffix icon="info-outline"
+                   nbTooltip="Essa é a data inical para definir datas para as etapas. Caso o campo não seja preenchido, a data do projeto será considerada a data incial"></nb-icon>
+        </nb-form-field>
+      </div>
+    </div>
+  </nb-card-body>
+  <nb-card-footer class="py-2">
+    <div class="d-flex justify-content-end align-items-center">
+      <button nbButton status="basic" (click)="close()" class="m-1">Fechar</button>
+      <button nbButton status="primary" (click)="synchronizeSchedule()" class="m-1">Selecionar</button>
+    </div>
+  </nb-card-footer>
+</nb-card>

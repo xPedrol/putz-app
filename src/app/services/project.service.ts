@@ -12,6 +12,7 @@ import {IConceptionCreation} from '../models/conception-creation.model';
 import {IProjectNegotiationParams} from '../models/project-negotiation-params.model';
 import {ProjectStatus} from '../models/enums/project-status.model';
 import {deleteAllUndefinedFields} from '../core/utils/deleteField';
+import {Moment} from "moment";
 
 export type queryType = { projects: IProject[], headers?: HttpHeaders };
 export type EntityResponseType = HttpResponse<IProject>;
@@ -89,7 +90,7 @@ export class ProjectService {
   }
 
   getAdvancedNegotiation(project: IProjectNegotiationParams): Observable<IProjectNegotiationCalcs> {
-    const params = new HttpParams().set('itemsBaseSum', project.itemsBaseSum ?? '');
+    const params = new HttpParams().set('itemsBaseSum', project.itemsBaseSum ?? 0).set('itemsExtraBaseSum', project.extraItemsBaseSum ?? 0);
     return this.http
       .post<IProjectNegotiationCalcs>(`${environment.API_URL}projects/calculator/advanced`, project, {params}).pipe(tap((negotiation) => {
         this.setNegotiation(negotiation);
@@ -185,7 +186,16 @@ export class ProjectService {
 
   synchronizeSchedule(projectId: number): Observable<IProject> {
     return this.http
-      .put<IProject>(`${environment.API_URL}projects/${projectId}/schedule/reset`,{});
+      .put<IProject>(`${environment.API_URL}projects/${projectId}/schedule/reset`, {});
+  }
+
+  synchronizeScheduleByName(projectId: number, scheduleName: string, initialDate: Moment): Observable<IProject> {
+    let options = {};
+    if (initialDate && initialDate?.isValid()) {
+      options = createRequestOption({initialDate: initialDate.toJSON()});
+    }
+    return this.http
+      .put<IProject>(`${environment.API_URL}projects/${projectId}/schedule/${scheduleName}/reset`, {}, {params: options});
   }
 
   closeProject(projectId: number): Observable<IProject> {

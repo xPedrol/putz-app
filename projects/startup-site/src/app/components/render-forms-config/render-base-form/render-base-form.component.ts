@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {catchError, debounceTime, distinctUntilChanged, filter, switchMap, takeUntil, tap} from 'rxjs/operators';
 import {FormGroup} from '@angular/forms';
 import {IProject} from '../../../../../../../src/app/models/project.model';
@@ -15,16 +15,24 @@ import {
 import {ILocation} from '../../../models/location.model';
 import {GeoLocationService} from '../../../services/geo-location.service';
 import {NgbTypeahead} from '@ng-bootstrap/ng-bootstrap';
+import {ActivatedRoute, Router} from '@angular/router';
+import {ToastService} from '../../../services/toast.service';
 
 @Component({
   selector: 'app-render-base-form',
-  template: ``
+  template: `<ng-content></ng-content>`
 })
 export abstract class RenderBaseFormComponent implements OnInit, OnDestroy {
+
   @ViewChild('instance', {static: true}) instance: NgbTypeahead;
   focus$ = new Subject<string>();
   click$ = new Subject<string>();
+
   public uploadForm: FormGroup;
+
+  @Input() public hasWhatsapp: boolean = true;
+  @Input() public isPrecadastro: boolean = true;
+
   protected project: IProject | undefined;
   protected subject$: Subject<any>;
 
@@ -33,6 +41,11 @@ export abstract class RenderBaseFormComponent implements OnInit, OnDestroy {
   abstract createFromForm(): any;
 
   abstract formSlug: string;
+  renderPass: string | undefined;
+
+  renderSlug: string | undefined;
+  projectRenderId: number | undefined;
+
   useCountryMask = false;
   fieldsForValidation: string[] = [];
   validatedNames: string[] = [];
@@ -41,14 +54,19 @@ export abstract class RenderBaseFormComponent implements OnInit, OnDestroy {
   countryCodes = countryCodes;
   location$: Subject<ILocation>;
   defaultCountryDialCode = '+55';
+  isLoadingForm = false;
+
   protected constructor(
     public projectService: ProjectService,
     public projectRenderItemService: ProjectRenderItemService,
-    public geoLocationService: GeoLocationService
+    public geoLocationService: GeoLocationService,
+    public elementRef: ElementRef,
+    public router: Router,
+    public activatedRoute: ActivatedRoute,
+    public toastService: ToastService
   ) {
     this.subject$ = new Subject();
     this.location$ = new Subject();
-    this.uploadForm = new FormGroup({});
   }
 
   ngOnInit(): void {
@@ -59,7 +77,7 @@ export abstract class RenderBaseFormComponent implements OnInit, OnDestroy {
       }
     });
 
-    if (this.useCountryMask) {
+    if (this.useCountryMask && this.uploadForm.get('country')) {
       if (this.uploadForm.get('country')?.value) {
         this.countryChange(this.uploadForm.get('country')?.value);
       }
@@ -76,28 +94,20 @@ export abstract class RenderBaseFormComponent implements OnInit, OnDestroy {
     this.subject$.complete();
   }
 
-  onSubmitPrecadastro(): Observable<IProjectRenderItem> {
+  onSubmit(): Observable<IProjectRenderItem> {
     if (this.uploadForm.invalid) {
       this.uploadForm.markAllAsTouched();
       return EMPTY;
-    } else {
-      return this.baseOnSubmit(this.createFromForm(), this.formSlug, true);
     }
-  }
 
-  onSubmit(projectRenderId?: number, precastro: boolean = false): Observable<IProjectRenderItem> {
-    if (this.uploadForm.invalid) {
-      this.uploadForm.markAllAsTouched();
-      return EMPTY;
-    } else {
-      return this.baseOnSubmit(this.createFromForm(), this.formSlug, precastro, projectRenderId);
-    }
-  }
+    const fields = this.createFromForm();
 
-  baseOnSubmit(fields: any, formSlug: string, precastro = true, projectRenderId?: number): Observable<IProjectRenderItem> {
     if (this.uploadForm && this.uploadForm.valid) {
-      const request = precastro ? this.projectRenderItemService.createFormPreCadastro(fields, formSlug) : this.projectRenderItemService.createFormItems(fields, formSlug, projectRenderId ?? -1);
-      return request.pipe(takeUntil(this.subject$), tap((renderItem) => {
+      const request = this.isPrecadastro ?
+        this.projectRenderItemService.createWithFormAndConfirmation(fields, this.formSlug) :
+        this.projectRenderItemService.createWithForm(fields, this.formSlug, this.renderPass);
+
+      return request.pipe(takeUntil(this.subject$), tap(() => {
         this.uploadForm!.reset();
       }), catchError((err) => {
         handleFormErrors(this!.uploadForm, err);
@@ -106,6 +116,15 @@ export abstract class RenderBaseFormComponent implements OnInit, OnDestroy {
     } else {
       return EMPTY;
     }
+  }
+
+  validateAndGetRaw(): any {
+    if (this.uploadForm.invalid) {
+      this.uploadForm.markAllAsTouched();
+      this.focusOnInvalid();
+      return null;
+    }
+    return this.createFromForm();
   }
 
   getValidatedNames(req?: any): void {
@@ -119,12 +138,10 @@ export abstract class RenderBaseFormComponent implements OnInit, OnDestroy {
   getValidatedNames$(req?: any): Observable<string[]> {
     if (this.formSlug) {
       return this.projectRenderItemService.getValidatedNames(this.formSlug, req);
-    }else {
+    } else {
       return null;
     }
   }
-
-  private path = 'whatsapp';
 
   countryChange(dialCode: any): void {
     //this.uploadForm.get(this.path)?.reset(dialCode);
@@ -132,19 +149,19 @@ export abstract class RenderBaseFormComponent implements OnInit, OnDestroy {
     this.selectedCountry = findCountyByDialCode(dialCode);
   }
 
-  getCurrentLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        this.geoLocationService.getLocationByLocation(position.coords.latitude, position.coords.longitude).pipe(takeUntil(this.subject$)).subscribe({
-          next: (value) => {
-            this.location$.next(value);
-          }
-        });
-      }, (error) => {
-        console.log(error);
-      }, {timeout: 10000});
-    }
-  }
+  // getCurrentLocation() {
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition((position) => {
+  //       this.geoLocationService.getLocationByLocation(position.coords.latitude, position.coords.longitude).pipe(takeUntil(this.subject$)).subscribe({
+  //         next: (value) => {
+  //           this.location$.next(value);
+  //         }
+  //       });
+  //     }, (error) => {
+  //       console.log(error);
+  //     }, {timeout: 10000});
+  //   }
+  // }
 
   getCountyByCode(code: string): any {
     code = code.toUpperCase();
@@ -152,26 +169,71 @@ export abstract class RenderBaseFormComponent implements OnInit, OnDestroy {
   }
 
   search: OperatorFunction<string, readonly string[]> = (text$: Observable<string>) => {
-    if(this.instance) {
+    if (this.instance) {
       const debouncedText$ = text$.pipe(debounceTime(500), distinctUntilChanged());
       const clicksWithClosedPopup$ = this.click$.pipe(filter(() => !this.instance.isPopupOpen()));
       const inputFocus$ = this.focus$;
 
       return merge(debouncedText$, inputFocus$, clicksWithClosedPopup$).pipe(
         switchMap(term => {
+          console.warn(term);
           let request: Observable<string[]> = of([]);
-          if (!term || term.length < 3 ||  term === '') {
-            //request = this.getValidatedNames$();
-          } else {
-            request = this.getValidatedNames$({search: term});
-          }
+          request = this.getValidatedNames$({search: term});
           return request;
         })
       );
-    }else{
+    } else {
       return of([]);
     }
   };
 
+  focusOnInvalid(formGroup: FormGroup = null): void {
+    formGroup = formGroup ?? this.uploadForm;
+    for (const key of Object.keys(formGroup.controls)) {
+      if (formGroup.controls[key].invalid) {
+        const invalidControl = this.elementRef.nativeElement.querySelector('[formcontrolname="' + key + '"]');
+        if (invalidControl) {
+          invalidControl.focus();
+          break;
+        }
+      }
+    }
+  }
+
+  onSubmitWithForm(): void {
+    console.log('Validando 1');
+    if (this.uploadForm) {
+      const data = this.validateAndGetRaw();
+      console.log('Validado :' + data);
+
+      if (!data) return;
+
+      const sendForm = () => {
+        console.log('Enviando Form');
+        this.isLoadingForm = true;
+
+        this.onSubmit().pipe(takeUntil(this.subject$)).subscribe({
+          next: (value) => {
+            const renderItemId = value?.id;
+            if (renderItemId) {
+              this.router.navigate([], {
+                queryParams: {
+                  renderId: value?.renderProject?.id,
+                  renderItemId
+                },
+                relativeTo: this.activatedRoute,
+                queryParamsHandling: ''
+              });
+            }
+          },
+          error: () => {
+            this.toastService.show({title: '', description: ''}, {classname: 'bg-danger text-light'});
+          }
+        }).add(() => this.isLoadingForm = false);
+      };
+
+      sendForm();
+    }
+  }
 
 }

@@ -3,9 +3,9 @@ import {CommonModule} from '@angular/common';
 
 import {ProjectRoutingModule} from './project-routing.module';
 import {ProjectSharedModule} from '../../entities/project-shared/project-shared.module';
-import {
-  RenderFormPocSharedModule
-} from '../../../../projects/customer-pages/src/app/entities/render-forms/render-form-poc/render-form-poc-shared.module';
+// import {
+//   RenderFormPocSharedModule
+// } from '../../../../projects/customer-pages/src/app/entities/render-forms/render-form-poc/render-form-poc-shared.module';
 
 
 @NgModule({
@@ -13,7 +13,7 @@ import {
   imports: [
     CommonModule,
     ProjectSharedModule,
-    RenderFormPocSharedModule,
+    // RenderFormPocSharedModule,
     ProjectRoutingModule
   ]
 })

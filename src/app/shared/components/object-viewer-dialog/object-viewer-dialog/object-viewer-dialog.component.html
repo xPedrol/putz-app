@@ -1,0 +1,42 @@
+<nb-card class="dialog-content" status="basic">
+  <nb-card-header class="py-2">
+    <div class="row align-items-center">
+      <div class="col-6 text-start">
+        <h6 class="header-title fw-bold">
+          {{title}}
+        </h6>
+      </div>
+      <div class="col-6 text-end">
+        <button nbButton ghost status="basic" (click)="close()">
+          <nb-icon icon="close-outline"></nb-icon>
+        </button>
+      </div>
+    </div>
+
+  </nb-card-header>
+  <nb-card-body>
+    <nb-list *ngIf="!isEmpty">
+      <nb-list-item *ngFor="let obj of objectMaps" class="d-block py-2">
+        <div class="d-flex justify-content-between align-items-center">
+          <p class="header-title m-0 me-3" [nbTooltip]="obj.key">{{obj.key}}</p>
+          <p class="m-0 text-nowrap overflow-hidden text-overflow-ellipsis" *ngIf="!obj.isObject"
+             [nbTooltip]="obj.value">{{obj.value}}</p>
+          <button nbButton status="primary" size="tiny" *ngIf="obj.isObject"
+                  [nbTooltip]="'Clique para abrir a lista de campos do objeto '+obj.key"
+                  (click)="openObjectViewerDialog(obj)">Ver objeto
+          </button>
+        </div>
+      </nb-list-item>
+    </nb-list>
+    <!--    <app-simple-not-found message="Registro vazio ou não adequado"></app-simple-not-found>-->
+    <app-detailed-not-found [hasCallback]="false" title="Registro vazio ou inválido" *ngIf="isEmpty"
+                            message="Não foi possível carregar os campos do registro selecionado"></app-detailed-not-found>
+  </nb-card-body>
+  <nb-card-footer class="py-2">
+    <div class="row align-items-center">
+      <div class="col-12 text-end">
+        <button nbButton status="basic" size="small" (click)="close()">Fechar</button>
+      </div>
+    </div>
+  </nb-card-footer>
+</nb-card>

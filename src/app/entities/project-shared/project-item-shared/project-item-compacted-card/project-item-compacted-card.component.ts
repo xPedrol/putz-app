@@ -8,7 +8,7 @@ import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {ConfirmDialogComponent} from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
 import {DialogAction} from '../../../../constants/dialog-action.constants';
-import {ProjectItemDialogComponent} from '../project-item-dialog/project-item-dialog.component';
+import {ProjectItemUpdateDialogComponent} from '../project-item-update-dialog/project-item-update-dialog.component';
 
 @Component({
   selector: 'app-project-item-compacted-card',
@@ -69,7 +69,7 @@ export class ProjectItemCompactedCardComponent implements OnInit, OnDestroy {
   }
 
   openEditProjectItemDialog(): void {
-    this.dialogService.open(ProjectItemDialogComponent, {
+    this.dialogService.open(ProjectItemUpdateDialogComponent, {
       context: {
         saveItemOnBD: false,
         projectItem: this.projectItem

@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
-import {mergeMap, of, Subject, takeWhile, timer} from 'rxjs';
+import {interval, mergeMap, of, Subject, Subscription, takeWhile, timer} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {IProjectRenderItemStatus} from '../../../../../../../src/app/models/enums/project-render-item-status.model';
 import {ActivatedRoute} from '@angular/router';
@@ -18,7 +18,15 @@ export class RenderFormFeedbackDetailComponent implements OnInit, OnDestroy {
   renderItem: IProjectRenderItem | undefined;
   isPreRegistered: boolean | undefined;
   subject$: Subject<any>;
-  loadingRenderItem = true;
+  loadingRenderItem = false;
+  timerSubscription: Subscription;
+  timeForNextRefresh = 0;
+  renderStatus = IProjectRenderItemStatus;
+  timer$ = interval(6000).pipe(takeWhile(() => {
+    return !this.renderItem?.videoUrl &&
+      !!(this.renderId &&
+        this.renderItemId);
+  }));
 
   constructor(
     public activatedRoute: ActivatedRoute,
@@ -30,6 +38,26 @@ export class RenderFormFeedbackDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getParams();
+    timer(0, 1000).subscribe(() => {
+      if (this.timeForNextRefresh > 0) {
+        this.timeForNextRefresh--;
+        console.warn(this.timeForNextRefresh);
+        this.cd.markForCheck();
+      }
+    });
+  }
+
+  initTimer(): void {
+    this.timerSubscription = this.timer$.subscribe(() => {
+      console.warn('Timer reiniciado');
+      this.getRenderItem();
+    });
+  }
+
+  stopTimer(): void {
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();
+    }
   }
 
   getParams(): void {
@@ -38,20 +66,22 @@ export class RenderFormFeedbackDetailComponent implements OnInit, OnDestroy {
       this.renderId = renderId;
       this.renderItemId = renderItemId;
       if (renderId && renderItemId) {
-        timer(0, 8000)
-          .pipe(takeWhile(() => !this.renderItem?.videoUrl && !!(this.renderId && this.renderItemId))).subscribe(() => {
-          this.getRenderItem();
-        });
+        this.getRenderItem();
       } else {
         this.renderItem = null;
-        this.cd.markForCheck();
       }
+      this.cd.markForCheck();
     });
   }
 
   getRenderItem(): void {
     if (this.renderId && this.renderItemId) {
       this.loadingRenderItem = true;
+      this.stopTimer();
+      this.timer$.subscribe().unsubscribe();
+      if (!this.renderItem) {
+        this.cd.markForCheck();
+      }
       this.renderItemService.findRenderPublicItem({
         renderId: this.renderId,
         itemId: this.renderItemId,
@@ -78,6 +108,9 @@ export class RenderFormFeedbackDetailComponent implements OnInit, OnDestroy {
       }).add(() => {
         this.loadingRenderItem = false;
         this.cd.markForCheck();
+        this.initTimer();
+        this.timeForNextRefresh = 6;
+        console.warn('Requisição finalizada');
       });
     }
   }

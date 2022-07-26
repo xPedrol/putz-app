@@ -3,11 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {ProjectDashboardComponent} from '../../entities/project-shared/project-dashboard/project-dashboard.component';
 import {AuthGuard} from '../../core/interceptor/auth-guard.service';
 import {allAuthorities, Authority} from '../../constants/authority.constants';
-import {
-  TimeLineEventListComponent
-} from '../../entities/project-shared/time-line-event-shared/time-line-event-list/time-line-event-list.component';
 import {ProjectUpdateComponent} from '../../entities/project-shared/project-update/project-update.component';
-import {RenderDetailComponent} from '../../entities/render-shared/render-detail/render-detail.component';
 import {
   ProjectGeneralTabComponent
 } from '../../entities/project-shared/project-update-tabs/project-general-tab/project-general-tab.component';
@@ -29,20 +25,8 @@ import {
   ProjectNoAccessTabComponent
 } from '../../entities/project-shared/project-update-tabs/project-no-access-tab/project-no-access-tab.component';
 import {
-  RenderDetailTableTabComponent
-} from '../../entities/render-shared/render-detail/render-detail-table-tab/render-detail-table-tab.component';
-import {
-  RenderDetailChartsTabComponent
-} from '../../entities/render-shared/render-detail/render-detail-charts-tab/render-detail-charts-tab.component';
-import {
-  RenderDetailErrorsTabComponent
-} from '../../entities/render-shared/render-detail/render-detail-errors-tab/render-detail-errors-tab.component';
-import {
   ProjectContractTabComponent
 } from '../../entities/project-shared/project-update-tabs/project-contract-tab/project-contract-tab.component';
-import {
-  RenderDetailCsvTabComponent
-} from '../../entities/render-shared/render-detail/render-detail-csv-tab/render-detail-csv-tab.component';
 
 const routes: Routes = [
   {
@@ -58,17 +42,9 @@ const routes: Routes = [
       authorities: allAuthorities
     }
   },
-  // {
-  //   path: 'renders',
-  //   component: JobDetailComponent,
-  //   canActivate: [AuthGuard],
-  //   data: {
-  //     authorities: [Authority.MANAGER, Authority.ADMIN]
-  //   }
-  // },
   {
     path: ':projectId/timeline',
-    component: TimeLineEventListComponent,
+    loadChildren: () => import('./timeline/timeline.module').then(m => m.TimelineModule),
     canActivate: [AuthGuard],
     data: {
       authorities: allAuthorities
@@ -125,39 +101,13 @@ const routes: Routes = [
     ]
   },
   {
-    path: ':projectId/render/:renderSlug',
-    component: RenderDetailComponent,
+    path: ':projectId/render',
     canActivate: [AuthGuard],
     data: {
       authorities: [Authority.CLIENT, Authority.MANAGER, Authority.ADMIN]
     },
-    children: [
-      {
-        path: '',
-        component: RenderDetailTableTabComponent
-      },
-      {
-        path: 'table',
-        component: RenderDetailTableTabComponent
-      },
-      {
-        path: 'charts',
-        component: RenderDetailChartsTabComponent
-      },
-      {
-        path: 'errors',
-        component: RenderDetailErrorsTabComponent
-      },
-      {
-        path: 'csv',
-        component: RenderDetailCsvTabComponent
-      }
-    ]
+    loadChildren: () => import('./render/render.module').then(m => m.RenderModule)
   },
-  // {
-  //   path: ':projectId/render/:renderSlug/rendering',
-  //   component: RenderTableTabComponent,
-  // },
   {
     path: ':projectId/items',
     loadChildren: () => import('../project-item/project-item.module').then(m => m.ProjectItemModule),

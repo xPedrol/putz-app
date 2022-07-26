@@ -44,6 +44,7 @@ export interface IProjectItem {
   quantity?: number | null;
   isExtraItem?: boolean | null;
   invoicePDF?: string | null;
+  priceFactor?: number | null;
 }
 
 export class ProjectItem implements IProjectItem {
@@ -82,6 +83,7 @@ export class ProjectItem implements IProjectItem {
   quantity: number | null;
   isExtraItem: boolean | null;
   invoicePDF: string | null;
+  priceFactor?: number | null;
 
   constructor(item: any) {
     item = item || {};

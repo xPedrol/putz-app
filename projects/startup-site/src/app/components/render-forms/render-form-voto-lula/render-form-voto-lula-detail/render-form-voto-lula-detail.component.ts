@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {IProjectRenderItem} from "../../../../../../../../src/app/models/project-render-item.model";
 
 @Component({
   selector: 'app-render-form-voto-lula-detail',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RenderFormVotoLulaDetailComponent implements OnInit {
 
-  constructor() { }
+  @Input() hasWhatsapp: boolean = true;
+  @Input() isPrecadastro: boolean = true;
+
+  constructor(
+
+  ) {
+  }
 
   ngOnInit(): void {
+
   }
 
 }

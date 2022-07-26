@@ -1,5 +1,5 @@
-<nb-card class="dialog-content">
-  <nb-card-header class="border-0">
+<nb-card class="dialog-content" status="basic">
+  <nb-card-header class="py-2">
     <div class="row align-items-center">
       <div class="col-6 text-start">
         <h6 class="header-title fw-bold">
@@ -45,9 +45,12 @@
           </p>
         </ng-container>
       </div>
-      <div class="mb-3 col-12 text-end" (click)="save()">
-        <button nbButton status="primary">Selecionar</button>
-      </div>
+
+    </div>
+  </nb-card-body>
+  <nb-card-body class="py-2">
+    <div class="d-flex justify-content-end align-items-center">
+      <button nbButton status="primary" (click)="save()">Selecionar</button>
     </div>
   </nb-card-body>
 </nb-card>

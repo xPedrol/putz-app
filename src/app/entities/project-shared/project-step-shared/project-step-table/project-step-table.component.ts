@@ -5,7 +5,7 @@ import {SortEvent} from '../../../../directives/sortable.directive';
 import {IProjectStep} from '../../../../models/project-step.model';
 import {ProjectStepService} from '../../../../services/project-step.service';
 import {ISort, Sort} from '../../../../models/table/sort.model';
-import {ProjectStepDialogComponent} from '../project-step-dialog/project-step-dialog.component';
+import {ProjectStepUpdateDialogComponent} from '../project-step-update-dialog/project-step-update-dialog.component';
 import {ConfirmDialogComponent} from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
 import {DialogAction} from '../../../../constants/dialog-action.constants';
 import {Subject} from 'rxjs';
@@ -153,7 +153,7 @@ export class ProjectStepTableComponent implements OnInit, OnDestroy {
   }
 
   openProjectStepDialog(projectStep: IProjectStep): void {
-    this.dialogService.open(ProjectStepDialogComponent, {context: {projectStep}}).onClose.pipe(takeUntil(this.subject$)).subscribe((projectStep) => {
+    this.dialogService.open(ProjectStepUpdateDialogComponent, {context: {projectStep}}).onClose.pipe(takeUntil(this.subject$)).subscribe((projectStep) => {
       if (projectStep) {
         this.projectSteps = this.projectSteps?.map(step => {
           if (step?.id === projectStep?.id) {

@@ -10,18 +10,22 @@ import {NgbAccordionModule, NgbAlertModule, NgbTypeaheadModule} from '@ng-bootst
 import {ImageCropperHandleModule} from "../../image-cropper/image-cropper-handle.module";
 import {PtBannerComponent} from "./eu-voto-lula/pt-banner/pt-banner.component";
 import {EuVotoLulaComponent} from "./eu-voto-lula/eu-voto-lula.component";
-import {CarouselModule} from "ngx-owl-carousel-o";
-import {StickyNavModule} from "ng2-sticky-nav";
-import {NgxSmartModalModule} from "ngx-smart-modal";
-import {NgxScrollTopModule} from "ngx-scrolltop";
-import {TabsModule} from "ngx-tabset";
-import {AccordionModule} from "ngx-accordion";
-import {PageComponentsModule} from "../../pages-components/page-components.module";
-import {CommonStartupModule} from "../../../common/common-startup.module";
 import {PtComoUsarComponent} from "./eu-voto-lula/pt-como-usar/pt-como-usar.component";
+import {CdkStepperModule} from "@angular/cdk/stepper";
+import {NgStepperModule} from "../../ng-stepper/ng-stepper.module";
+import {
+  FieldErrorMessageModule
+} from "../../../../../../../src/app/shared/components/field-error-message/field-error-message.module";
+import {TabsModule} from "ngx-tabset";
+import {NgxDropzoneModule} from "ngx-dropzone";
 
 const routes: Routes = [
-  {path: '', component: EuVotoLulaComponent},
+  {path: '', component: EuVotoLulaComponent, data:{isPrecadastro: false, hasWhatsapp:false}},
+  {path: 'direto', component: EuVotoLulaComponent, data:{isPrecadastro: false, hasWhatsapp:false}},
+  {path: 'diretowhatsapp', component: EuVotoLulaComponent, data:{isPrecadastro: false, hasWhatsapp:true}},
+
+  {path: 'whatsapp', component: EuVotoLulaComponent, data:{isPrecadastro: true, hasWhatsapp:true}},
+  // {path: 'pre', component: EuVotoLulaComponent, data:{isPrecadastro: true, hasWhatsapp:false}},
   {path: 'forms', component: RenderFormVotoLulaDetailComponent},
 ];
 
@@ -32,12 +36,7 @@ const routes: Routes = [
     RenderFormVotoLulaFieldsComponent,
     EuVotoLulaComponent,
     PtBannerComponent,
-    PtComoUsarComponent,
-    // MaServicesComponent,
-    // MaCasosAmericanasComponent,
-    // MaFunfactsComponent,
-    // MaCtaComponent,
-    // MaContactComponent,
+    PtComoUsarComponent
   ],
     exports: [
         RenderFormVotoLulaDetailComponent,
@@ -53,17 +52,8 @@ const routes: Routes = [
     NgbTypeaheadModule,
     NgbAccordionModule,
     ImageCropperHandleModule,
-    NgbAlertModule
-
-    // CarouselModule,
-    // StickyNavModule,
-    // NgxSmartModalModule.forRoot(),
-    // NgxScrollTopModule,
-    // TabsModule.forRoot(),
-    // AccordionModule,
-    // PageComponentsModule,
-    // CommonStartupModule,
-    // RenderFormVotoLulaModule
+    NgbAlertModule,
+    CdkStepperModule, NgStepperModule, FieldErrorMessageModule, TabsModule, NgxDropzoneModule,
   ]
 })
 export class RenderFormVotoLulaModule {

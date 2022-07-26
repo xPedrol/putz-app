@@ -9,6 +9,7 @@ export interface IProjectRenderItem {
   description?: string | null;
   renderSlug?: string | null;
   jsonData?: string | null;
+  whatsapp?: string | null;
   dataSource?: string | null;
   startRenderDate?: Moment | null;
   expectedRenderDate?: Moment | null;
@@ -40,6 +41,7 @@ export class ProjectRenderItem implements IProjectRenderItem {
   id: number;
   job: any | null;
   jsonData: string | null;
+  whatsapp: string | null;
   dataSource: string | null;
   lastModifiedBy: string | null;
   lastModifiedDate: Moment | null;
@@ -64,6 +66,7 @@ export class ProjectRenderItem implements IProjectRenderItem {
     this.expectedRenderDate = item.expectedRenderDate ? moment(item.expectedRenderDate) : null;
     this.id = item.id;
     this.job = item.job;
+    this.whatsapp = item.whatsapp;
     this.jsonData = item.jsonData;
     this.dataSource = item.dataSource;
     this.lastModifiedBy = item.lastModifiedBy;

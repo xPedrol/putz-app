@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {MenuSiteService} from "../../../services/menu-site.service";
 import {BehaviorSubject} from "rxjs";
 import {IMenuSiteItemModel} from "../../../services/menu-site-item.model";
-import {navigationExample} from "../../../services/navigation-example";
+import {navigationBasicPutz} from "../navigationBasicPutz";
 
 @Component({
   selector: 'app-privacy-policy',
@@ -14,7 +14,7 @@ export class PrivacyPolicyComponent implements OnInit {
   constructor(
     private menuService: MenuSiteService,
   ) {
-    menuService.currentMenu = new BehaviorSubject<IMenuSiteItemModel[]>(navigationExample);
+    menuService.currentMenu = new BehaviorSubject<IMenuSiteItemModel[]>(navigationBasicPutz);
     menuService.showLogin = true;
     menuService.isCentred = false;
     menuService.isNavBarColorWhite = false;

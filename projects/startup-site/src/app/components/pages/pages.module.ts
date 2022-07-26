@@ -50,7 +50,6 @@ import {RenderFormsModule} from "../render-forms/render-forms.module";
         PutzProdutoraVarejoModule,
         PutzEpaModule,
         RenderFormsModule
-
     ],
     providers: [],
     bootstrap: []

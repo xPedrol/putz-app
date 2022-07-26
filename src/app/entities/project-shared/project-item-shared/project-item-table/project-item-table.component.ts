@@ -13,7 +13,7 @@ import {AccountService} from '../../../../services/account.service';
 import {IProject} from '../../../../models/project.model';
 import {ProjectService} from '../../../../services/project.service';
 import {ISort, Sort} from '../../../../models/table/sort.model';
-import {ProjectItemDialogComponent} from '../project-item-dialog/project-item-dialog.component';
+import {ProjectItemUpdateDialogComponent} from '../project-item-update-dialog/project-item-update-dialog.component';
 import {ConfirmDialogComponent} from '../../../../shared/components/confirm-dialog/confirm-dialog.component';
 import {DialogAction} from '../../../../constants/dialog-action.constants';
 import {Authority} from '../../../../constants/authority.constants';
@@ -164,7 +164,7 @@ export class ProjectItemTableComponent implements OnInit, OnDestroy {
 
   openUpdateProjectItemDialog(projectItem: IProjectItem | undefined): void {
     if (projectItem) {
-      this.dialogService.open(ProjectItemDialogComponent, {
+      this.dialogService.open(ProjectItemUpdateDialogComponent, {
         context: {
           projectItem,
           saveItemOnBD: true

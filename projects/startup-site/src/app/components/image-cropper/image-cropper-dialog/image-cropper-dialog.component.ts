@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import {ImageCroppedEvent, LoadedImage} from "ngx-image-cropper";
+import {ImageCroppedEvent} from "ngx-image-cropper";
 
 @Component({
   selector: 'app-image-cropper-dialog',
@@ -8,7 +8,7 @@ import {ImageCroppedEvent, LoadedImage} from "ngx-image-cropper";
   styleUrls: ['./image-cropper-dialog.component.scss']
 })
 export class ImageCropperDialogComponent implements OnInit {
-  @Input() public ratio: number = 3/4;
+  @Input() public ratio: number = 3 / 4;
   @Input() public resizeToHeight: number = 539;
   @Input() public resizeToWidth: number = 416;
   imageFile: any;
@@ -27,18 +27,9 @@ export class ImageCropperDialogComponent implements OnInit {
     this.croppedImage = event.base64;
   }
 
-  close(): void {
-    if (this.croppedImage) {
-      this.activeModal.close(this.croppedImage);
-    }
-  }
-
-  onSelect(event: any) {
-    this.imageFile = event.addedFiles[0];
-  }
-
-  onRemove() {
-    this.imageFile = undefined;
-    this.croppedImage = undefined;
+  close(sendImage = false): void {
+    this.croppedImage = sendImage ? this.croppedImage : null;
+    this.imageFile = sendImage ? this.imageFile : null;
+    this.activeModal.close(this.croppedImage);
   }
 }

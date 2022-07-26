@@ -1,7 +1,9 @@
 import {Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import {ProjectService} from '../../../../services/project.service';
 import {IProject} from '../../../../models/project.model';
-import {ProjectItemDialogComponent} from '../../project-item-shared/project-item-dialog/project-item-dialog.component';
+import {
+  ProjectItemUpdateDialogComponent
+} from '../../project-item-shared/project-item-update-dialog/project-item-update-dialog.component';
 import {IProjectItem, ProjectItem} from '../../../../models/project-item.model';
 import {NbDialogService, NbToastrService} from '@nebular/theme';
 import {ProjectItemService} from '../../../../services/project-item.service';
@@ -14,6 +16,9 @@ import {ConfirmDialogComponent} from '../../../../shared/components/confirm-dial
 import {DialogAction} from '../../../../constants/dialog-action.constants';
 import {AccountService} from '../../../../services/account.service';
 import {Authority} from '../../../../constants/authority.constants';
+import {
+  ObjectViewerDialogComponent
+} from "../../../../shared/components/object-viewer-dialog/object-viewer-dialog/object-viewer-dialog.component";
 
 @Component({
   selector: 'app-project-conception-tab',
@@ -68,6 +73,7 @@ export class ProjectConceptionTabComponent implements OnInit, OnDestroy {
       }
       if (projectItemsRes?.projectItems) {
         this.projectItems = this.orderExtraItems(projectItemsRes.projectItems);
+        // this.getNewItemsCalc();
       }
     });
     combineLatest([
@@ -89,23 +95,20 @@ export class ProjectConceptionTabComponent implements OnInit, OnDestroy {
   }
 
   openProjectItemDialog(): void {
-    this.dialogService.open(ProjectItemDialogComponent, {context: {saveItemOnBD: false}}).onClose.pipe(takeUntil(this.subject$)).subscribe(projectItem => {
+    this.dialogService.open(ProjectItemUpdateDialogComponent, {context: {saveItemOnBD: false}}).onClose.pipe(takeUntil(this.subject$)).subscribe(projectItem => {
       if (projectItem) {
         const items: IProjectItem[] = this.projectItems ?? [];
         items.push(projectItem);
-        this.getNewItemsCalc(items);
         this.projectItemService.projectItems$.next({projectItems: items});
         this.getNegotiation();
       }
     });
   }
 
-  getNewItemsCalc(items: IProjectItem[]): void {
-    if (this.project && this.negotiationCalc) {
-      this.project.items = items;
-      this.negotiationCalc.itemsSum = this.project.calcItemSum(this.projectItems);
-      this.projectService.negotiationCalc$.next(this.negotiationCalc);
-    }
+  getNewItemsCalc(): void {
+    // this.negotiationCalc.extraItemsBaseSum = this.getExtraItemsBaseSum();
+    // this.negotiationCalc.itemsBaseSum = this.getItemsBaseSum();
+    // console.warn(this.negotiationCalc.itemsBaseSum, this.negotiationCalc.extraItemsBaseSum);
   }
 
   getProjectItems(): void {
@@ -133,7 +136,6 @@ export class ProjectConceptionTabComponent implements OnInit, OnDestroy {
           }
           break;
       }
-      this.getNewItemsCalc(items);
       this.projectItemService.projectItems$.next({projectItems: items});
       this.getNegotiation();
     }
@@ -181,9 +183,14 @@ export class ProjectConceptionTabComponent implements OnInit, OnDestroy {
   }
 
   getNegotiation(): void {
-    const negotiationForCalc = this.conceptionForm?.getNegotiation();
+    const negotiationForCalc = this.conceptionForm?.validateAndGetNegotiationRaw();
     if (this.projectItems && !this.advancedConception && negotiationForCalc) {
       negotiationForCalc.items = ProjectItem.clearFieldsForUpdate(this.projectItems);
+
+    }
+    if (this.projectItems && this.advancedConception && negotiationForCalc) {
+      negotiationForCalc.extraItemsBaseSum = this.getItemsSum(true);
+      negotiationForCalc.itemsBaseSum = this.getItemsSum();
     }
     if (negotiationForCalc && ((negotiationForCalc.items && negotiationForCalc.items.length > 0) || this.advancedConception)) {
       const request = this.advancedConception ? this.projectService.getAdvancedNegotiation(negotiationForCalc) : this.projectService.getBasicNegotiation(negotiationForCalc);
@@ -195,6 +202,14 @@ export class ProjectConceptionTabComponent implements OnInit, OnDestroy {
     }
   }
 
+  getItemsSum(isExtraItem: boolean = false): number {
+    return this.projectItems.filter(item => item.isExtraItem === isExtraItem).reduce((acc, item) => {
+      item.priceFactor = item.priceFactor ?? 1;
+      return acc + (item.valueBase * item.priceFactor);
+    }, 0);
+  }
+
+
   trackProjectItemsByFn(index: number, item: any): number {
     return item?.id;
   }
@@ -203,6 +218,15 @@ export class ProjectConceptionTabComponent implements OnInit, OnDestroy {
     const extraItems: IProjectItem[] = items.filter((item) => item.isExtraItem);
     const normalItems: IProjectItem[] = items.filter((item) => !item.isExtraItem);
     return [...normalItems, ...extraItems];
+  }
+
+  openObjectViewerDialog(): void {
+    this.dialogService.open(ObjectViewerDialogComponent, {
+      context: {
+        title: 'Campos de orçamento',
+        object: this.negotiationCalc
+      }
+    });
   }
 
   ngOnDestroy(): void {

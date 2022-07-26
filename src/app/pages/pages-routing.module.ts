@@ -78,10 +78,6 @@ const routes: Routes = [
         }
       },
       {
-        path: 'render',
-        loadChildren: () => import('./render/render.module').then(m => m.RenderModule),
-      },
-      {
         path: 'manager',
         loadChildren: () => import('./manager/manager.module').then(m => m.ManagerModule),
         canActivate: [AuthGuard],

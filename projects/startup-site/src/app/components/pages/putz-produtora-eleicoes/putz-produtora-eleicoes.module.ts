@@ -10,19 +10,20 @@ import {CommonModule} from "@angular/common";
 import {PageComponentsModule} from "../../pages-components/page-components.module";
 
 import {CommonStartupModule} from "../../../common/common-startup.module";
-import {PutzProdutoraEleicoesComponent} from "./putz-produtora-eleicoes.component";
-import {IaBannerComponent} from "./ia-banner/ia-banner.component";
+import {EleicoesBannerComponent} from "./eleicoes-banner/eleicoes-banner.component";
 import {IaServicesComponent} from "./ia-services/ia-services.component";
 import {IaFeaturesComponent} from "./ia-features/ia-features.component";
 import {IaWhyChooseUsComponent} from "./ia-why-choose-us/ia-why-choose-us.component";
 import {IaFeedbackComponent} from "./ia-feedback/ia-feedback.component";
 import {IaContactComponent} from "./ia-contact/ia-contact.component";
+
+import {PutzProdutoraEleicoesComponent} from "./putz-produtora-eleicoes.component";
 import {RenderFormGaloModule} from "../../render-forms/render-form-galo/render-form-galo.module";
 
 @NgModule({
   declarations: [
     PutzProdutoraEleicoesComponent,
-    IaBannerComponent,
+    EleicoesBannerComponent,
     IaServicesComponent,
     IaFeaturesComponent,
     IaWhyChooseUsComponent,
@@ -41,7 +42,9 @@ import {RenderFormGaloModule} from "../../render-forms/render-form-galo/render-f
         CommonStartupModule,
         RenderFormGaloModule
     ],
-    providers: [],
+    exports: [ EleicoesBannerComponent
+    ],
+    providers: [ ],
     bootstrap: []
 })
 export class PutzProdutoraEleicoesModule { }

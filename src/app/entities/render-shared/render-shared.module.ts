@@ -43,13 +43,11 @@ import {
 } from './render-detail/render-detail-charts-tab/render-detail-charts-tab.component';
 import {ApprovedNamesDialogComponent} from './approved-names-dialog/approved-names-dialog.component';
 import {
-  ProjectRenderErrorsDialogComponent
-} from './project-render-errors-dialog/project-render-errors-dialog.component';
-import {
   RenderDetailErrorsTabComponent
 } from './render-detail/render-detail-errors-tab/render-detail-errors-tab.component';
 import {RenderDetailCsvTabComponent} from './render-detail/render-detail-csv-tab/render-detail-csv-tab.component';
 import {CsvUploadComponent} from './csv-upload/csv-upload.component';
+import {RenderBasicSharedModule} from "./render-basic-shared.module";
 
 
 @NgModule({
@@ -67,7 +65,6 @@ import {CsvUploadComponent} from './csv-upload/csv-upload.component';
     RenderDetailTableTabComponent,
     RenderDetailChartsTabComponent,
     ApprovedNamesDialogComponent,
-    ProjectRenderErrorsDialogComponent,
     RenderDetailErrorsTabComponent,
     RenderDetailCsvTabComponent,
     CsvUploadComponent
@@ -75,8 +72,7 @@ import {CsvUploadComponent} from './csv-upload/csv-upload.component';
   exports: [
     RenderTableComponent,
     RenderDetailComponent,
-    RenderExportCsvConfirmDialogComponent,
-    ProjectRenderErrorsDialogComponent
+    RenderExportCsvConfirmDialogComponent
   ],
   imports: [
     CommonModule,
@@ -93,7 +89,8 @@ import {CsvUploadComponent} from './csv-upload/csv-upload.component';
     FormsModule,
     PaginationWrapModule,
     RouterModule,
-    NgChartsModule
+    NgChartsModule,
+    RenderBasicSharedModule
   ]
 })
 export class RenderSharedModule {

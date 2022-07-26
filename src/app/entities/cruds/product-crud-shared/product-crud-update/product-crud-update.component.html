@@ -91,8 +91,8 @@
             </nb-form-field>
           </div>
           <div class="col-md-4 mb-3">
+            <label class="label">Tipo de produto</label>
             <nb-form-field>
-              <label class="label">Tipo de produto</label>
               <input formControlName="productType" nbInput fullWidth placeholder="Tipo de produto..." fieldSize="large"
                      [nbAutocomplete]="productTypeAutoControl">
               <nb-autocomplete #productTypeAutoControl [handleDisplayFn]="viewProductTypeHandle">
@@ -102,6 +102,11 @@
                 </nb-option>
 
               </nb-autocomplete>
+              <button *ngIf="form.get('productType')?.value" nbButton nbSuffix type="button" appearance="ghost" (click)="openObjectViewerDialog()"
+                      status="basic"
+                      [nbTooltip]="'Listar tipo selecionado'">
+                <nb-icon icon="file-text-outline"></nb-icon>
+              </button>
             </nb-form-field>
             <ng-container
               *ngIf="(form.get('productType')!.invalid || !form.get('productType').value?.id) && form.get('productType')!.touched">

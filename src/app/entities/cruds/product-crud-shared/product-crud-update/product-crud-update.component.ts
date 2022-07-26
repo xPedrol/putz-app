@@ -13,6 +13,9 @@ import {levelArray} from "../../../../models/enums/level.model";
 import {IProductType} from "../../../../models/product-type.model";
 import {ProductTypeService} from "../../../../services/product-type.service";
 import {deleteAllUndefinedFields} from "../../../../core/utils/deleteField";
+import {
+  ObjectViewerDialogComponent
+} from "../../../../shared/components/object-viewer-dialog/object-viewer-dialog/object-viewer-dialog.component";
 
 @Component({
   selector: 'app-product-crud-update',
@@ -157,6 +160,18 @@ export class ProductCrudUpdateComponent implements OnInit {
       return value;
     }
     return (value as IProductType)?.name;
+  }
+
+  openObjectViewerDialog(): void {
+    let productType = this.form.get('productType')?.value;
+    if (productType && typeof productType !== 'string') {
+      this.dialogService.open(ObjectViewerDialogComponent, {
+        context: {
+          title: `Campos de ${(productType as IProductType).name}`,
+          object: productType
+        }
+      });
+    }
   }
 
   ngOnDestroy(): void {

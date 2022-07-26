@@ -1,12 +1,28 @@
-<div class="container render-form-detail-container my-5">
+<div class="container render-form-detail-container">
   <ng-container *ngIf="!renderId || !renderItemId">
     <ng-content></ng-content>
   </ng-container>
   <ng-container *ngIf="renderId && renderItemId">
-    <h4 class="text-center">Progresso do vídeo</h4>
+
+    <div class="section-title" *ngIf="isPreRegistered">
+      <span class="sub-title">Falta só mais um passo.</span>
+      <h2 class="text-center">Precisamos confirmar seu Whatsapp</h2>
+      <p>Click no botão, ele irá abrir seu whatsapp e envie o código abaixo para nosso número.</p>
+    </div>
+    <div class="section-title" *ngIf="!isPreRegistered">
+      <span class="sub-title">Incrível, Deu tudo certo!!!!.</span>
+      <h2 class="text-center">Aguarde só mais uns minutos..</h2>
+      <p class="mb-0">O Vídeo vai ser gerado e logo depois basta compartilhar.</p>
+      <ng-container *ngIf="!this.renderItem?.videoUrl &&
+      !!(this.renderId &&
+        this.renderItemId)">
+        <small *ngIf="timeForNextRefresh > 0">Próxima atualização em {{timeForNextRefresh}} segundo(s)</small>
+        <small *ngIf="timeForNextRefresh <= 0">Atualizando...</small>
+      </ng-container>
+    </div>
+
     <div class="row">
       <div class="col-12 col-md-10 col-lg-8 mx-auto">
-
         <app-render-form-feedback-card *ngIf="renderItem"
                                        [isPreRegistered]="isPreRegistered"
                                        [renderId]="renderId"
@@ -28,5 +44,6 @@
         <!--        </ng-container>-->
       </div>
     </div>
+
   </ng-container>
 </div>
